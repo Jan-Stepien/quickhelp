@@ -17,7 +17,8 @@
     "@no-work/agent-sdk": "workspace:*",
     "@no-work/tool-kit": "workspace:*",
     "@no-work/tools-json-formatter": "workspace:*",
-    "@no-work/tools-jwt-decoder": "workspace:*"
+    "@no-work/tools-jwt-decoder": "workspace:*",
+    "@no-work/tools-image-converter": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.19.19",

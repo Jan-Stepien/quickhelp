@@ -1,6 +1,16 @@
 import type { Tool } from "@no-work/tool-kit";
 
-export function buildLlmsTxt(tools: Tool[], baseUrl = "https://no.work"): string {
+export interface ExtraRoute {
+  path: string;
+  title: string;
+  summary?: string;
+}
+
+export function buildLlmsTxt(
+  tools: Tool[],
+  baseUrl = "https://no.work",
+  extraRoutes: ExtraRoute[] = []
+): string {
   const header = [
     "# Agent-Native Tool Factory",
     "",
@@ -36,6 +46,19 @@ export function buildLlmsTxt(tools: Tool[], baseUrl = "https://no.work"): string
     return lines.join("\n");
   });
 
+  const extraSection =
+    extraRoutes.length > 0
+      ? [
+          "",
+          "## Additional Pages",
+          "",
+          ...extraRoutes.map(
+            (r) =>
+              `- [${r.title}](${baseUrl}${r.path})${r.summary ? ` — ${r.summary}` : ""}`
+          ),
+        ].join("\n")
+      : "";
+
   const footer = [
     "",
     "## Discovery",
@@ -49,5 +72,5 @@ export function buildLlmsTxt(tools: Tool[], baseUrl = "https://no.work"): string
     "Free tier: 30 req/min per IP, responses include attribution watermark.",
   ].join("\n");
 
-  return header + toolEntries.join("\n\n") + footer;
+  return header + toolEntries.join("\n\n") + extraSection + footer;
 }

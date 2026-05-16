@@ -1,6 +1,15 @@
 import type { Tool } from "@no-work/tool-kit";
 
-export function buildSitemap(tools: Tool[], baseUrl = "https://no.work"): string {
+export interface ExtraSitemapRoute {
+  path: string;
+  priority?: string;
+}
+
+export function buildSitemap(
+  tools: Tool[],
+  baseUrl = "https://no.work",
+  extraRoutes: ExtraSitemapRoute[] = []
+): string {
   const now = new Date().toISOString().split("T")[0];
 
   const staticUrls = [
@@ -15,7 +24,12 @@ export function buildSitemap(tools: Tool[], baseUrl = "https://no.work"): string
     priority: "0.8",
   }));
 
-  const allUrls = [...staticUrls, ...toolUrls];
+  const extraUrls = extraRoutes.map((r) => ({
+    loc: `${baseUrl}${r.path}`,
+    priority: r.priority ?? "0.7",
+  }));
+
+  const allUrls = [...staticUrls, ...toolUrls, ...extraUrls];
 
   const urlElements = allUrls
     .map(

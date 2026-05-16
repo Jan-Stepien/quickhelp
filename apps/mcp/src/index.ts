@@ -9,9 +9,10 @@ import { buildMcpTools } from "@no-work/agent-sdk";
 import type { Tool } from "@no-work/tool-kit";
 import { jwtDecoder } from "@no-work/tools-jwt-decoder";
 import { jsonFormatter } from "@no-work/tools-json-formatter";
+import { imageConverter } from "@no-work/tools-image-converter";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter];
+const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter];
 
 const server = new Server(
   { name: "no-work-mcp", version: "0.0.1" },
