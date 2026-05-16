@@ -105,8 +105,8 @@ interface DecodedState {
 }
 
 export function JwtDecoderUI({ sampleToken }: { sampleToken: string }) {
-  const [token, setToken] = useState("");
-  const [decoded, setDecoded] = useState<DecodedState | null>(null);
+  const [token, setToken] = useState(sampleToken);
+  const [decoded, setDecoded] = useState<DecodedState | null>(() => decodeToken(sampleToken));
 
   const [algorithm, setAlgorithm] = useState("HS256");
   const [secret, setSecret] = useState("");

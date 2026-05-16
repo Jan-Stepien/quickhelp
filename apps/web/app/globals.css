@@ -26,6 +26,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --background: #09090b;
   --foreground: #fafafa;
   --muted: #27272a;
