@@ -7,7 +7,7 @@ export interface ExtraSitemapRoute {
 
 export function buildSitemap(
   tools: Tool[],
-  baseUrl = "https://no.work",
+  baseUrl = "https://quickhelp.dev",
   extraRoutes: ExtraSitemapRoute[] = []
 ): string {
   const now = new Date().toISOString().split("T")[0];

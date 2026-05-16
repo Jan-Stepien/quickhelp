@@ -4,7 +4,7 @@ import type { Category } from "@no-work/tool-kit";
 
 export const metadata = {
   title: "All Tools",
-  description: "Browse all utility tools available on no.work.",
+  description: "Browse all utility tools available on quickhelp.dev.",
 };
 
 export default function ToolsPage() {

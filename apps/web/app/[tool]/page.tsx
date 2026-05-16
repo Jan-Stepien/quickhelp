@@ -25,7 +25,7 @@ export default async function ToolPage({ params }: Props) {
   const tool = getToolBySlug(slug);
   if (!tool) notFound();
 
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work";
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
   const jsonLd = buildToolJsonLd(tool, baseUrl);
   const serialized = serializeTool(tool);
 

@@ -5,7 +5,7 @@ import { buildOpenAPI } from "@no-work/agent-sdk";
 export const dynamic = "force-static";
 
 export function GET(): NextResponse {
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work";
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
   const doc = buildOpenAPI(registry, { baseUrl });
   return NextResponse.json(doc, {
     headers: {

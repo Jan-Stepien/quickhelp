@@ -8,7 +8,7 @@ export interface ExtraRoute {
 
 export function buildLlmsTxt(
   tools: Tool[],
-  baseUrl = "https://no.work",
+  baseUrl = "https://quickhelp.dev",
   extraRoutes: ExtraRoute[] = []
 ): string {
   const header = [

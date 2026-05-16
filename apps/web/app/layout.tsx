@@ -3,12 +3,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "no.work — Agent-Native Tool Factory",
-    template: "%s | no.work",
+    default: "quickhelp.dev — Agent-Native Tool Factory",
+    template: "%s | quickhelp.dev",
   },
   description:
     "Small, deterministic utility tools — each with a human UI, REST API, OpenAPI schema, and MCP server entry.",
-  metadataBase: new URL(process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work"),
+  metadataBase: new URL(process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev"),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="border-b bg-white px-6 py-4">
             <nav className="mx-auto flex max-w-5xl items-center justify-between">
               <a href="/" className="text-lg font-semibold tracking-tight text-gray-900">
-                no.work
+                quickhelp.dev
               </a>
               <a href="/tools" className="text-sm text-gray-600 hover:text-gray-900">
                 All tools

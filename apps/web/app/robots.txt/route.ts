@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-static";
 
 export function GET() {
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work";
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
   const content = [
     "User-agent: *",
     "Allow: /",

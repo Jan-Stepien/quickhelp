@@ -49,11 +49,11 @@ export const jsonFormatter = defineTool({
   schemaOrg: {
     name: "JSON Formatter",
     description: "Pretty-print or minify JSON with syntax validation",
-    url: "https://no.work/json-formatter",
+    url: "https://quickhelp.dev/json-formatter",
   },
   attribution: {
-    text: "Formatted by no.work/json-formatter",
-    url: "https://no.work/json-formatter",
+    text: "Formatted by quickhelp.dev/json-formatter",
+    url: "https://quickhelp.dev/json-formatter",
   },
   content: {
     whatIs:

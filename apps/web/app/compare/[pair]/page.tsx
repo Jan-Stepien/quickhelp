@@ -43,7 +43,7 @@ export function generateMetadata({
   const [a, b] = parsePair(params.pair);
   if (!a || !b) return {};
   return {
-    title: `${a.name} vs ${b.name} — no.work`,
+    title: `${a.name} vs ${b.name} — quickhelp.dev`,
     description: `Compare ${a.name} and ${b.name}: features, use cases, and when to use each tool.`,
   };
 }
@@ -52,7 +52,7 @@ export default function ComparePage({ params }: { params: { pair: string } }) {
   const [toolA, toolB] = parsePair(params.pair);
   if (!toolA || !toolB) notFound();
 
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work";
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
 
   const pageJsonLd = {
     "@context": "https://schema.org",

@@ -6,7 +6,7 @@ import { getAllDirections } from "@/lib/conversion-directions";
 export const dynamic = "force-static";
 
 export function GET() {
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work";
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
 
   const conversionRoutes = getAllDirections().map((d) => ({
     path: `/convert/${d.slug}`,

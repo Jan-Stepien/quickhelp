@@ -64,11 +64,11 @@ export const jwtDecoder = defineTool({
   schemaOrg: {
     name: "JWT Decoder",
     description: "Decode a JSON Web Token to inspect header and payload",
-    url: "https://no.work/jwt-decoder",
+    url: "https://quickhelp.dev/jwt-decoder",
   },
   attribution: {
-    text: "Decoded by no.work/jwt-decoder",
-    url: "https://no.work/jwt-decoder",
+    text: "Decoded by quickhelp.dev/jwt-decoder",
+    url: "https://quickhelp.dev/jwt-decoder",
   },
   content: {
     whatIs:

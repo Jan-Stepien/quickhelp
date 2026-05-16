@@ -1,6 +1,6 @@
-# no.work MCP Server
+# quickhelp.dev MCP Server
 
-An MCP server exposing all no.work tools via stdio or HTTP.
+An MCP server exposing all quickhelp.dev tools via stdio or HTTP.
 
 ## Claude Desktop config
 

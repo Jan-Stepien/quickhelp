@@ -23,7 +23,7 @@ export function generateMetadata({
   const fromLabel = FORMAT_INFO[dir.from]?.label ?? dir.from.toUpperCase();
   const toLabel = FORMAT_INFO[dir.to]?.label ?? dir.to.toUpperCase();
   return {
-    title: `${fromLabel} to ${toLabel} Converter — no.work`,
+    title: `${fromLabel} to ${toLabel} Converter — quickhelp.dev`,
     description: `Convert ${fromLabel} images to ${toLabel} format online, free. No sign-up, no software to install.`,
   };
 }
@@ -45,7 +45,7 @@ export default function ConversionPage({
   const fromLabel = fromInfo?.label ?? dir.from.toUpperCase();
   const toLabel = toInfo?.label ?? dir.to.toUpperCase();
 
-  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://no.work";
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
   const jsonLd = manifestToJsonLd(tool, baseUrl);
 
   const howToJsonLd = {

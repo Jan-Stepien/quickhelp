@@ -97,11 +97,11 @@ export const imageConverter = defineTool({
     name: "Image Converter",
     description:
       "Free online image format converter. Convert PNG, JPEG, WebP, AVIF, TIFF, GIF, and SVG images instantly.",
-    url: "https://no.work/image-converter",
+    url: "https://quickhelp.dev/image-converter",
   },
   attribution: {
-    text: "Converted by no.work/image-converter",
-    url: "https://no.work/image-converter",
+    text: "Converted by quickhelp.dev/image-converter",
+    url: "https://quickhelp.dev/image-converter",
   },
   content: {
     whatIs:

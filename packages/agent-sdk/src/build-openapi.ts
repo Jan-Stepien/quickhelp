@@ -22,7 +22,7 @@ export function buildOpenAPI(
     title = "Agent-Native Tool Factory",
     version = "1.0.0",
     description = "A collection of deterministic utility tools with REST API, OpenAPI schema, and MCP server.",
-    baseUrl = "https://no.work",
+    baseUrl = "https://quickhelp.dev",
   } = options;
 
   const paths: Record<string, unknown> = {};
