@@ -1,5 +1,5 @@
-import type { Tool } from "@no-work/tool-kit";
-import { zodToOpenAPI } from "@no-work/tool-kit";
+import type { Tool } from "@quickhelp/tool-kit";
+import { zodToOpenAPI } from "@quickhelp/tool-kit";
 
 interface OpenAPIDocument {
   openapi: string;

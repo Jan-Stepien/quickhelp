@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { registry } from "@/lib/registry";
-import type { Category } from "@no-work/tool-kit";
+import type { Category } from "@quickhelp/tool-kit";
 
 export const metadata = {
   title: "All Tools",

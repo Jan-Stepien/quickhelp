@@ -20,25 +20,25 @@
       "@/*": [
         "./*"
       ],
-      "@no-work/tool-kit": [
+      "@quickhelp/tool-kit": [
         "../../packages/tool-kit/src/index.ts"
       ],
-      "@no-work/agent-sdk": [
+      "@quickhelp/agent-sdk": [
         "../../packages/agent-sdk/src/index.ts"
       ],
-      "@no-work/ui": [
+      "@quickhelp/ui": [
         "../../packages/ui/src/index.ts"
       ],
-      "@no-work/seo": [
+      "@quickhelp/seo": [
         "../../packages/seo/src/index.ts"
       ],
-      "@no-work/analytics": [
+      "@quickhelp/analytics": [
         "../../packages/analytics/src/index.ts"
       ],
-      "@no-work/tools-jwt-decoder": [
+      "@quickhelp/tools-jwt-decoder": [
         "../../packages/tools/jwt-decoder/src/index.ts"
       ],
-      "@no-work/tools-json-formatter": [
+      "@quickhelp/tools-json-formatter": [
         "../../packages/tools/json-formatter/src/index.ts"
       ]
     },

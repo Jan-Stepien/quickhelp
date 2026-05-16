@@ -20,7 +20,7 @@ if (existsSync(toolDir)) {
   process.exit(1);
 }
 
-const packageName = `@no-work/tools-${slug}`;
+const packageName = `@quickhelp/tools-${slug}`;
 const name = slug.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
 
 await mkdir(join(toolDir, "src"), { recursive: true });
@@ -44,7 +44,7 @@ await writeFile(
         build: "echo 'Tool consumed directly from src by Next.js'",
       },
       dependencies: {
-        "@no-work/tool-kit": "workspace:*",
+        "@quickhelp/tool-kit": "workspace:*",
         zod: "^3.24.2",
       },
       devDependencies: {
@@ -59,7 +59,7 @@ await writeFile(
 await writeFile(
   join(toolDir, "src", "manifest.ts"),
   `import { z } from "zod";
-import { defineTool } from "@no-work/tool-kit";
+import { defineTool } from "@quickhelp/tool-kit";
 
 export const ${toCamel(slug)} = defineTool({
   id: "${slug}",
@@ -88,7 +88,7 @@ export const ${toCamel(slug)} = defineTool({
   schemaOrg: {
     name: "${name}",
     description: "TODO: description",
-    url: "https://no.work/${slug}",
+    url: "https://quickhelp.dev/${slug}",
   },
   content: {
     whatIs: "TODO: what is this tool?",

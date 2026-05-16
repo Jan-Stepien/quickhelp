@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildMcpTools } from "@no-work/agent-sdk";
+import { buildMcpTools } from "@quickhelp/agent-sdk";
 import { registry } from "@/lib/registry";
 
 // Node runtime required — sharp (used by image-converter) is a native binary

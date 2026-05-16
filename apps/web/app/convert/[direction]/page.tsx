@@ -4,8 +4,8 @@ import { getAllDirections, parseDirection, FORMAT_INFO } from "@/lib/conversion-
 import { getToolBySlug } from "@/lib/registry";
 import { serializeTool } from "@/lib/tool-serializer";
 import { ToolPageClient } from "@/app/[tool]/ToolPageClient";
-import { JsonLd } from "@no-work/seo";
-import { manifestToJsonLd } from "@no-work/tool-kit";
+import { JsonLd } from "@quickhelp/seo";
+import { manifestToJsonLd } from "@quickhelp/tool-kit";
 
 export const dynamic = "force-static";
 

@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { registry } from "@/lib/registry";
-import { JsonLd } from "@no-work/seo";
-import { manifestToJsonLd } from "@no-work/tool-kit";
-import type { Tool } from "@no-work/tool-kit";
+import { JsonLd } from "@quickhelp/seo";
+import { manifestToJsonLd } from "@quickhelp/tool-kit";
+import type { Tool } from "@quickhelp/tool-kit";
 
 export const dynamic = "force-static";
 

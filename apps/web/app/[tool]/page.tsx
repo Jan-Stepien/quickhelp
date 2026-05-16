@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { registry, getToolBySlug } from "@/lib/registry";
 import { serializeTool } from "@/lib/tool-serializer";
-import { buildToolJsonLd } from "@no-work/agent-sdk";
+import { buildToolJsonLd } from "@quickhelp/agent-sdk";
 import { ToolPageClient } from "./ToolPageClient";
 
 interface Props {

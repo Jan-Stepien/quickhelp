@@ -33,7 +33,7 @@ POST https://quickhelp.dev/mcp            # MCP HTTP (JSON-RPC 2.0)
 }
 ```
 
-Build first: `pnpm --filter @no-work/mcp build`
+Build first: `pnpm --filter @quickhelp/mcp build`
 
 ## Structure
 

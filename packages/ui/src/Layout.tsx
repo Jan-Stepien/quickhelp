@@ -10,7 +10,7 @@ export function Layout({ children }: LayoutProps) {
       <header className="border-b bg-white px-6 py-4">
         <nav className="mx-auto flex max-w-5xl items-center justify-between">
           <a href="/" className="text-lg font-semibold tracking-tight text-gray-900">
-            no.work
+            quickhelp.dev
           </a>
           <a
             href="/tools"

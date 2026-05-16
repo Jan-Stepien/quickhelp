@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { z } from "zod";
-import { defineTool } from "@no-work/tool-kit";
+import { defineTool } from "@quickhelp/tool-kit";
 import { buildOpenAPI } from "./build-openapi.js";
 import { buildLlmsTxt } from "./build-llms-txt.js";
 import { buildSitemap } from "./build-sitemap.js";

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { registry } from "@/lib/registry";
-import { buildSitemap } from "@no-work/agent-sdk";
+import { buildSitemap } from "@quickhelp/agent-sdk";
 import { getAllDirections } from "@/lib/conversion-directions";
 
 export const dynamic = "force-static";

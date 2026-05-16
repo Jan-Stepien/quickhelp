@@ -1,5 +1,5 @@
 {
-  "name": "@no-work/agent-sdk",
+  "name": "@quickhelp/agent-sdk",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -16,7 +16,7 @@
     "test": "node --import tsx/esm --test src/**/*.test.ts"
   },
   "dependencies": {
-    "@no-work/tool-kit": "workspace:*"
+    "@quickhelp/tool-kit": "workspace:*"
   },
   "devDependencies": {
     "tsx": "^4.22.0",

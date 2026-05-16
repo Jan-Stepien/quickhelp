@@ -1,10 +1,10 @@
 {
-  "name": "@no-work/mcp",
+  "name": "@quickhelp/mcp",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "bin": {
-    "no-work-mcp": "./dist/index.js"
+    "quickhelp-mcp": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
-    "@no-work/agent-sdk": "workspace:*",
-    "@no-work/tool-kit": "workspace:*",
-    "@no-work/tools-json-formatter": "workspace:*",
-    "@no-work/tools-jwt-decoder": "workspace:*",
-    "@no-work/tools-image-converter": "workspace:*"
+    "@quickhelp/agent-sdk": "workspace:*",
+    "@quickhelp/tool-kit": "workspace:*",
+    "@quickhelp/tools-json-formatter": "workspace:*",
+    "@quickhelp/tools-jwt-decoder": "workspace:*",
+    "@quickhelp/tools-image-converter": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.19.19",

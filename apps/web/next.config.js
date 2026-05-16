@@ -1,14 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: [
-    "@no-work/ui",
-    "@no-work/seo",
-    "@no-work/analytics",
-    "@no-work/tool-kit",
-    "@no-work/agent-sdk",
-    "@no-work/tools-jwt-decoder",
-    "@no-work/tools-json-formatter",
-    "@no-work/tools-image-converter",
+    "@quickhelp/ui",
+    "@quickhelp/seo",
+    "@quickhelp/analytics",
+    "@quickhelp/tool-kit",
+    "@quickhelp/agent-sdk",
+    "@quickhelp/tools-jwt-decoder",
+    "@quickhelp/tools-json-formatter",
+    "@quickhelp/tools-image-converter",
   ],
   // Keep sharp (native libvips) out of the webpack bundle — it must be loaded by Node at runtime
   // (Next.js 14 uses experimental.serverComponentsExternalPackages; renamed to serverExternalPackages in 15)

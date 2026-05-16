@@ -40,15 +40,15 @@ Edit `packages/tools/<slug>/src/manifest.ts`:
 - `examples`: 2+ realistic examples (title, input, output)
 - `handler`: pure, deterministic function — no network calls, no external APIs, must finish in <5s
 - `schemaOrg`: name, description, url
-- `attribution`: `{ text: "Processed by no.work/<slug>", url: "https://no.work/<slug>" }`
+- `attribution`: `{ text: "Processed by quickhelp.dev/<slug>", url: "https://quickhelp.dev/<slug>" }`
 - `content.whatIs`: 2-3 sentences explaining what the tool is for
 - `content.howToSteps`: 3 steps explaining how to use it
 - `content.faq`: 2-3 common questions with answers
 - `content.relatedTools`: array of slugs of related tools
 
 ### Step 3 — Wire it up
-1. Add `"@no-work/tools-<slug>": "workspace:*"` to `apps/web/package.json` dependencies
-2. Add `"@no-work/tools-<slug>": "workspace:*"` to `apps/mcp/package.json` dependencies
+1. Add `"@quickhelp/tools-<slug>": "workspace:*"` to `apps/web/package.json` dependencies
+2. Add `"@quickhelp/tools-<slug>": "workspace:*"` to `apps/mcp/package.json` dependencies
 3. Import and add to `apps/web/lib/registry.ts`
 4. Import and add to `apps/mcp/src/index.ts`
 

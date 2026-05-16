@@ -20,19 +20,19 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.12.1
         version: 1.29.0(zod@3.25.76)
-      '@no-work/agent-sdk':
+      '@quickhelp/agent-sdk':
         specifier: workspace:*
         version: link:../../packages/agent-sdk
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../../packages/tool-kit
-      '@no-work/tools-image-converter':
+      '@quickhelp/tools-image-converter':
         specifier: workspace:*
         version: link:../../packages/tools/image-converter
-      '@no-work/tools-json-formatter':
+      '@quickhelp/tools-json-formatter':
         specifier: workspace:*
         version: link:../../packages/tools/json-formatter
-      '@no-work/tools-jwt-decoder':
+      '@quickhelp/tools-jwt-decoder':
         specifier: workspace:*
         version: link:../../packages/tools/jwt-decoder
     devDependencies:
@@ -51,28 +51,28 @@ importers:
 
   apps/web:
     dependencies:
-      '@no-work/agent-sdk':
+      '@quickhelp/agent-sdk':
         specifier: workspace:*
         version: link:../../packages/agent-sdk
-      '@no-work/analytics':
+      '@quickhelp/analytics':
         specifier: workspace:*
         version: link:../../packages/analytics
-      '@no-work/seo':
+      '@quickhelp/seo':
         specifier: workspace:*
         version: link:../../packages/seo
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../../packages/tool-kit
-      '@no-work/tools-image-converter':
+      '@quickhelp/tools-image-converter':
         specifier: workspace:*
         version: link:../../packages/tools/image-converter
-      '@no-work/tools-json-formatter':
+      '@quickhelp/tools-json-formatter':
         specifier: workspace:*
         version: link:../../packages/tools/json-formatter
-      '@no-work/tools-jwt-decoder':
+      '@quickhelp/tools-jwt-decoder':
         specifier: workspace:*
         version: link:../../packages/tools/jwt-decoder
-      '@no-work/ui':
+      '@quickhelp/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       next:
@@ -115,7 +115,7 @@ importers:
 
   packages/agent-sdk:
     dependencies:
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../tool-kit
     devDependencies:
@@ -170,7 +170,7 @@ importers:
 
   packages/tools/image-converter:
     dependencies:
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../../tool-kit
       sharp:
@@ -186,7 +186,7 @@ importers:
 
   packages/tools/json-formatter:
     dependencies:
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../../tool-kit
       zod:
@@ -199,7 +199,7 @@ importers:
 
   packages/tools/jwt-decoder:
     dependencies:
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../../tool-kit
       zod:
@@ -212,7 +212,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@no-work/tool-kit':
+      '@quickhelp/tool-kit':
         specifier: workspace:*
         version: link:../tool-kit
       react:

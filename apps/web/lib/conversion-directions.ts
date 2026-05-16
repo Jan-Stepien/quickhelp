@@ -1,4 +1,4 @@
-import type { InputFormat, OutputFormat } from "@no-work/tools-image-converter";
+import type { InputFormat, OutputFormat } from "@quickhelp/tools-image-converter";
 
 export const INPUT_FORMATS: InputFormat[] = ["png", "jpeg", "webp", "avif", "tiff", "gif", "svg"];
 export const OUTPUT_FORMATS: OutputFormat[] = ["png", "jpeg", "webp", "avif", "tiff", "gif"];

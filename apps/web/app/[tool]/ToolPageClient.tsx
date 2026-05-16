@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import type { SerializedTool, FormField } from "@/lib/tool-serializer";
-import type { ToolContent } from "@no-work/tool-kit";
+import type { ToolContent } from "@quickhelp/tool-kit";
 
 interface ToolPageClientProps {
   tool: SerializedTool;

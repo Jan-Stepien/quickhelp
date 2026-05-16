@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defineTool } from "@no-work/tool-kit";
+import { defineTool } from "@quickhelp/tool-kit";
 
 export const jsonFormatter = defineTool({
   id: "json-formatter",

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defineTool } from "@no-work/tool-kit";
+import { defineTool } from "@quickhelp/tool-kit";
 
 export const SUPPORTED_INPUT_FORMATS = ["png", "jpeg", "webp", "avif", "tiff", "gif", "svg"] as const;
 export const SUPPORTED_OUTPUT_FORMATS = ["png", "jpeg", "webp", "avif", "tiff", "gif"] as const;

@@ -8,7 +8,7 @@ interface MetaTagsProps {
 }
 
 export function MetaTags({ title, description, url, imageUrl }: MetaTagsProps) {
-  const fullTitle = `${title} | no.work`;
+  const fullTitle = `${title} | quickhelp.dev`;
   return (
     <>
       <title>{fullTitle}</title>

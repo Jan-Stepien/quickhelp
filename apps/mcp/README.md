@@ -9,7 +9,7 @@ Add to `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "no-work": {
+    "quickhelp": {
       "command": "node",
       "args": ["/path/to/no_work/apps/mcp/dist/index.js"]
     }
@@ -21,9 +21,9 @@ Add to `claude_desktop_config.json`:
 
 ```bash
 pnpm install
-pnpm --filter @no-work/tool-kit build
-pnpm --filter @no-work/agent-sdk build
-pnpm --filter @no-work/mcp build
+pnpm --filter @quickhelp/tool-kit build
+pnpm --filter @quickhelp/agent-sdk build
+pnpm --filter @quickhelp/mcp build
 node apps/mcp/dist/index.js
 ```
 

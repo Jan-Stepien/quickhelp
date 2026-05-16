@@ -1,5 +1,5 @@
 {
-  "name": "@no-work/tools-json-formatter",
+  "name": "@quickhelp/tools-json-formatter",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "build": "echo 'Tool consumed directly from src by Next.js'"
   },
   "dependencies": {
-    "@no-work/tool-kit": "workspace:*",
+    "@quickhelp/tool-kit": "workspace:*",
     "zod": "^3.24.2"
   },
   "devDependencies": {

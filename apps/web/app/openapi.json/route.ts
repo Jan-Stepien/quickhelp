@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { registry } from "@/lib/registry";
-import { buildOpenAPI } from "@no-work/agent-sdk";
+import { buildOpenAPI } from "@quickhelp/agent-sdk";
 
 export const dynamic = "force-static";
 

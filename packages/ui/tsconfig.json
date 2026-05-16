@@ -5,7 +5,7 @@
     "jsx": "react-jsx",
     "lib": ["ES2022", "DOM"],
     "paths": {
-      "@no-work/tool-kit": ["../tool-kit/src/index.ts"]
+      "@quickhelp/tool-kit": ["../tool-kit/src/index.ts"]
     }
   },
   "include": ["src"]

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import type { Tool, ToolContent } from "@no-work/tool-kit";
+import type { Tool, ToolContent } from "@quickhelp/tool-kit";
 import { CopyButton } from "./CopyButton.js";
 
 interface ToolPageProps {

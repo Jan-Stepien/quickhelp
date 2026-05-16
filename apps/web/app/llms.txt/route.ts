@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { registry } from "@/lib/registry";
-import { buildLlmsTxt } from "@no-work/agent-sdk";
+import { buildLlmsTxt } from "@quickhelp/agent-sdk";
 import { getAllDirections } from "@/lib/conversion-directions";
 
 export const dynamic = "force-static";

@@ -5,17 +5,17 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { buildMcpTools } from "@no-work/agent-sdk";
-import type { Tool } from "@no-work/tool-kit";
-import { jwtDecoder } from "@no-work/tools-jwt-decoder";
-import { jsonFormatter } from "@no-work/tools-json-formatter";
-import { imageConverter } from "@no-work/tools-image-converter";
+import { buildMcpTools } from "@quickhelp/agent-sdk";
+import type { Tool } from "@quickhelp/tool-kit";
+import { jwtDecoder } from "@quickhelp/tools-jwt-decoder";
+import { jsonFormatter } from "@quickhelp/tools-json-formatter";
+import { imageConverter } from "@quickhelp/tools-image-converter";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter];
 
 const server = new Server(
-  { name: "no-work-mcp", version: "0.0.1" },
+  { name: "quickhelp-mcp", version: "0.0.1" },
   { capabilities: { tools: {} } }
 );
 

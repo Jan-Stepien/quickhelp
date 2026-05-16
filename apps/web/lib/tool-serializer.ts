@@ -1,4 +1,4 @@
-import type { Tool, ToolContent } from "@no-work/tool-kit";
+import type { Tool, ToolContent } from "@quickhelp/tool-kit";
 import { z } from "zod";
 
 export interface FormField {

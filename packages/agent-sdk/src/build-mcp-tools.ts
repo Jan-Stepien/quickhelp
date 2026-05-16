@@ -1,5 +1,5 @@
-import type { Tool } from "@no-work/tool-kit";
-import { zodToJsonSchema } from "@no-work/tool-kit";
+import type { Tool } from "@quickhelp/tool-kit";
+import { zodToJsonSchema } from "@quickhelp/tool-kit";
 
 export interface McpToolDefinition {
   name: string;
