@@ -49,6 +49,18 @@
   --json-keyword: #d8b4fe;
 }
 
+@layer components {
+  .tool-card {
+    @apply block rounded-lg border border-border bg-muted/40 p-4 transition-colors hover:border-foreground/30;
+  }
+  .tool-card-title {
+    @apply font-medium text-foreground;
+  }
+  .tool-card-summary {
+    @apply mt-1 text-sm text-muted-foreground;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--border);
@@ -59,5 +71,11 @@
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--foreground);
+  }
+  p {
+    color: var(--muted-foreground);
   }
 }

@@ -27,16 +27,12 @@ export default function HomePage() {
         <h2 className="mb-4 text-lg font-semibold text-foreground">Featured tools</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {featured.map((tool) => (
-            <Link
-              key={tool.slug}
-              href={`/${tool.slug}`}
-              className="block rounded-lg border border-border bg-muted/40 p-5 hover:border-foreground/30 transition-colors"
-            >
+            <Link key={tool.slug} href={`/${tool.slug}`} className="tool-card p-5">
               <div className="mb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {tool.category}
               </div>
-              <div className="font-semibold text-foreground">{tool.name}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{tool.summary}</div>
+              <div className="tool-card-title font-semibold">{tool.name}</div>
+              <div className="tool-card-summary">{tool.summary}</div>
             </Link>
           ))}
         </div>
