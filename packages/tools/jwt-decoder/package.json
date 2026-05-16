@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@quickhelp/tool-kit": "workspace:*",
+    "jose": "^5.9.6",
     "zod": "^3.24.2"
   },
   "devDependencies": {
