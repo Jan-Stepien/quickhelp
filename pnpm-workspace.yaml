@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "packages/tools/*"
+  - "tooling/*"
+allowBuilds:
+  esbuild: true

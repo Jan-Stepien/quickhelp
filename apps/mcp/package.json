@@ -1,0 +1,28 @@
+{
+  "name": "@no-work/mcp",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "no-work-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "dev": "node --import tsx/esm src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@no-work/agent-sdk": "workspace:*",
+    "@no-work/tool-kit": "workspace:*",
+    "@no-work/tools-json-formatter": "workspace:*",
+    "@no-work/tools-jwt-decoder": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.19",
+    "tsx": "^4.22.0",
+    "typescript": "^5.7.2",
+    "zod": "^3.24.2"
+  }
+}

@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+import { buildMcpTools } from "@no-work/agent-sdk";
+import type { Tool } from "@no-work/tool-kit";
+import { jwtDecoder } from "@no-work/tools-jwt-decoder";
+import { jsonFormatter } from "@no-work/tools-json-formatter";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter];
+
+const server = new Server(
+  { name: "no-work-mcp", version: "0.0.1" },
+  { capabilities: { tools: {} } }
+);
+
+const mcpTools = buildMcpTools(registry);
+
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: mcpTools.map((t) => ({
+    name: t.name,
+    description: t.description,
+    inputSchema: t.inputSchema,
+  })),
+}));
+
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+
+  const tool = registry.find((t) => t.slug === name);
+  if (!tool) {
+    return {
+      content: [{ type: "text", text: `Tool '${name}' not found` }],
+      isError: true,
+    };
+  }
+
+  const parsed = tool.inputSchema.safeParse(args);
+  if (!parsed.success) {
+    return {
+      content: [{ type: "text", text: `Validation error: ${parsed.error.message}` }],
+      isError: true,
+    };
+  }
+
+  try {
+    const result = await tool.handler(parsed.data);
+    return {
+      content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+    };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return { content: [{ type: "text", text: message }], isError: true };
+  }
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);

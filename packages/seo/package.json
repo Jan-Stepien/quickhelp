@@ -1,0 +1,26 @@
+{
+  "name": "@no-work/seo",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "echo 'SEO package consumed directly from src by Next.js'"
+  },
+  "dependencies": {
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}

@@ -1,0 +1,18 @@
+node_modules/
+.next/
+.turbo/
+dist/
+out/
+build/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+.vercel
+.DS_Store
+
+# Compiled output that leaked into src/ directories
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.ts.map

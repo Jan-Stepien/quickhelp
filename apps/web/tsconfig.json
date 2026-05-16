@@ -1,0 +1,63 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@no-work/tool-kit": [
+        "../../packages/tool-kit/src/index.ts"
+      ],
+      "@no-work/agent-sdk": [
+        "../../packages/agent-sdk/src/index.ts"
+      ],
+      "@no-work/ui": [
+        "../../packages/ui/src/index.ts"
+      ],
+      "@no-work/seo": [
+        "../../packages/seo/src/index.ts"
+      ],
+      "@no-work/analytics": [
+        "../../packages/analytics/src/index.ts"
+      ],
+      "@no-work/tools-jwt-decoder": [
+        "../../packages/tools/jwt-decoder/src/index.ts"
+      ],
+      "@no-work/tools-json-formatter": [
+        "../../packages/tools/json-formatter/src/index.ts"
+      ]
+    },
+    "strict": true,
+    "noEmit": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
