@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider, Layout } from "@quickhelp/ui";
+
+const fontSans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const fontMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
-    default: "quickhelp.dev — Agent-Native Tool Factory",
+    default: "quickhelp.dev — Developer Tools",
     template: "%s | quickhelp.dev",
   },
   description:
@@ -11,32 +25,23 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev"),
 };
 
+const noFlashScript = `(function(){try{var t=localStorage.getItem('qh-theme');if(t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const cfToken = process.env["NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN"] ?? "";
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fontSans.variable} ${fontMono.variable}`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
+      </head>
       <body>
-        <div className="min-h-screen bg-gray-50 font-sans">
-          <header className="border-b bg-white px-6 py-4">
-            <nav className="mx-auto flex max-w-5xl items-center justify-between">
-              <a href="/" className="text-lg font-semibold tracking-tight text-gray-900">
-                quickhelp.dev
-              </a>
-              <a href="/tools" className="text-sm text-gray-600 hover:text-gray-900">
-                All tools
-              </a>
-            </nav>
-          </header>
-          <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
-          <footer className="border-t bg-white px-6 py-6 text-center text-sm text-gray-500">
-            <p>
-              Free tier: 30 req/min, watermarked.{" "}
-              <a href="/openapi.json" className="underline">OpenAPI</a>
-              {" · "}
-              <a href="/llms.txt" className="underline">llms.txt</a>
-            </p>
-          </footer>
-        </div>
+        <ThemeProvider>
+          <Layout>{children}</Layout>
+        </ThemeProvider>
         {cfToken && (
           <script
             defer

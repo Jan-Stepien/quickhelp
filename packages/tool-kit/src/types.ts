@@ -63,5 +63,5 @@ export interface Tool<
   schemaOrg: SchemaOrg;
   attribution?: ToolAttribution;
   content?: ToolContent;
-  inputUiHints?: Record<string, { type: "text" | "textarea" | "file"; accept?: string }>;
+  inputUiHints?: Record<string, { type: "text" | "textarea" | "file" | "select"; accept?: string; options?: string[] }>;
 }

@@ -5,9 +5,10 @@ export interface FormField {
   key: string;
   label: string;
   placeholder?: string;
-  type: "text" | "textarea" | "file";
+  type: "text" | "textarea" | "file" | "select" | "number";
   accept?: string;
   defaultValue?: string;
+  options?: { value: string; label: string }[];
 }
 
 export interface SerializedTool {
@@ -33,7 +34,7 @@ export function serializeTool(tool: Tool): SerializedTool {
 
 function extractFields(
   schema: z.ZodTypeAny,
-  hints?: Record<string, { type: "text" | "textarea" | "file"; accept?: string }>
+  hints?: Record<string, { type: "text" | "textarea" | "file" | "select"; accept?: string; options?: string[] }>
 ): FormField[] {
   if (!(schema instanceof z.ZodObject)) return [];
   const shape = (schema as z.ZodObject<z.ZodRawShape>).shape;
@@ -52,22 +53,53 @@ function extractFields(
     }
 
     const hint = hints?.[key];
-    let fieldType: "text" | "textarea" | "file";
-    if (hint) {
-      fieldType = hint.type;
-    } else {
-      fieldType =
-        MULTILINE_KEYS.has(key) || isLongStringField(inner) ? "textarea" : "text";
+
+    // Enum → select
+    if (inner instanceof z.ZodEnum) {
+      const values = (inner as z.ZodEnum<[string, ...string[]]>).options as string[];
+      return {
+        key,
+        label: key.replace(/_/g, " "),
+        placeholder: desc,
+        type: "select",
+        defaultValue,
+        options: values.map((v) => ({ value: v, label: v })),
+      } satisfies FormField;
     }
+
+    // Number → number input
+    if (inner instanceof z.ZodNumber) {
+      return {
+        key,
+        label: key.replace(/_/g, " "),
+        placeholder: desc,
+        type: "number",
+        defaultValue,
+      } satisfies FormField;
+    }
+
+    if (hint) {
+      return {
+        key,
+        label: key.replace(/_/g, " "),
+        placeholder: desc,
+        type: hint.type,
+        accept: hint.accept,
+        defaultValue,
+        options: hint.options?.map((v) => ({ value: v, label: v })),
+      } satisfies FormField;
+    }
+
+    const fieldType: "text" | "textarea" =
+      MULTILINE_KEYS.has(key) || isLongStringField(inner) ? "textarea" : "text";
 
     return {
       key,
       label: key.replace(/_/g, " "),
       placeholder: desc,
       type: fieldType,
-      accept: hint?.accept,
       defaultValue,
-    };
+    } satisfies FormField;
   });
 }
 

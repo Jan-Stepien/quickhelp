@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import type { SerializedTool, FormField } from "@/lib/tool-serializer";
 import type { ToolContent } from "@quickhelp/tool-kit";
+import { Button, Card, CardBody, Textarea, Input, Select, CodeBlock, CopyButton } from "@quickhelp/ui";
 
 interface ToolPageClientProps {
   tool: SerializedTool;
@@ -25,7 +26,6 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
     for (const [key, value] of formData.entries()) {
       input[key] = value;
     }
-    // Overlay base64 file values (hidden inputs won't capture them reliably cross-browser)
     for (const [key, b64] of Object.entries(fileBase64Ref.current)) {
       input[key] = b64;
     }
@@ -51,7 +51,6 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
 
   const outputStr = output ? JSON.stringify(output, null, 2) : null;
 
-  // For image output, detect base64 image in the output
   const imageOutput =
     output &&
     typeof output["image"] === "string" &&
@@ -62,60 +61,63 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{tool.name}</h1>
-        <p className="mt-1 text-gray-600">{tool.summary}</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tool.name}</h1>
+        <p className="mt-1 text-muted-foreground">{tool.summary}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-lg border bg-white p-6">
-        {tool.fields.map((field) => (
-          <FieldInput
-            key={field.key}
-            field={field}
-            prefilledValue={prefilledValues?.[field.key]}
-            onFileBase64={(b64) => {
-              fileBase64Ref.current[field.key] = b64;
-            }}
-          />
-        ))}
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
-        >
-          {loading ? "Running…" : "Run"}
-        </button>
-      </form>
+      <Card>
+        <CardBody>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {tool.fields.map((field) => (
+              <FieldInput
+                key={field.key}
+                field={field}
+                prefilledValue={prefilledValues?.[field.key]}
+                onFileBase64={(b64) => { fileBase64Ref.current[field.key] = b64; }}
+              />
+            ))}
+            <Button type="submit" disabled={loading}>
+              {loading ? "Running…" : "Run"}
+            </Button>
+          </form>
+        </CardBody>
+      </Card>
 
       {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
           {error}
         </div>
       )}
 
       {imageOutput && (
-        <div className="rounded-lg border bg-white p-6 space-y-4">
-          <h2 className="text-sm font-medium text-gray-700">Converted image</h2>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`data:image/${imageOutput.format};base64,${imageOutput.b64}`}
-            alt="Converted output"
-            className="max-w-full rounded border"
-          />
-          <a
-            href={`data:image/${imageOutput.format};base64,${imageOutput.b64}`}
-            download={`converted.${imageOutput.format}`}
-            className="inline-block rounded-md border px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50"
-          >
-            Download
-          </a>
-        </div>
+        <Card>
+          <CardBody className="space-y-4">
+            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Converted image</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`data:image/${imageOutput.format};base64,${imageOutput.b64}`}
+              alt="Converted output"
+              className="max-w-full rounded border border-border"
+            />
+            <a
+              href={`data:image/${imageOutput.format};base64,${imageOutput.b64}`}
+              download={`converted.${imageOutput.format}`}
+            >
+              <Button variant="outline" size="sm">Download</Button>
+            </a>
+          </CardBody>
+        </Card>
       )}
 
       {outputStr && !imageOutput && (
-        <div className="relative rounded-lg border bg-white p-6">
-          <CopyButton text={outputStr} />
-          <pre className="overflow-auto pt-6 text-sm">{outputStr}</pre>
-        </div>
+        <Card>
+          <CardBody className="relative">
+            <div className="absolute right-3 top-3">
+              <CopyButton text={outputStr} />
+            </div>
+            <CodeBlock code={outputStr} language="json" className="mt-2" />
+          </CardBody>
+        </Card>
       )}
 
       {tool.content && <ContentBlock content={tool.content} />}
@@ -132,102 +134,111 @@ function FieldInput({
   prefilledValue?: string;
   onFileBase64?: (b64: string) => void;
 }) {
-  const baseClass =
-    "w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900";
+  const label = (
+    <label htmlFor={field.key} className="mb-1 block text-sm font-medium capitalize text-foreground">
+      {field.label}
+    </label>
+  );
 
   if (field.type === "file") {
     return (
-      <div className="space-y-1">
-        <label htmlFor={field.key} className="block text-sm font-medium capitalize text-gray-700">
-          {field.label}
-        </label>
-        <input
+      <div>
+        {label}
+        <Input
           id={field.key}
           name={field.key}
           type="file"
           accept={field.accept}
-          className={baseClass}
           onChange={(e) => {
-            const file = e.target.files?.[0];
+            const file = (e.target as HTMLInputElement).files?.[0];
             if (!file || !onFileBase64) return;
             const reader = new FileReader();
             reader.onload = () => {
-              const result = reader.result as string;
-              // Strip the data URL prefix (e.g. "data:image/png;base64,")
-              const b64 = result.split(",")[1] ?? "";
+              const b64 = (reader.result as string).split(",")[1] ?? "";
               onFileBase64(b64);
             };
             reader.readAsDataURL(file);
           }}
         />
-        {field.placeholder && (
-          <p className="text-xs text-gray-500">{field.placeholder}</p>
-        )}
+        {field.placeholder && <p className="mt-1 text-xs text-muted-foreground">{field.placeholder}</p>}
       </div>
     );
   }
 
-  return (
-    <div className="space-y-1">
-      <label htmlFor={field.key} className="block text-sm font-medium capitalize text-gray-700">
-        {field.label}
-      </label>
-      {field.type === "textarea" ? (
-        <textarea
+  if (field.type === "select" && field.options) {
+    return (
+      <div>
+        {label}
+        <Select
+          id={field.key}
+          name={field.key}
+          defaultValue={prefilledValue ?? field.defaultValue}
+          options={field.options}
+        />
+      </div>
+    );
+  }
+
+  if (field.type === "number") {
+    return (
+      <div>
+        {label}
+        <Input
+          id={field.key}
+          name={field.key}
+          type="number"
+          defaultValue={prefilledValue ?? field.defaultValue}
+          placeholder={field.placeholder}
+        />
+      </div>
+    );
+  }
+
+  if (field.type === "textarea") {
+    return (
+      <div>
+        {label}
+        <Textarea
           id={field.key}
           name={field.key}
           rows={6}
           defaultValue={prefilledValue ?? field.defaultValue}
           placeholder={field.placeholder}
-          className={`${baseClass} font-mono`}
         />
-      ) : (
-        <input
-          id={field.key}
-          name={field.key}
-          type="text"
-          defaultValue={prefilledValue ?? field.defaultValue}
-          placeholder={field.placeholder}
-          className={baseClass}
-        />
-      )}
-    </div>
-  );
-}
-
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  async function handleClick() {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+      </div>
+    );
   }
+
   return (
-    <button
-      onClick={handleClick}
-      className="absolute right-4 top-4 rounded-md border px-3 py-1 text-xs text-gray-600 hover:bg-gray-50"
-    >
-      {copied ? "Copied!" : "Copy"}
-    </button>
+    <div>
+      {label}
+      <Input
+        id={field.key}
+        name={field.key}
+        type="text"
+        defaultValue={prefilledValue ?? field.defaultValue}
+        placeholder={field.placeholder}
+      />
+    </div>
   );
 }
 
 function ContentBlock({ content }: { content: ToolContent }) {
   return (
-    <div className="space-y-6 border-t pt-8">
+    <div className="space-y-6 border-t border-border pt-8">
       {content.whatIs && (
         <section>
-          <h2 className="text-lg font-semibold">What is this?</h2>
-          <p className="mt-2 text-gray-700">{content.whatIs}</p>
+          <h2 className="text-base font-semibold text-foreground">What is this?</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{content.whatIs}</p>
         </section>
       )}
       {content.howToSteps.length > 0 && (
         <section>
-          <h2 className="text-lg font-semibold">How to use</h2>
-          <ol className="mt-2 list-decimal space-y-2 pl-5">
+          <h2 className="text-base font-semibold text-foreground">How to use</h2>
+          <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
             {content.howToSteps.map((step, i) => (
               <li key={i}>
-                <strong>{step.name}</strong>: {step.text}
+                <strong className="text-foreground">{step.name}</strong>: {step.text}
               </li>
             ))}
           </ol>
@@ -235,12 +246,12 @@ function ContentBlock({ content }: { content: ToolContent }) {
       )}
       {content.faq.length > 0 && (
         <section>
-          <h2 className="text-lg font-semibold">FAQ</h2>
+          <h2 className="text-base font-semibold text-foreground">FAQ</h2>
           <dl className="mt-2 space-y-4">
             {content.faq.map((item, i) => (
               <div key={i}>
-                <dt className="font-medium text-gray-900">{item.question}</dt>
-                <dd className="mt-1 text-gray-700">{item.answer}</dd>
+                <dt className="text-sm font-medium text-foreground">{item.question}</dt>
+                <dd className="mt-1 text-sm text-muted-foreground">{item.answer}</dd>
               </div>
             ))}
           </dl>

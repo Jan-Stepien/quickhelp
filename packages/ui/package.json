@@ -15,7 +15,9 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "@quickhelp/tool-kit": "workspace:*"
+    "@quickhelp/tool-kit": "workspace:*",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
