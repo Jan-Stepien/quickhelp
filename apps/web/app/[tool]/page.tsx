@@ -10,7 +10,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return registry.map((t) => ({ tool: t.slug }));
+  // image-converter has its own dedicated page at /app/image-converter
+  return registry.filter((t) => t.slug !== "image-converter").map((t) => ({ tool: t.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
