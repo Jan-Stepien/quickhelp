@@ -10,8 +10,9 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  // image-converter has its own dedicated page at /app/image-converter
-  return registry.filter((t) => t.slug !== "image-converter").map((t) => ({ tool: t.slug }));
+  // image-converter and background-remover have their own dedicated pages
+  const DEDICATED = new Set(["image-converter", "background-remover"]);
+  return registry.filter((t) => !DEDICATED.has(t.slug)).map((t) => ({ tool: t.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

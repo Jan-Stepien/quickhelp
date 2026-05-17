@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@quickhelp/tool-kit": ["../../tool-kit/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}
