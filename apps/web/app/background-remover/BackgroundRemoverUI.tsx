@@ -41,6 +41,10 @@ export function BackgroundRemoverUI() {
         // proxyToWorker: false avoids SharedArrayBuffer / COEP header requirement
         proxyToWorker: false,
         model: "isnet",
+        // In a webpack bundle import.meta.url resolves incorrectly, so the library
+        // can't infer the CDN path. Set it explicitly to avoid "e.replace is not a function".
+        publicPath:
+          "https://static.img.ly/packages/imgly/background-removal-js/1.7.0/",
         output: { format: "image/png" },
         progress: (key: string, current: number, total: number) => {
           const pct = total > 0 ? Math.round((current / total) * 100) : 0;
