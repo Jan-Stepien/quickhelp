@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider, Layout } from "@quickhelp/ui";
+import { ThemeProvider, Layout, ConsentProvider, ConsentBanner } from "@quickhelp/ui";
+import { AnalyticsLoader } from "./AnalyticsLoader";
+import { AdsenseLoader } from "./AdsenseLoader";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -39,16 +41,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
       </head>
       <body>
-        <ThemeProvider>
-          <Layout>{children}</Layout>
-        </ThemeProvider>
-        {cfToken && (
-          <script
-            defer
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={JSON.stringify({ token: cfToken })}
-          />
-        )}
+        <ConsentProvider>
+          <ThemeProvider>
+            <Layout>{children}</Layout>
+          </ThemeProvider>
+          <ConsentBanner />
+          <AnalyticsLoader cfToken={cfToken} />
+          <AdsenseLoader />
+        </ConsentProvider>
       </body>
     </html>
   );

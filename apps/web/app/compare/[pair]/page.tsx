@@ -4,6 +4,8 @@ import { registry } from "@/lib/registry";
 import { JsonLd } from "@quickhelp/seo";
 import { manifestToJsonLd } from "@quickhelp/tool-kit";
 import type { Tool } from "@quickhelp/tool-kit";
+import { AdSlot } from "@quickhelp/ui";
+import { AD_SLOTS } from "@/lib/ad-slots";
 
 export const dynamic = "force-static";
 
@@ -80,6 +82,8 @@ export default function ComparePage({ params }: { params: { pair: string } }) {
           <ToolCard tool={toolA} baseUrl={baseUrl} />
           <ToolCard tool={toolB} baseUrl={baseUrl} />
         </div>
+
+        <AdSlot slot={AD_SLOTS["compare-mid"]} className="my-8" />
 
         <ComparisonTable toolA={toolA} toolB={toolB} />
       </div>

@@ -8,5 +8,5 @@
       "@quickhelp/tool-kit": ["../tool-kit/src/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "env.d.ts"]
 }

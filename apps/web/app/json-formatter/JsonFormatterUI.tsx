@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Badge, Button, Card, CardBody, CardHeader, CardTitle, CodeBlock, CopyButton, Select, Textarea } from "@quickhelp/ui";
+import { AdSlot, Badge, Button, Card, CardBody, CardHeader, CardTitle, CodeBlock, CopyButton, Select, Textarea } from "@quickhelp/ui";
+import { AD_SLOTS } from "@/lib/ad-slots";
 import { JsonTree } from "./JsonTree";
 import { repairJson, extractErrorPosition } from "./repair";
 
@@ -234,6 +235,8 @@ export function JsonFormatterUI() {
           </CardBody>
         </Card>
       </div>
+
+      <AdSlot slot={AD_SLOTS["json-formatter-mid"]} />
 
       {/* Content block */}
       <div className="space-y-6 border-t border-border pt-8">

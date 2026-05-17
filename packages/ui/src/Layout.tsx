@@ -1,5 +1,6 @@
 import React from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { ManageCookiesButton } from "./ManageCookiesButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -36,6 +37,21 @@ export function Layout({ children }: LayoutProps) {
           <a href="/mcp" className="underline underline-offset-2 hover:text-foreground transition-colors">
             MCP
           </a>
+        </p>
+        <p className="mt-2">
+          <a href="/privacy" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Privacy
+          </a>
+          {" · "}
+          <a href="/cookies" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Cookies
+          </a>
+          {" · "}
+          <a href="/terms" className="underline underline-offset-2 hover:text-foreground transition-colors">
+            Terms
+          </a>
+          {" · "}
+          <ManageCookiesButton />
         </p>
       </footer>
     </div>

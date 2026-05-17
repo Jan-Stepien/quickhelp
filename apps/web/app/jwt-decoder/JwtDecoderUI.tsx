@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { Badge, Button, Card, CardBody, CardHeader, CardTitle, CodeBlock, CopyButton, Select, Textarea } from "@quickhelp/ui";
+import { AdSlot, Badge, Button, Card, CardBody, CardHeader, CardTitle, CodeBlock, CopyButton, Select, Textarea } from "@quickhelp/ui";
+import { AD_SLOTS } from "@/lib/ad-slots";
 
 // ── JWT decode helpers (client-side, no server round-trip) ───────────────────
 
@@ -303,6 +304,8 @@ export function JwtDecoderUI({ sampleToken }: { sampleToken: string }) {
           </Button>
         </CardBody>
       </Card>
+
+      <AdSlot slot={AD_SLOTS["jwt-decoder-mid"]} />
 
       {/* Content block */}
       <div className="space-y-6 border-t border-border pt-8">

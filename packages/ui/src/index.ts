@@ -18,3 +18,8 @@ export type { IconButtonProps } from "./IconButton";
 export { CodeBlock } from "./CodeBlock";
 export { CopyButton } from "./CopyButton";
 export { cn } from "./cn";
+export { ConsentProvider, useConsent } from "./ConsentProvider";
+export { ConsentBanner } from "./ConsentBanner";
+export { AdSlot } from "./AdSlot";
+export { HouseAd } from "./HouseAd";
+export { ManageCookiesButton } from "./ManageCookiesButton";

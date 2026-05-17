@@ -3,7 +3,8 @@
 import React, { useRef, useState } from "react";
 import type { SerializedTool, FormField } from "@/lib/tool-serializer";
 import type { ToolContent } from "@quickhelp/tool-kit";
-import { Button, Card, CardBody, Textarea, Input, Select, CodeBlock, CopyButton } from "@quickhelp/ui";
+import { AdSlot, Button, Card, CardBody, Textarea, Input, Select, CodeBlock, CopyButton } from "@quickhelp/ui";
+import { AD_SLOTS } from "@/lib/ad-slots";
 
 interface ToolPageClientProps {
   tool: SerializedTool;
@@ -24,7 +25,13 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
     const formData = new FormData(e.currentTarget);
     const input: Record<string, unknown> = {};
     for (const [key, value] of formData.entries()) {
-      input[key] = value;
+      const field = tool.fields.find((f) => f.key === key);
+      if (field?.type === "file") continue; // populated via fileBase64Ref below
+      if (field?.type === "number" && typeof value === "string" && value !== "") {
+        input[key] = Number(value);
+      } else {
+        input[key] = value;
+      }
     }
     for (const [key, b64] of Object.entries(fileBase64Ref.current)) {
       input[key] = b64;
@@ -119,6 +126,8 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
           </CardBody>
         </Card>
       )}
+
+      <AdSlot slot={AD_SLOTS["tool-mid"]} />
 
       {tool.content && <ContentBlock content={tool.content} />}
     </div>
