@@ -44,7 +44,7 @@ export function BackgroundRemoverUI() {
         // In a webpack bundle import.meta.url resolves incorrectly, so the library
         // can't infer the CDN path. Set it explicitly to avoid "e.replace is not a function".
         publicPath:
-          "https://static.img.ly/packages/imgly/background-removal-js/1.7.0/",
+          "https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/",
         output: { format: "image/png" },
         progress: (key: string, current: number, total: number) => {
           const pct = total > 0 ? Math.round((current / total) * 100) : 0;
