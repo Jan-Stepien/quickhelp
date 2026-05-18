@@ -6,6 +6,7 @@ import { buildToolJsonLd } from "@quickhelp/agent-sdk";
 import { buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
 import { JsonLd } from "@quickhelp/seo";
 import { buildMetadata } from "@/lib/metadata";
+import { AdSlot } from "@/components/AdSlot";
 
 export const metadata: Metadata = buildMetadata({
   path: "/background-remover",
@@ -51,6 +52,7 @@ export default function BackgroundRemoverPage() {
 
       {/* Browser-only AI — requires WebAssembly + WebGPU/WASM; ssr:false */}
       <BackgroundRemoverUI />
+      <AdSlot slot="tool-page-mid" format="horizontal" className="my-2" />
 
       {content?.whatIs && (
         <section id="what-is" aria-labelledby="what-is-heading">

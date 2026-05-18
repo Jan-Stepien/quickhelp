@@ -27,6 +27,7 @@ export function GET() {
     { path: "/changelog", priority: "0.6", changefreq: "weekly" as const },
     { path: "/glossary", priority: "0.7", changefreq: "monthly" as const },
     { path: "/about", priority: "0.5", changefreq: "monthly" as const },
+    { path: "/contact", priority: "0.5", changefreq: "yearly" as const },
     { path: "/docs", priority: "0.8", changefreq: "weekly" as const },
     ...BLOG_POSTS.map((p) => ({
       path: `/blog/${p.slug}`,
