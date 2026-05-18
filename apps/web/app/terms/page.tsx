@@ -1,9 +1,13 @@
+import { buildMetadata } from "@/lib/metadata";
+
 export const dynamic = "force-static";
 
-export const metadata = {
+export const metadata = buildMetadata({
+  path: "/terms",
   title: "Terms of Service",
   description: "Terms of service for quickhelp.dev.",
-};
+  noindex: true,
+});
 
 /* <!-- TODO: review with counsel --> */
 export default function TermsPage() {

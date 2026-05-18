@@ -1,9 +1,13 @@
+import { buildMetadata } from "@/lib/metadata";
+
 export const dynamic = "force-static";
 
-export const metadata = {
+export const metadata = buildMetadata({
+  path: "/privacy",
   title: "Privacy Policy",
-  description: "Privacy policy for quickhelp.dev.",
-};
+  description: "Privacy policy for quickhelp.dev — how we collect and use data.",
+  noindex: true,
+});
 
 /* <!-- TODO: review with counsel --> */
 export default function PrivacyPage() {

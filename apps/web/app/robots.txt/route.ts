@@ -4,13 +4,54 @@ export const dynamic = "force-static";
 
 export function GET() {
   const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
+
   const content = [
+    "# quickhelp.dev robots.txt",
+    "# The API is the product — AI crawlers are explicitly welcome.",
+    "",
     "User-agent: *",
     "Allow: /",
     `Sitemap: ${baseUrl}/sitemap.xml`,
+    "",
+    "# OpenAI",
+    "User-agent: GPTBot",
+    "Allow: /",
+    "",
+    "User-agent: OAI-SearchBot",
+    "Allow: /",
+    "",
+    "User-agent: ChatGPT-User",
+    "Allow: /",
+    "",
+    "# Anthropic",
+    "User-agent: ClaudeBot",
+    "Allow: /",
+    "",
+    "User-agent: anthropic-ai",
+    "Allow: /",
+    "",
+    "# Perplexity",
+    "User-agent: PerplexityBot",
+    "Allow: /",
+    "",
+    "# Google (AI Overviews / Gemini)",
+    "User-agent: Google-Extended",
+    "Allow: /",
+    "",
+    "# Cohere",
+    "User-agent: cohere-ai",
+    "Allow: /",
+    "",
+    "# Common Crawl (training data — allowed; creates citation surface)",
+    "User-agent: CCBot",
+    "Allow: /",
+    "",
+    "# ByteDance / TikTok AI",
+    "User-agent: Bytespider",
+    "Allow: /",
   ].join("\n");
 
   return new NextResponse(content, {
-    headers: { "Content-Type": "text/plain" },
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
 }

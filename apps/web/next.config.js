@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  poweredByHeader: false,
+  compress: true,
   transpilePackages: [
     "@quickhelp/ui",
     "@quickhelp/seo",
@@ -11,6 +13,42 @@ const nextConfig = {
     "@quickhelp/tools-image-converter",
     "@quickhelp/tools-background-remover",
   ],
+  images: {
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: [],
+  },
+  async headers() {
+    return [
+      // Security headers for all routes
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+        ],
+      },
+      // Agent-facing discovery surfaces: open CORS + aggressive caching
+      {
+        source: "/(openapi\\.json|llms\\.txt|llms-full\\.txt|sitemap\\.xml|robots\\.txt)",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Cache-Control", value: "public, s-maxage=3600, stale-while-revalidate=86400" },
+        ],
+      },
+      // API responses: noindex (page UI is what gets indexed, not raw JSON)
+      {
+        source: "/api/(.*)",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex" },
+        ],
+      },
+    ];
+  },
   // Keep sharp out of the webpack bundle — loaded by Node at runtime
   experimental: {
     serverComponentsExternalPackages: [
@@ -19,6 +57,7 @@ const nextConfig = {
       "@imgly/background-removal",
       "onnxruntime-web",
     ],
+    optimizePackageImports: ["lucide-react"],
   },
   webpack(config) {
     config.resolve.extensionAlias = {

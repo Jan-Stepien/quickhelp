@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { registry } from "@/lib/registry";
+import { JsonLd } from "@quickhelp/seo";
+import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@quickhelp/tool-kit";
 
 export default function HomePage() {
   const featured = registry.slice(0, 4);
+  const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
+  const sameAs = [
+    process.env["NEXT_PUBLIC_GITHUB_URL"],
+    process.env["NEXT_PUBLIC_TWITTER_URL"],
+    process.env["NEXT_PUBLIC_LINKEDIN_URL"],
+  ].filter((v): v is string => Boolean(v));
+
   return (
-    <div className="space-y-12">
+    <>
+      <JsonLd data={buildOrganizationJsonLd(baseUrl, sameAs)} />
+      <JsonLd data={buildWebSiteJsonLd(baseUrl)} />
+      <div className="space-y-12">
       <section className="space-y-4">
         <h1 className="text-4xl font-bold tracking-tight text-foreground">
           Utility tools for humans and agents
@@ -69,6 +81,7 @@ export default function HomePage() {
           </a>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

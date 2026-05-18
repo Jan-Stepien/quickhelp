@@ -1,5 +1,5 @@
 export { buildOpenAPI } from "./build-openapi.js";
-export { buildLlmsTxt } from "./build-llms-txt.js";
+export { buildLlmsTxt, buildLlmsFullTxt } from "./build-llms-txt.js";
 export type { ExtraRoute } from "./build-llms-txt.js";
 export { buildSitemap } from "./build-sitemap.js";
 export type { ExtraSitemapRoute } from "./build-sitemap.js";

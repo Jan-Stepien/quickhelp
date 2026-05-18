@@ -2,10 +2,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { registry } from "@/lib/registry";
 import { JsonLd } from "@quickhelp/seo";
-import { manifestToJsonLd } from "@quickhelp/tool-kit";
+import { manifestToJsonLd, buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
 import type { Tool } from "@quickhelp/tool-kit";
 import { AdSlot } from "@quickhelp/ui";
 import { AD_SLOTS } from "@/lib/ad-slots";
+import { buildMetadata } from "@/lib/metadata";
 
 export const dynamic = "force-static";
 
@@ -44,10 +45,12 @@ export function generateMetadata({
 }): Metadata {
   const [a, b] = parsePair(params.pair);
   if (!a || !b) return {};
-  return {
-    title: `${a.name} vs ${b.name} — quickhelp.dev`,
-    description: `Compare ${a.name} and ${b.name}: features, use cases, and when to use each tool.`,
-  };
+  return buildMetadata({
+    path: `/compare/${params.pair}`,
+    title: `${a.name} vs ${b.name}`,
+    description: `Compare ${a.name} and ${b.name}: features, use cases, and when to use each tool. Free, no sign-up.`,
+    keywords: [a.name, b.name, "compare", "vs", "developer tools"],
+  });
 }
 
 export default function ComparePage({ params }: { params: { pair: string } }) {
@@ -64,12 +67,19 @@ export default function ComparePage({ params }: { params: { pair: string } }) {
     url: `${baseUrl}/compare/${params.pair}`,
   };
 
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: "Home", url: baseUrl },
+    { name: "All Tools", url: `${baseUrl}/tools` },
+    { name: `${toolA.name} vs ${toolB.name}`, url: `${baseUrl}/compare/${params.pair}` },
+  ]);
+
   const toolAJsonLd = manifestToJsonLd(toolA, baseUrl)[0];
   const toolBJsonLd = manifestToJsonLd(toolB, baseUrl)[0];
 
   return (
     <>
       <JsonLd data={pageJsonLd} />
+      <JsonLd data={breadcrumb} />
       {toolAJsonLd && <JsonLd data={toolAJsonLd} />}
       {toolBJsonLd && <JsonLd data={toolBJsonLd} />}
 

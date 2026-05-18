@@ -5,7 +5,8 @@ import { getToolBySlug } from "@/lib/registry";
 import { serializeTool } from "@/lib/tool-serializer";
 import { ToolPageClient } from "@/app/[tool]/ToolPageClient";
 import { JsonLd } from "@quickhelp/seo";
-import { manifestToJsonLd } from "@quickhelp/tool-kit";
+import { manifestToJsonLd, buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
+import { buildMetadata } from "@/lib/metadata";
 
 export const dynamic = "force-static";
 
@@ -22,10 +23,12 @@ export function generateMetadata({
   if (!dir) return {};
   const fromLabel = FORMAT_INFO[dir.from]?.label ?? dir.from.toUpperCase();
   const toLabel = FORMAT_INFO[dir.to]?.label ?? dir.to.toUpperCase();
-  return {
-    title: `${fromLabel} to ${toLabel} Converter — quickhelp.dev`,
-    description: `Convert ${fromLabel} images to ${toLabel} format online, free. No sign-up, no software to install.`,
-  };
+  return buildMetadata({
+    path: `/convert/${params.direction}`,
+    title: `${fromLabel} to ${toLabel} Converter`,
+    description: `Convert ${fromLabel} images to ${toLabel} format online, free. No sign-up, no software to install. Privacy-first: runs in your browser.`,
+    keywords: [fromLabel, toLabel, "image converter", "convert", "free", "online", "browser"],
+  });
 }
 
 export default function ConversionPage({
@@ -47,28 +50,19 @@ export default function ConversionPage({
 
   const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
   const jsonLd = manifestToJsonLd(tool, baseUrl);
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: "Home", url: baseUrl },
+    { name: "Image Converter", url: `${baseUrl}/image-converter` },
+    { name: `${fromLabel} to ${toLabel}`, url: `${baseUrl}/convert/${dir.from}-to-${dir.to}` },
+  ]);
 
-  const howToJsonLd = {
+  // HowTo schema deprecated by Google (Sept 2023). Steps rendered as visible HTML instead.
+  const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: `How to convert ${fromLabel} to ${toLabel}`,
-    step: [
-      {
-        "@type": "HowToStep",
-        name: "Upload",
-        text: `Click the file picker and select your ${fromLabel} image (up to 3 MB).`,
-      },
-      {
-        "@type": "HowToStep",
-        name: "Convert",
-        text: `The source format is pre-set to ${fromLabel} and the target to ${toLabel}. Click Run.`,
-      },
-      {
-        "@type": "HowToStep",
-        name: "Download",
-        text: `Preview the converted ${toLabel} image and click Download.`,
-      },
-    ],
+    "@type": "Article",
+    headline: `How to convert ${fromLabel} to ${toLabel}`,
+    description: `Step-by-step guide to convert ${fromLabel} images to ${toLabel} format online for free.`,
+    url: `${baseUrl}/convert/${dir.from}-to-${dir.to}`,
   };
 
   return (
@@ -76,7 +70,8 @@ export default function ConversionPage({
       {jsonLd.map((obj, i) => (
         <JsonLd key={i} data={obj} />
       ))}
-      <JsonLd data={howToJsonLd} />
+      <JsonLd data={articleJsonLd} />
+      <JsonLd data={breadcrumb} />
 
       <div className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-6 space-y-2">
