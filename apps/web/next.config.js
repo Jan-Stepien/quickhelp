@@ -26,9 +26,23 @@ const nextConfig = {
       ".mjs": [".mts", ".mjs"],
     };
 
-    // Fix: onnxruntime-web ships .mjs files that mix ESM import with createRequire(import.meta.url).
-    // Webpack's default CJS processing fails on the bare `import` keyword.
-    // Treating node_modules .mjs files as "javascript/auto" lets webpack pass them through.
+    // ort.bundle.min.mjs uses `new URL("ort.bundle.min.mjs", import.meta.url)` to build a
+    // proxy-worker URL. Webpack replaces import.meta.url with the build-time file:// path;
+    // that path starts with "file:" so a branch executes that calls new URL(moduleObject, …),
+    // and moduleObject.replace() throws "e.replace is not a function" at runtime.
+    // The loader rewrites import.meta.url to globalThis.location?.href before webpack sees the
+    // file; at runtime that's an http:// URL, the "file:" branch is never taken, no crash.
+    config.module.rules.push({
+      test: /ort\.bundle\.min\.mjs$/,
+      include: /node_modules[\\/]onnxruntime-web/,
+      use: [{ loader: new URL("./onnx-import-meta-patch.cjs", import.meta.url).pathname }],
+      type: "javascript/auto",
+      resolve: { fullySpecified: false },
+    });
+
+    // Fix: @imgly/background-removal and other node_modules .mjs files mix ESM import with
+    // createRequire(). Webpack's default CJS processing fails on the bare `import` keyword.
+    // "javascript/auto" lets webpack pass them through.
     config.module.rules.push({
       test: /\.mjs$/,
       include: /node_modules/,
