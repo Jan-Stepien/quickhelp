@@ -22,7 +22,15 @@ export function GET() {
     priority: "0.7" as const,
   }));
 
+  const useCaseRoutes: { path: string; priority: "0.6"; changefreq: "monthly" }[] = [];
+  for (const tool of registry) {
+    for (const uc of tool.content?.useCases ?? []) {
+      useCaseRoutes.push({ path: `/use-cases/${uc.slug}`, priority: "0.6", changefreq: "monthly" });
+    }
+  }
+
   const contentRoutes = [
+    { path: "/use-cases", priority: "0.7", changefreq: "weekly" as const },
     { path: "/blog", priority: "0.8", changefreq: "weekly" as const },
     { path: "/changelog", priority: "0.6", changefreq: "weekly" as const },
     { path: "/glossary", priority: "0.7", changefreq: "monthly" as const },
@@ -47,7 +55,7 @@ export function GET() {
     })),
   ];
 
-  const xml = buildSitemap(registry, baseUrl, [...conversionRoutes, ...contentRoutes]);
+  const xml = buildSitemap(registry, baseUrl, [...conversionRoutes, ...useCaseRoutes, ...contentRoutes]);
   return new NextResponse(xml, {
     headers: {
       "Content-Type": "application/xml",

@@ -22,11 +22,21 @@ export interface FaqItem {
   answer: string;
 }
 
+export interface ToolUseCase {
+  slug: string;
+  title: string;
+  intent: string;
+  intro: string;
+  steps: HowToStep[];
+  faq?: FaqItem[];
+}
+
 export interface ToolContent {
   whatIs: string;
   howToSteps: HowToStep[];
   faq: FaqItem[];
   relatedTools?: string[];
+  useCases?: ToolUseCase[];
 }
 
 export interface ToolAttribution {

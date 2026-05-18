@@ -118,5 +118,67 @@ export const jsonFormatter = defineTool({
       },
     ],
     relatedTools: ["jwt-decoder"],
+    useCases: [
+      {
+        slug: "pretty-print-api-response",
+        title: "How to pretty-print a JSON API response",
+        intent: "Convert a minified or compact JSON API response into human-readable, indented output for inspection.",
+        intro: "When you fetch a JSON API in the browser or with curl, the response usually arrives as a single compressed line that's nearly impossible to read. Pretty-printing adds indentation and line breaks so you can immediately see the structure, find the field you need, and spot unexpected values. This guide shows how to format any JSON API response in seconds using the quickhelp.dev JSON Formatter — no terminal, no jq, no installation required.",
+        steps: [
+          { name: "Copy the raw response", text: "In Chrome DevTools open the Network tab, click the API request, select the Response tab, and copy the body. Or copy the output of: curl https://api.example.com/endpoint." },
+          { name: "Paste and format", text: "Open quickhelp.dev/json-formatter, paste the raw JSON, select 'Pretty' mode with 2-space indentation, and click Run. The formatted output appears immediately." },
+          { name: "Inspect and copy", text: "Use the tree view to expand nested objects. Click the Copy button to paste the formatted JSON into your editor, log file, or documentation." },
+        ],
+        faq: [
+          { question: "Does pretty-printing change the data?", answer: "No. Formatting only affects whitespace — the underlying data, field order, and values are unchanged." },
+          { question: "What if the API returns invalid JSON?", answer: "The formatter shows a parse error with the line and column number. Enable 'Repair' mode to automatically fix common issues like trailing commas and single-quoted strings." },
+        ],
+      },
+      {
+        slug: "minify-json-for-production",
+        title: "How to minify JSON for production",
+        intent: "Remove all whitespace from a JSON file to reduce its size before embedding it in code, APIs, or config files.",
+        intro: "Minifying JSON strips every space, tab, and newline that exists only for human readability, producing the smallest possible string for a given data structure. This matters when embedding JSON in JavaScript bundles, serializing API responses, storing JSON in database columns, or sending payloads over constrained networks. This guide explains how to minify any JSON file in one step using the quickhelp.dev JSON Formatter.",
+        steps: [
+          { name: "Paste your JSON", text: "Copy your formatted or indented JSON and paste it into quickhelp.dev/json-formatter." },
+          { name: "Select Minify mode", text: "Click the 'Minify' option in the mode selector. The output field updates instantly with a single-line, whitespace-free string." },
+          { name: "Copy the result", text: "Click Copy. The minified JSON is ready to paste into your code, config file, or API payload." },
+        ],
+        faq: [
+          { question: "How much smaller does minified JSON get?", answer: "Typically 10–30% smaller depending on how much indentation the original had. For deeply nested objects with 4-space indentation, savings can be 40%+." },
+          { question: "Does minification sort keys or change field order?", answer: "No — minification only removes whitespace. Key order is preserved exactly as in the input." },
+        ],
+      },
+      {
+        slug: "sort-json-keys-alphabetically",
+        title: "How to sort JSON keys alphabetically",
+        intent: "Reorder all keys in a JSON object alphabetically at every level of nesting for consistent diffs and readability.",
+        intro: "Alphabetically sorted JSON keys make git diffs cleaner, make config files easier to scan, and let you reliably compare two JSON objects by eye. When keys are added in random order over time, a sorted snapshot reveals exactly what changed. This guide shows how to sort all keys in a JSON object — recursively, at every level of nesting — using the quickhelp.dev JSON Formatter.",
+        steps: [
+          { name: "Paste your JSON", text: "Open quickhelp.dev/json-formatter and paste the JSON whose keys you want to sort." },
+          { name: "Enable Sort Keys", text: "Toggle on the 'Sort keys' option. Leave mode set to 'Pretty' for readable output." },
+          { name: "Copy the sorted result", text: "Click Run then Copy. The output has every object's keys sorted A→Z at every depth." },
+        ],
+        faq: [
+          { question: "Does sort order affect JSON semantics?", answer: "No. JSON objects are unordered by specification — key order carries no semantic meaning. Sorting is purely a style convention." },
+          { question: "Are array elements also sorted?", answer: "No. Array elements maintain their original order because arrays are ordered by definition." },
+        ],
+      },
+      {
+        slug: "validate-json-syntax",
+        title: "How to validate JSON syntax and find errors",
+        intent: "Check whether a JSON string is syntactically valid and locate the exact position of any parse errors.",
+        intro: "A single missing comma, an extra bracket, or a trailing comma turns valid JSON into an unresolvable parse error. Tracking down the error by eye in a 500-line JSON file is painful. The quickhelp.dev JSON Formatter validates any JSON string instantly, reports whether it's valid, and — if it isn't — shows the exact line and column of the first error. The optional Repair mode can automatically fix the most common issues.",
+        steps: [
+          { name: "Paste the suspect JSON", text: "Copy the JSON you want to validate and paste it into quickhelp.dev/json-formatter." },
+          { name: "Check the result", text: "If the JSON is valid, the formatted output appears. If it's invalid, a red error message shows the problem and its exact line:column position." },
+          { name: "Fix or repair", text: "Correct the error manually based on the line number, or enable 'Repair' mode to automatically remove trailing commas, fix single-quoted strings, and strip comments." },
+        ],
+        faq: [
+          { question: "What errors can Repair mode fix automatically?", answer: "Trailing commas before } or ], single-quoted strings, bare (unquoted) object keys, and JavaScript-style // and /* */ comments." },
+          { question: "Is there a file size limit for validation?", answer: "The API endpoint accepts up to 1 MB. For larger files, validate locally with: node -e \"JSON.parse(require('fs').readFileSync('file.json','utf8'))\"" },
+        ],
+      },
+    ],
   },
 });

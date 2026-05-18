@@ -138,5 +138,67 @@ export const imageConverter = defineTool({
       },
     ],
     relatedTools: ["jwt-decoder", "json-formatter"],
+    useCases: [
+      {
+        slug: "convert-png-to-webp",
+        title: "How to convert PNG to WebP online",
+        intent: "Reduce PNG file size by converting to WebP format for faster web page loading.",
+        intro: "WebP images are typically 25–35% smaller than PNGs at the same visual quality, making the conversion one of the highest-ROI optimizations for web performance. Every modern browser supports WebP, and the format supports both lossless and lossy compression as well as alpha transparency. This guide shows how to convert a PNG to WebP in seconds using the quickhelp.dev Image Converter — no Photoshop, no command line, no installation required.",
+        steps: [
+          { name: "Upload your PNG", text: "Open quickhelp.dev/image-converter, click the file picker, and select your PNG. The source format is detected automatically." },
+          { name: "Select WebP as output", text: "Choose 'webp' from the output format dropdown. Set quality to 80 (a good balance between file size and sharpness — increase for print, decrease for thumbnails)." },
+          { name: "Convert and download", text: "Click Run. A preview of the converted WebP appears along with the file size. Click Download to save it." },
+        ],
+        faq: [
+          { question: "Does PNG to WebP conversion lose quality?", answer: "At quality 80 the difference is imperceptible to most viewers. For pixel-perfect accuracy (e.g., icons or screenshots with sharp text) use quality 95+ or enable lossless WebP via the API." },
+          { question: "Does WebP support transparency like PNG?", answer: "Yes. WebP supports alpha transparency. Your converted file will preserve any transparent areas from the original PNG." },
+        ],
+      },
+      {
+        slug: "convert-jpeg-to-avif",
+        title: "How to convert JPEG to AVIF online",
+        intent: "Shrink photo file sizes dramatically by converting JPEG images to the AVIF format.",
+        intro: "AVIF (AV1 Image File Format) achieves roughly 50% smaller files than JPEG at equivalent visual quality, making it the most efficient image format for web delivery as of 2026. All major browsers support it. The trade-off is longer encoding time — AVIF takes more CPU to compress than JPEG or WebP. This guide explains how to convert any JPEG to AVIF using the quickhelp.dev Image Converter.",
+        steps: [
+          { name: "Upload your JPEG", text: "Go to quickhelp.dev/image-converter and upload your JPEG file (up to 3 MB)." },
+          { name: "Select AVIF as output", text: "Choose 'avif' from the output format list. Start with quality 70 — AVIF's perceptual quality is higher than JPEG at the same numeric value, so 70 often looks like JPEG at 85." },
+          { name: "Download and test", text: "Download the AVIF file and test it in your browser. If the quality looks wrong, re-convert at a higher or lower quality setting." },
+        ],
+        faq: [
+          { question: "How much smaller is AVIF compared to JPEG?", answer: "Typically 40–60% smaller at equivalent quality for photographs. For illustrations with flat areas of color, savings can exceed 70%." },
+          { question: "Can I use AVIF everywhere?", answer: "AVIF is supported in Chrome 85+, Firefox 93+, Safari 16+, and Edge 121+. For older browsers, serve WebP as a fallback using a picture element." },
+        ],
+      },
+      {
+        slug: "convert-webp-to-png",
+        title: "How to convert WebP to PNG online",
+        intent: "Convert a WebP image to PNG for compatibility with tools and platforms that don't support WebP.",
+        intro: "While WebP is excellent for web delivery, many image editing tools, publishing platforms, and email clients still require PNG or JPEG. Converting WebP back to PNG gives you a lossless, universally compatible file. This guide walks through the conversion using the quickhelp.dev Image Converter — no download required, output ready in seconds.",
+        steps: [
+          { name: "Upload the WebP file", text: "Open quickhelp.dev/image-converter and upload your WebP image." },
+          { name: "Set output to PNG", text: "Select 'png' as the output format. PNG conversion ignores the quality slider since PNG is lossless." },
+          { name: "Download the PNG", text: "Click Run, then Download. The PNG preserves all pixel data from the WebP exactly." },
+        ],
+        faq: [
+          { question: "Will the PNG be larger than the WebP?", answer: "Yes — PNG is a lossless format and will be larger (sometimes 2–4× larger) than the equivalent WebP. This is expected and not a quality loss." },
+          { question: "Does the conversion support WebP with transparency?", answer: "Yes. Transparent areas in the WebP are preserved in the PNG output as an alpha channel." },
+        ],
+      },
+      {
+        slug: "convert-svg-to-png",
+        title: "How to convert SVG to PNG online",
+        intent: "Rasterize an SVG vector file to a PNG bitmap for use in contexts that require raster images.",
+        intro: "SVG (Scalable Vector Graphics) files are resolution-independent and ideal for logos and icons. But many platforms — social media, email clients, office apps — require raster formats like PNG. This guide explains how to convert an SVG to a high-resolution PNG using the quickhelp.dev Image Converter, which renders the SVG at print density (150 DPI) before rasterizing.",
+        steps: [
+          { name: "Upload your SVG", text: "Open quickhelp.dev/image-converter and upload your SVG file. SVG is accepted as input only — it cannot be used as an output format." },
+          { name: "Select PNG as output", text: "Choose 'png' from the output format list. The converter renders the SVG at 150 DPI, which is suitable for most display and light-print use cases." },
+          { name: "Download and verify", text: "Click Run. Check the reported width and height in the output — if you need a larger raster, you can use the API with a custom density parameter." },
+        ],
+        faq: [
+          { question: "At what resolution are SVGs rasterized?", answer: "The converter uses 150 DPI. For print-quality output (300 DPI) you can call the API directly and process the PNG with a scaling step." },
+          { question: "What if my SVG has external fonts or images?", answer: "External resources may not resolve during server-side rendering. Embed fonts inline (e.g., with a tool like SVGO) or convert the SVG locally with Inkscape for complex files." },
+        ],
+      },
+    ],
   },
 });

@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, Layout, ConsentProvider, ConsentBanner } from "@quickhelp/ui";
 import { AnalyticsLoader } from "./AnalyticsLoader";
+import { WebVitalsReporter } from "./WebVitalsReporter";
 import { AdsenseLoader } from "./AdsenseLoader";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -22,10 +23,6 @@ const APP_URL = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
-  title: {
-    default: "quickhelp.dev — Developer Tools",
-    template: "%s | quickhelp.dev",
-  },
   ...buildMetadata({
     path: "/",
     title: "quickhelp.dev — Developer Tools",
@@ -33,6 +30,11 @@ export const metadata: Metadata = {
       "Small, deterministic utility tools — each with a human UI, REST API, OpenAPI schema, and MCP server entry. Free, fast, agent-native.",
     keywords: ["developer tools", "utility tools", "JWT decoder", "JSON formatter", "image converter", "API", "MCP", "OpenAPI"],
   }),
+  // Override title after spread to preserve the template for child segments
+  title: {
+    default: "quickhelp.dev — Developer Tools",
+    template: "%s | quickhelp.dev",
+  },
 };
 
 export const viewport: Viewport = {
@@ -66,6 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ThemeProvider>
           <ConsentBanner />
           <AnalyticsLoader cfToken={cfToken} />
+          <WebVitalsReporter />
           <AdsenseLoader />
         </ConsentProvider>
       </body>
