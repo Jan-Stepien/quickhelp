@@ -6,8 +6,6 @@ import { buildToolJsonLd } from "@quickhelp/agent-sdk";
 import { buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
 import { JsonLd } from "@quickhelp/seo";
 import { buildMetadata } from "@/lib/metadata";
-import { AdSlot } from "@/components/AdSlot";
-import { AD_SLOTS } from "@/lib/ad-slots";
 
 export const metadata: Metadata = buildMetadata({
   path: "/image-resizer",
@@ -56,7 +54,23 @@ export default function ImageResizerPage() {
 
       <ImageResizerUI />
 
-      <AdSlot slot={AD_SLOTS["tool-mid"]} format="horizontal" className="my-2" />
+      <section id="all-tools" aria-labelledby="all-tools-heading">
+        <h2 id="all-tools-heading" className="mb-3 text-sm font-semibold text-muted-foreground uppercase tracking-widest">
+          All tools
+        </h2>
+        <ul className="flex flex-wrap gap-2">
+          {registry.map((t) => (
+            <li key={t.slug}>
+              <Link
+                href={`/${t.slug}`}
+                className="rounded-full border border-border px-3 py-1 text-sm hover:bg-muted transition-colors"
+              >
+                {t.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       {content?.whatIs && (
         <section id="what-is" aria-labelledby="what-is-heading">
