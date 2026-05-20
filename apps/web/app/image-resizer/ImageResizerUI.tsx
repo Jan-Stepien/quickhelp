@@ -92,13 +92,15 @@ function processImageOnCanvas(
             outW = tW ?? drawW;
             outH = tH ?? drawH;
           } else {
-            // inside: shrink to fit within target bounds, preserve aspect ratio
+            // inside: scale to fit within target, canvas is exact target size,
+            // image is centered — remaining space is transparent
             const scale = tW && tH
               ? Math.min(tW / sw, tH / sh)
               : tW ? tW / sw : tH! / sh;
             drawW = Math.round(sw * scale);
             drawH = Math.round(sh * scale);
-            outW = drawW; outH = drawH;
+            outW = tW ?? drawW;
+            outH = tH ?? drawH;
           }
         }
 
@@ -403,7 +405,7 @@ export function ImageResizerUI() {
               <div className="space-y-1">
                 <label className="text-xs text-muted-foreground">Fit mode</label>
                 <select value={fit} onChange={(e) => setFit(e.target.value as FitMode)} className="w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm focus:outline-none">
-                  <option value="inside">Fit — shrink to fit, preserve ratio (default)</option>
+                  <option value="inside">Fit — preserve ratio, pad remaining space (default)</option>
                   <option value="cover">Cover — fill target exactly, crop overflow</option>
                   <option value="fill">Stretch — force exact size, may distort</option>
                 </select>
