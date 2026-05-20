@@ -3,7 +3,6 @@ export const AD_SLOTS = {
   "json-formatter-mid": "8628094352",
   "tool-mid": "4365186804",
   "compare-mid": "6959560556",
-  // Blog units — create in AdSense dashboard and replace the placeholder IDs below
-  "blog-content-top": "",
-  "blog-content-bottom": "",
+  "blog-content-top": "7160076388",
+  "blog-content-bottom": "3346851669",
 } as const;
