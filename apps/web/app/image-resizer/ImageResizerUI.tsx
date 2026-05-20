@@ -68,31 +68,43 @@ function processImageOnCanvas(
           sh = Math.min(opts.cropHeight, sh - sy);
         }
 
-        let dw = sw, dh = sh;
+        // drawW/drawH — how large to render the image (pre-rotation)
+        // outW/outH  — final canvas size (pre-rotation); may differ from draw for cover
+        let drawW = sw, drawH = sh;
+        let outW = sw, outH = sh;
+
         if (opts.resizeWidth || opts.resizeHeight) {
-          const rw = opts.resizeWidth ?? Infinity;
-          const rh = opts.resizeHeight ?? Infinity;
+          const tW = opts.resizeWidth;
+          const tH = opts.resizeHeight;
+
           if (opts.fit === "fill") {
-            dw = opts.resizeWidth ?? sw;
-            dh = opts.resizeHeight ?? sh;
+            // stretch to exact target — distortion is intentional
+            drawW = tW ?? sw;
+            drawH = tH ?? sh;
+            outW = drawW; outH = drawH;
           } else if (opts.fit === "cover") {
-            const scaleW = opts.resizeWidth ? opts.resizeWidth / sw : Infinity;
-            const scaleH = opts.resizeHeight ? opts.resizeHeight / sh : Infinity;
-            const scale = Math.max(scaleW === Infinity ? 0 : scaleW, scaleH === Infinity ? 0 : scaleH);
-            dw = Math.round(sw * scale);
-            dh = Math.round(sh * scale);
-            if (opts.resizeWidth) dw = opts.resizeWidth;
-            if (opts.resizeHeight) dh = opts.resizeHeight;
+            // scale to cover target exactly, canvas is the target, overflow is clipped
+            const scaleW = tW ? tW / sw : tH! / sh;
+            const scaleH = tH ? tH / sh : tW! / sw;
+            const scale = Math.max(scaleW, scaleH);
+            drawW = Math.round(sw * scale);
+            drawH = Math.round(sh * scale);
+            outW = tW ?? drawW;
+            outH = tH ?? drawH;
           } else {
-            const scale = Math.min(rw / sw, rh / sh);
-            dw = Math.round(sw * scale);
-            dh = Math.round(sh * scale);
+            // inside: shrink to fit within target bounds, preserve aspect ratio
+            const scale = tW && tH
+              ? Math.min(tW / sw, tH / sh)
+              : tW ? tW / sw : tH! / sh;
+            drawW = Math.round(sw * scale);
+            drawH = Math.round(sh * scale);
+            outW = drawW; outH = drawH;
           }
         }
 
         const rotated = opts.rotate === 90 || opts.rotate === 270;
-        const canvasW = rotated ? dh : dw;
-        const canvasH = rotated ? dw : dh;
+        const canvasW = rotated ? outH : outW;
+        const canvasH = rotated ? outW : outH;
 
         const canvas = document.createElement("canvas");
         canvas.width = canvasW;
@@ -103,7 +115,7 @@ function processImageOnCanvas(
         ctx.rotate((opts.rotate * Math.PI) / 180);
         if (opts.flipH) ctx.scale(-1, 1);
         if (opts.flipV) ctx.scale(1, -1);
-        ctx.drawImage(img, sx, sy, sw, sh, -dw / 2, -dh / 2, dw, dh);
+        ctx.drawImage(img, sx, sy, sw, sh, -drawW / 2, -drawH / 2, drawW, drawH);
 
         const mime = opts.format === "jpeg" ? "image/jpeg" : opts.format === "webp" ? "image/webp" : "image/png";
         const qualityArg = opts.format === "png" ? undefined : opts.quality / 100;
@@ -391,9 +403,9 @@ export function ImageResizerUI() {
               <div className="space-y-1">
                 <label className="text-xs text-muted-foreground">Fit mode</label>
                 <select value={fit} onChange={(e) => setFit(e.target.value as FitMode)} className="w-full rounded-md border border-border bg-background px-2 py-1.5 text-sm focus:outline-none">
-                  <option value="inside">Inside — fit within bounds (default)</option>
-                  <option value="cover">Cover — fill and crop overflow</option>
-                  <option value="fill">Fill — stretch to exact size</option>
+                  <option value="inside">Fit — shrink to fit, preserve ratio (default)</option>
+                  <option value="cover">Cover — fill target exactly, crop overflow</option>
+                  <option value="fill">Stretch — force exact size, may distort</option>
                 </select>
               </div>
             </div>
