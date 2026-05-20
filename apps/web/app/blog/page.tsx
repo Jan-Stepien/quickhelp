@@ -46,6 +46,46 @@ const POSTS = [
       "Comparing JSON.stringify, streaming parsers, and tree-diffing approaches across 1 KB to 1 MB payloads.",
     readingTime: "7 min read",
   },
+  {
+    slug: "how-to-view-lcov-coverage-reports",
+    title: "How to view LCOV coverage reports online (no setup required)",
+    date: "2026-05-20",
+    summary:
+      "LCOV reports from Jest, Vitest, Istanbul, and coverage.py are just text files. Here's how to read them without installing anything.",
+    readingTime: "6 min read",
+  },
+  {
+    slug: "understanding-lcov-coverage-metrics",
+    title: "Line, function, and branch coverage: what the numbers actually mean",
+    date: "2026-05-19",
+    summary:
+      "Your CI shows 82% coverage. Is that good? Depends entirely on which metric you're measuring — and most teams are measuring the wrong one.",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "image-sizes-for-social-media-2026",
+    title: "Image sizes for every social media platform in 2026: the complete guide",
+    date: "2026-05-17",
+    summary:
+      "Instagram, LinkedIn, X, Facebook, YouTube — every platform has different required dimensions. Here are the exact pixel values and how to hit them in seconds.",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "how-to-crop-images-for-web",
+    title: "How to crop images to the perfect aspect ratio for web and social media",
+    date: "2026-05-16",
+    summary:
+      "1:1 for Instagram, 16:9 for YouTube, 4:3 for blog — understanding aspect ratios means your images never get cut off or stretched again.",
+    readingTime: "5 min read",
+  },
+  {
+    slug: "resize-product-photos-for-etsy-amazon-shopify",
+    title: "How to resize and prepare product photos for Etsy, Amazon, and Shopify",
+    date: "2026-05-14",
+    summary:
+      "Each marketplace has different image requirements. Here's how to get clean, correctly sized product photos without paying for Photoshop.",
+    readingTime: "6 min read",
+  },
 ];
 
 export default function BlogPage() {

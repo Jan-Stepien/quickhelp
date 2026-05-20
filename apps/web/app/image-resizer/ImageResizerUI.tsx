@@ -13,10 +13,11 @@ type Tab = "resize" | "crop" | "transform";
 
 interface Dimensions { width: number; height: number }
 
+type StageResult = { url: string; dimensions: Dimensions; sizeBytes: number; format: OutputFormat };
+
 type Stage =
   | { kind: "idle" }
-  | { kind: "loaded"; file: File; original: Dimensions; objectUrl: string }
-  | { kind: "done"; original: Dimensions; resultUrl: string; resultDimensions: Dimensions; sizeBytes: number; format: OutputFormat }
+  | { kind: "loaded"; file: File; original: Dimensions; objectUrl: string; result?: StageResult }
   | { kind: "error"; message: string };
 
 const CROP_PRESETS = [
@@ -152,11 +153,13 @@ export function ImageResizerUI() {
 
   const originalRef = useRef<Dimensions | null>(null);
 
-  // Keep result URL clean
+  // Keep object URLs clean
   useEffect(() => {
     return () => {
-      if (stage.kind === "loaded") URL.revokeObjectURL(stage.objectUrl);
-      if (stage.kind === "done") URL.revokeObjectURL(stage.resultUrl);
+      if (stage.kind === "loaded") {
+        URL.revokeObjectURL(stage.objectUrl);
+        if (stage.result) URL.revokeObjectURL(stage.result.url);
+      }
     };
   }, [stage]);
 
@@ -252,8 +255,12 @@ export function ImageResizerUI() {
         format,
         quality,
       });
-      URL.revokeObjectURL(stage.objectUrl);
-      setStage({ kind: "done", original: stage.original, resultUrl: result.url, resultDimensions: { width: result.width, height: result.height }, sizeBytes: result.sizeBytes, format });
+      // Revoke the previous result URL before updating
+      if (stage.result) URL.revokeObjectURL(stage.result.url);
+      setStage({
+        ...stage,
+        result: { url: result.url, dimensions: { width: result.width, height: result.height }, sizeBytes: result.sizeBytes, format },
+      });
     } catch (e) {
       setStage({ kind: "error", message: e instanceof Error ? e.message : "Processing failed." });
     } finally {
@@ -262,16 +269,18 @@ export function ImageResizerUI() {
   };
 
   const handleDownload = () => {
-    if (stage.kind !== "done") return;
+    if (stage.kind !== "loaded" || !stage.result) return;
     const a = document.createElement("a");
-    a.href = stage.resultUrl;
-    a.download = `resized.${stage.format}`;
+    a.href = stage.result.url;
+    a.download = `resized.${stage.result.format}`;
     a.click();
   };
 
   const reset = () => {
-    if (stage.kind === "done") URL.revokeObjectURL(stage.resultUrl);
-    if (stage.kind === "loaded") URL.revokeObjectURL(stage.objectUrl);
+    if (stage.kind === "loaded") {
+      URL.revokeObjectURL(stage.objectUrl);
+      if (stage.result) URL.revokeObjectURL(stage.result.url);
+    }
     setStage({ kind: "idle" });
   };
 
@@ -312,56 +321,40 @@ export function ImageResizerUI() {
     );
   }
 
-  if (stage.kind === "done") {
-    return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-lg border border-border p-3 space-y-0.5">
-            <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Original</p>
-            <p className="text-sm font-mono">{stage.original.width}×{stage.original.height}</p>
-          </div>
-          <div className="rounded-lg border border-border p-3 space-y-0.5">
-            <p className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">Output</p>
-            <p className="text-sm font-mono">{stage.resultDimensions.width}×{stage.resultDimensions.height} · {(stage.sizeBytes / 1024).toFixed(0)} KB · {stage.format.toUpperCase()}</p>
-          </div>
-        </div>
-        <div className="rounded-xl border border-border overflow-hidden" style={CHECKERBOARD_STYLE}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={stage.resultUrl} alt="Processed result" className="w-full object-contain max-h-96" />
-        </div>
-        <div className="flex gap-2">
-          <button
-            onClick={handleDownload}
-            className="flex-1 rounded-lg bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition-opacity"
-          >
-            Download {stage.format.toUpperCase()}
-          </button>
-          <button
-            onClick={reset}
-            className="rounded-lg border border-border px-4 py-2.5 text-sm hover:bg-muted transition-colors"
-          >
-            New image
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   // loaded state
-  const { original, objectUrl } = stage;
+  const { original, objectUrl, result } = stage;
 
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Preview */}
-        <div className="rounded-xl border border-border overflow-hidden" style={CHECKERBOARD_STYLE}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={objectUrl} alt="Original" className="w-full object-contain max-h-64" />
+        {/* Preview — updates to show result after processing */}
+        <div className="space-y-2">
+          <div className="rounded-xl border border-border overflow-hidden" style={CHECKERBOARD_STYLE}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={result?.url ?? objectUrl} alt={result ? "Processed result" : "Original"} className="w-full object-contain max-h-64" />
+          </div>
+          {result ? (
+            <div className="rounded-lg border border-border p-2 space-y-2">
+              <p className="text-xs text-muted-foreground">
+                <span className="font-semibold text-foreground">{result.dimensions.width}×{result.dimensions.height}</span>
+                {" · "}{(result.sizeBytes / 1024).toFixed(0)} KB · {result.format.toUpperCase()}
+                <span className="ml-1 text-muted-foreground/60">(was {original.width}×{original.height})</span>
+              </p>
+              <button
+                onClick={handleDownload}
+                className="w-full rounded-lg bg-foreground px-3 py-2 text-sm font-medium text-background hover:opacity-90 transition-opacity"
+              >
+                Download {result.format.toUpperCase()}
+              </button>
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground font-mono">{original.width}×{original.height} px · original</p>
+          )}
         </div>
 
         {/* Controls */}
         <div className="space-y-3">
-          <p className="text-xs text-muted-foreground font-mono">{original.width}×{original.height} px</p>
+          <p className="text-xs text-muted-foreground font-mono">{original.width}×{original.height} px · source</p>
 
           {/* Tabs */}
           <div className="flex rounded-lg border border-border overflow-hidden text-xs font-medium">
@@ -510,10 +503,10 @@ export function ImageResizerUI() {
           disabled={processing}
           className="flex-1 rounded-lg bg-foreground px-4 py-2.5 text-sm font-medium text-background hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {processing ? "Processing…" : "Apply & Preview"}
+          {processing ? "Processing…" : result ? "Re-apply" : "Apply & Preview"}
         </button>
         <button onClick={reset} className="rounded-lg border border-border px-4 py-2.5 text-sm hover:bg-muted transition-colors">
-          Clear
+          New image
         </button>
       </div>
     </div>

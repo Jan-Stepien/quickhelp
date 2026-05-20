@@ -672,6 +672,873 @@ const result = await segmenter(imageUrl, {
       </div>
     ),
   },
+  "how-to-view-lcov-coverage-reports": {
+    title: "How to view LCOV coverage reports online (no setup required)",
+    date: "2026-05-20",
+    description: "LCOV reports from Jest, Vitest, Istanbul, and coverage.py are just text files. Here's how to read them without installing anything.",
+    keywords: ["lcov viewer online", "view lcov report", "lcov.info file viewer", "jest coverage report viewer", "istanbul coverage viewer", "vitest coverage", "coverage.py lcov"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          Every major test framework — Jest, Vitest, Istanbul, pytest-cov, gcov — can export coverage data
+          in LCOV format. The output is a plain text file, usually named <code>lcov.info</code>, sitting
+          somewhere in your <code>coverage/</code> directory after a test run. Reading it is the hard part:
+          the raw format is designed for machine consumption, not humans. This guide shows you how to turn
+          that file into a readable coverage report in seconds, without installing any additional tooling.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">What is an LCOV file?</h2>
+        <p>
+          LCOV is a coverage data format originally developed as a front-end to gcov, GCC&apos;s built-in
+          coverage tool. It has since become the de facto interchange format for coverage data across
+          languages and frameworks because it is simple, text-based, and well-supported by CI systems
+          like Codecov, Coveralls, and GitHub&apos;s coverage annotations.
+        </p>
+        <p>
+          A typical <code>lcov.info</code> file looks like this:
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`TN:
+SF:src/utils/format.ts
+FN:3,formatDate
+FN:12,formatCurrency
+FNDA:5,formatDate
+FNDA:0,formatCurrency
+FNF:2
+FNH:1
+DA:3,5
+DA:4,5
+DA:12,0
+DA:13,0
+LF:4
+LH:2
+end_of_record`}
+        </pre>
+        <p>
+          Each record describes one source file. The key line prefixes are: <code>SF</code> (source file
+          path), <code>FN</code> (function definition with line number), <code>FNDA</code> (function
+          hit count), <code>DA</code> (line number and hit count), <code>BRDA</code> (branch data),
+          and the summary totals <code>LF/LH</code> (lines found/hit) and <code>FNF/FNH</code>
+          (functions found/hit). Reading this raw is tedious — a viewer translates it into percentages,
+          color-coded tables, and sortable file lists.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">How to generate an LCOV report</h2>
+
+        <h3 className="text-lg font-medium text-foreground">Jest and Istanbul</h3>
+        <p>
+          Jest uses Istanbul under the hood. Add <code>--coverage</code> and set the reporter to
+          include <code>lcov</code>:
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// jest.config.js
+module.exports = {
+  collectCoverage: true,
+  coverageReporters: ["lcov", "text"],
+  coverageDirectory: "coverage",
+};`}
+        </pre>
+        <p>
+          Run <code>npx jest</code> and you will find <code>coverage/lcov.info</code> after the test run completes.
+        </p>
+
+        <h3 className="text-lg font-medium text-foreground">Vitest</h3>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// vitest.config.ts
+export default {
+  test: {
+    coverage: {
+      provider: "v8",   // or "istanbul"
+      reporter: ["lcov", "text"],
+    },
+  },
+};`}
+        </pre>
+        <p>
+          Run <code>npx vitest run --coverage</code>. The output lands at <code>coverage/lcov.info</code>.
+        </p>
+
+        <h3 className="text-lg font-medium text-foreground">Python (pytest-cov / coverage.py)</h3>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`# Install once
+pip install pytest-cov
+
+# Run tests with LCOV output
+pytest --cov=src --cov-report=lcov:coverage/lcov.info`}
+        </pre>
+        <p>
+          Or with coverage.py directly:
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`coverage run -m pytest
+coverage lcov -o coverage/lcov.info`}
+        </pre>
+
+        <h3 className="text-lg font-medium text-foreground">Go</h3>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`go test ./... -coverprofile=coverage.out
+# Convert Go's profile format to LCOV:
+go install github.com/jandelgado/gcov2lcov@latest
+gcov2lcov -infile=coverage.out -outfile=coverage/lcov.info`}
+        </pre>
+
+        <h2 className="text-xl font-semibold text-foreground">How to view the report</h2>
+        <p>
+          The traditional approach is <code>genhtml</code> — an LCOV command-line tool that converts
+          <code>lcov.info</code> into a multi-page HTML report. It works well but requires installing
+          the lcov package (<code>brew install lcov</code>, <code>apt install lcov</code>) and navigating
+          to the generated HTML locally. In a CI environment you typically upload the file to Codecov
+          or Coveralls instead.
+        </p>
+        <p>
+          For a faster workflow — especially when debugging coverage gaps during local development or
+          reviewing a colleague&apos;s <code>lcov.info</code> without cloning the repo — a browser-based
+          viewer is significantly faster. Drop the file, see the result immediately.
+        </p>
+        <p>
+          <Link href="/lcov-viewer" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s LCOV Coverage Viewer
+          </Link>{" "}
+          accepts any <code>lcov.info</code> file (drag and drop or paste the text directly), parses
+          it entirely in your browser, and renders a sortable table of all files with line, function,
+          and branch coverage percentages. Files below 80% are highlighted in amber; below 60% in red.
+          No upload, no account, no install.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">What to look for in a coverage report</h2>
+        <p>
+          Once you have the report open, sort by coverage ascending. The lowest-covered files are your
+          highest-risk areas — not because low coverage is always bad, but because it surfaces files
+          that have never been tested at all (0% line coverage) vs files that are tested but have
+          untested branches.
+        </p>
+        <p>
+          Pay attention to the difference between line coverage and branch coverage. A file can have
+          100% line coverage and 50% branch coverage — every line was executed, but some conditional
+          paths were never taken. Branch coverage gaps in validation logic, error handling, and
+          authentication code are the most dangerous.
+        </p>
+        <p>
+          Function coverage is the simplest metric: it tells you which functions were never called
+          by tests. Dead code and unused utility functions show up here as 0% function coverage.
+          Before deleting them, verify they are not called at runtime via a path your tests don&apos;t cover.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Using LCOV in CI</h2>
+        <p>
+          Most CI providers natively consume <code>lcov.info</code>. GitHub Actions with the
+          <code>codecov/codecov-action</code> will automatically find and upload coverage files;
+          Coveralls uses <code>coveralls-lcov</code>. For coverage gates — failing the build when
+          coverage drops below a threshold — most frameworks support this natively:
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// jest.config.js — fail if overall line coverage drops below 80%
+module.exports = {
+  coverageThreshold: {
+    global: {
+      lines: 80,
+      functions: 80,
+      branches: 70,
+    },
+  },
+};`}
+        </pre>
+        <p>
+          For local inspection of any <code>lcov.info</code> — your own, from a PR, or from a CI artifact —{" "}
+          <Link href="/lcov-viewer" className="underline underline-offset-2 text-foreground">
+            open it in the LCOV viewer
+          </Link>{" "}
+          for an instant readable summary.
+        </p>
+      </div>
+    ),
+  },
+  "understanding-lcov-coverage-metrics": {
+    title: "Line, function, and branch coverage: what the numbers actually mean",
+    date: "2026-05-19",
+    description: "Your CI shows 82% coverage. Is that good? Depends entirely on which metric you're measuring — and most teams are measuring the wrong one.",
+    keywords: ["code coverage metrics", "line coverage vs branch coverage", "function coverage", "branch coverage explained", "code coverage 80 percent", "coverage threshold"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          Most teams report a single coverage number — &quot;we have 82% coverage&quot; — without specifying which
+          metric they mean. That number can hide critical gaps or mislead you into thinking code is well-tested
+          when it isn&apos;t. Understanding the difference between line, function, and branch coverage is not
+          a theoretical concern: it directly affects whether your test suite catches the bugs that matter.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Line coverage</h2>
+        <p>
+          Line coverage (sometimes called statement coverage) measures the percentage of executable lines
+          that were run at least once during your test suite. A line is &quot;covered&quot; if any test caused
+          the program counter to pass through it. It is the easiest metric to understand and the most
+          commonly reported.
+        </p>
+        <p>
+          In an <code>lcov.info</code> file, line coverage is recorded via <code>DA</code> records:
+          <code>DA:&lt;line_number&gt;,&lt;hit_count&gt;</code>. The totals are <code>LF</code> (lines found)
+          and <code>LH</code> (lines hit). Line coverage = LH / LF × 100.
+        </p>
+        <p>
+          <strong className="text-foreground">What it catches:</strong> Dead code (lines with hit count 0
+          have never been executed), completely untested functions, and code that only runs on the happy path.
+        </p>
+        <p>
+          <strong className="text-foreground">What it misses:</strong> Conditional logic. If you have
+          <code>if (user.isAdmin) &#123; doA(); &#125; else &#123; doB(); &#125;</code> and your tests only
+          ever pass admin users, line coverage will show 100% for that block — both <code>doA()</code> and
+          <code>doB()</code> are lines, and they&apos;re both reachable via different code paths. But if no test
+          ever exercises the non-admin path, the <code>else</code> branch is untested.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Function coverage</h2>
+        <p>
+          Function coverage measures the percentage of functions (or methods) that were called at least
+          once. In LCOV: <code>FN</code> records list function definitions, <code>FNDA</code> records list
+          hit counts, and <code>FNF/FNH</code> are the totals.
+        </p>
+        <p>
+          <strong className="text-foreground">What it catches:</strong> Entirely untested functions — code
+          that was written but never exercised. This is the most dramatic gap indicator. A file with 100%
+          line coverage and 60% function coverage has 40% of its functions that were never entered during testing.
+        </p>
+        <p>
+          <strong className="text-foreground">What it misses:</strong> Everything inside a function that
+          was called. Function coverage is a coarse metric — a function is either &quot;hit&quot; or not. If a
+          function has ten conditional branches and your test only exercises two of them, function coverage
+          still shows 100% for that function.
+        </p>
+        <p>
+          Function coverage is most useful for identifying dead code. If a function has 0 hits across your
+          entire test suite, either it is dead code (consider deleting it) or it is only reachable via a
+          runtime path your tests don&apos;t cover (consider adding a test).
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Branch coverage</h2>
+        <p>
+          Branch coverage is the most powerful and least commonly met metric. It measures whether each
+          possible outcome of every conditional expression was taken. For an <code>if/else</code>, branch
+          coverage requires both the true and false paths to be exercised. For a <code>switch</code> with
+          five cases, all five branches must be hit.
+        </p>
+        <p>
+          In LCOV: <code>BRDA</code> records store branch data — <code>BRDA:&lt;line&gt;,&lt;block&gt;,&lt;branch&gt;,&lt;count&gt;</code>.
+          A count of <code>-</code> means the branch was never taken. Totals are <code>BRF</code>
+          (branches found) and <code>BRH</code> (branches hit).
+        </p>
+        <p>
+          <strong className="text-foreground">What it catches:</strong> Untested error paths, missed edge
+          cases in validation logic, ignored else branches, and code that only ever runs in the &quot;everything
+          works&quot; scenario. The bugs that reach production almost always live in untested branches.
+        </p>
+        <p>
+          <strong className="text-foreground">Why it&apos;s hard to hit:</strong> Branch coverage grows
+          exponentially with conditional complexity. A function with 5 independent if-statements has 32
+          possible execution paths. Testing all of them requires exponentially more test cases than line
+          coverage requires. In practice, 70% branch coverage is considered excellent; 80%+ is exceptional.
+        </p>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Metric</th>
+                <th className="text-left px-4 py-2 text-foreground">Measures</th>
+                <th className="text-left px-4 py-2 text-foreground">Misses</th>
+                <th className="text-right px-4 py-2 text-foreground">Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Line", "Code executed", "Conditional paths", "≥ 80%"],
+                ["Function", "Functions called", "Internal branches", "≥ 80%"],
+                ["Branch", "All conditional paths", "Complex path combos", "≥ 70%"],
+              ].map(([m, measures, misses, target]) => (
+                <tr key={m} className="border-t border-border">
+                  <td className="px-4 py-2 font-mono font-medium text-foreground">{m}</td>
+                  <td className="px-4 py-2">{measures}</td>
+                  <td className="px-4 py-2">{misses}</td>
+                  <td className="px-4 py-2 text-right">{target}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-xl font-semibold text-foreground">The 80% rule — and why it can mislead</h2>
+        <p>
+          &quot;80% coverage&quot; became an industry standard partly because it sounds rigorous and partly because
+          it is achievable without extreme effort. But 80% line coverage and 80% branch coverage are very
+          different standards. Teams that report &quot;80% coverage&quot; and mean line coverage may have 50%
+          branch coverage — meaning half of their conditional logic has never been tested.
+        </p>
+        <p>
+          A more meaningful threshold is: <strong className="text-foreground">80% line, 80% function, 70% branch</strong>.
+          Requiring all three prevents the common pattern of padding line coverage with easy tests while
+          leaving error handling and edge cases untouched.
+        </p>
+        <p>
+          The most important coverage is not the aggregate number — it is the coverage of high-risk files.
+          Authentication logic, payment processing, data validation, and security-critical code should have
+          close to 100% branch coverage regardless of the overall project average.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">How to read these metrics in an LCOV report</h2>
+        <p>
+          When you open an <code>lcov.info</code> file in{" "}
+          <Link href="/lcov-viewer" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s LCOV Coverage Viewer
+          </Link>
+          , each file row shows all three metrics side by side. Sort by branch coverage ascending to find
+          the files with the most untested conditional paths. Files at 100% line coverage but low branch
+          coverage are the most dangerous: they look well-tested but have significant logical gaps.
+        </p>
+        <p>
+          The viewer colour-codes thresholds: green for ≥ 80%, amber for ≥ 60%, red for below 60%.
+          A file that is red on branch coverage but green on line coverage is telling you exactly where
+          to write your next tests.
+        </p>
+      </div>
+    ),
+  },
+  "image-sizes-for-social-media-2026": {
+    title: "Image sizes for every social media platform in 2026: the complete guide",
+    date: "2026-05-17",
+    description: "Instagram, LinkedIn, X, Facebook, YouTube — every platform has different required dimensions. Here are the exact pixel values and how to hit them in seconds.",
+    keywords: ["social media image sizes 2026", "Instagram image size", "LinkedIn image size", "Twitter image size", "Facebook image size", "YouTube thumbnail size", "resize image for social media"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          Upload the wrong size image to LinkedIn and it gets cropped to an awkward square. Post a
+          landscape photo to Instagram Stories and white bars appear on the sides. Submit a YouTube
+          thumbnail that&apos;s too small and it looks blurry on the channel page. Getting image dimensions
+          right for each platform is not optional — it directly affects how professional your content
+          looks and whether it gets cropped in unflattering ways. This guide covers every major platform
+          with exact pixel dimensions as of 2026.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Instagram</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-right px-4 py-2 text-foreground">Dimensions</th>
+                <th className="text-right px-4 py-2 text-foreground">Ratio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Square post", "1080 × 1080 px", "1:1"],
+                ["Portrait post", "1080 × 1350 px", "4:5"],
+                ["Landscape post", "1080 × 566 px", "1.91:1"],
+                ["Stories / Reels", "1080 × 1920 px", "9:16"],
+                ["Profile picture", "320 × 320 px", "1:1"],
+              ].map(([fmt, dim, ratio]) => (
+                <tr key={fmt} className="border-t border-border">
+                  <td className="px-4 py-2">{fmt}</td>
+                  <td className="px-4 py-2 text-right font-mono">{dim}</td>
+                  <td className="px-4 py-2 text-right">{ratio}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Instagram compresses everything it receives, so uploading at exactly these dimensions — not
+          larger — minimises the quality loss from their compression. The 4:5 portrait format (1080×1350)
+          takes up the most vertical space in the feed, which increases visibility; it is the recommended
+          format for single images. Square posts are safe across all placements. Landscape posts
+          appear smaller in the feed and are generally less effective for organic reach.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">X (formerly Twitter)</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-right px-4 py-2 text-foreground">Dimensions</th>
+                <th className="text-right px-4 py-2 text-foreground">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["In-feed image", "1600 × 900 px", "16:9, safe area 1200×675"],
+                ["Profile photo", "400 × 400 px", "Displayed at 200×200"],
+                ["Header/banner", "1500 × 500 px", "3:1"],
+                ["Card image (link)", "1200 × 628 px", "~1.91:1"],
+              ].map(([fmt, dim, notes]) => (
+                <tr key={fmt} className="border-t border-border">
+                  <td className="px-4 py-2">{fmt}</td>
+                  <td className="px-4 py-2 text-right font-mono">{dim}</td>
+                  <td className="px-4 py-2 text-right text-xs">{notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          X crops in-feed images to a 16:9 preview with the middle section visible. If your image
+          has important content in the top or bottom 15%, it may be cropped out of the preview.
+          Always check how the image renders in the preview before posting.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">LinkedIn</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-right px-4 py-2 text-foreground">Dimensions</th>
+                <th className="text-right px-4 py-2 text-foreground">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Feed post image", "1200 × 628 px", "~1.91:1"],
+                ["Square post", "1200 × 1200 px", "1:1"],
+                ["Portrait post", "628 × 1200 px", "~1:2"],
+                ["Profile photo", "400 × 400 px", "Min 200×200"],
+                ["Cover / banner", "1584 × 396 px", "4:1"],
+                ["Article cover", "1200 × 644 px", "~1.86:1"],
+                ["Company logo", "300 × 300 px", "1:1"],
+              ].map(([fmt, dim, notes]) => (
+                <tr key={fmt} className="border-t border-border">
+                  <td className="px-4 py-2">{fmt}</td>
+                  <td className="px-4 py-2 text-right font-mono">{dim}</td>
+                  <td className="px-4 py-2 text-right text-xs">{notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          LinkedIn is strict about banner dimensions — upload anything other than 4:1 and it is
+          cropped or stretched awkwardly. For regular posts, the 1:1 square format performs well
+          in the feed and avoids cropping issues across devices.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Facebook</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-right px-4 py-2 text-foreground">Dimensions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Feed photo", "1200 × 630 px"],
+                ["Square post", "1080 × 1080 px"],
+                ["Stories", "1080 × 1920 px"],
+                ["Profile picture", "170 × 170 px"],
+                ["Cover photo", "820 × 312 px"],
+                ["Event cover", "1920 × 1005 px"],
+                ["Link thumbnail", "1200 × 628 px"],
+              ].map(([fmt, dim]) => (
+                <tr key={fmt} className="border-t border-border">
+                  <td className="px-4 py-2">{fmt}</td>
+                  <td className="px-4 py-2 text-right font-mono">{dim}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-xl font-semibold text-foreground">YouTube</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-right px-4 py-2 text-foreground">Dimensions</th>
+                <th className="text-right px-4 py-2 text-foreground">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Thumbnail", "1280 × 720 px", "Min 640×360, 16:9"],
+                ["Channel banner", "2560 × 1440 px", "Safe zone: 1546×423"],
+                ["Profile picture", "800 × 800 px", "1:1"],
+                ["Community post image", "1920 × 1080 px", "16:9"],
+              ].map(([fmt, dim, notes]) => (
+                <tr key={fmt} className="border-t border-border">
+                  <td className="px-4 py-2">{fmt}</td>
+                  <td className="px-4 py-2 text-right font-mono">{dim}</td>
+                  <td className="px-4 py-2 text-right text-xs">{notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          YouTube thumbnails are the single most impactful image on the platform — they directly
+          drive click-through rate. Always upload at 1280×720 (the maximum). YouTube displays
+          thumbnails at various sizes depending on the device and context; providing the maximum
+          resolution ensures they never look blurry. Keep text large and readable at small sizes
+          (the thumbnail may appear as small as 120×67 px in mobile search results).
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">How to resize quickly</h2>
+        <p>
+          The fastest way to hit these exact dimensions is to use{" "}
+          <Link href="/image-resizer" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s Image Resizer
+          </Link>
+          . Enter the exact width and height from the table above, choose your output format (JPEG
+          for photos, PNG for graphics with transparency), and download. Everything runs in your
+          browser — no upload, no account, no watermark. The tool also lets you lock the aspect
+          ratio while resizing, which prevents distortion when you need to resize to a specific
+          width and the height can be flexible.
+        </p>
+        <p>
+          For bulk resizing — preparing the same image in multiple platform formats — the most efficient
+          workflow is to start with the largest required dimension (typically the YouTube thumbnail at
+          1280×720) and downscale for other platforms. Upscaling degrades quality; always work from
+          a high-resolution source.
+        </p>
+      </div>
+    ),
+  },
+  "how-to-crop-images-for-web": {
+    title: "How to crop images to the perfect aspect ratio for web and social media",
+    date: "2026-05-16",
+    description: "1:1 for Instagram, 16:9 for YouTube, 4:3 for blog — understanding aspect ratios means your images never get cut off or stretched again.",
+    keywords: ["crop image aspect ratio", "how to crop image online", "image aspect ratio guide", "16:9 crop", "1:1 crop", "4:3 crop", "crop image free"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          Aspect ratio is the proportional relationship between an image&apos;s width and height. It is
+          expressed as two numbers separated by a colon — 16:9, 4:3, 1:1 — where the first number is
+          the width and the second is the height. Understanding aspect ratios removes the guesswork from
+          image cropping: instead of estimating by eye, you know exactly what proportions you need for
+          each use case before you start. This guide explains the most common ratios and how to apply
+          them to web, social, and print contexts.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Why aspect ratio matters more than pixel size</h2>
+        <p>
+          Platforms do not require a specific pixel size — they require a specific ratio. Instagram
+          accepts square posts at 200×200 or 10000×10000 pixels, as long as the ratio is 1:1. What
+          platforms reject, crop, or distort is the wrong ratio. A 1200×628 LinkedIn post image uploaded
+          to a 1:1 profile picture slot will be cropped to a square, cutting off the sides.
+        </p>
+        <p>
+          When you crop to a ratio rather than a pixel size, you ensure the image will fill its
+          container correctly at every resolution. Then you set the pixel size to match the platform&apos;s
+          recommended dimensions. The ratio comes first; the pixel count comes second.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">The most common aspect ratios and where to use them</h2>
+
+        <h3 className="text-lg font-medium text-foreground">1:1 — Square</h3>
+        <p>
+          The square format is the most universally safe choice on the web. It is the default for
+          profile pictures across every platform (Twitter, LinkedIn, Facebook, Instagram, YouTube)
+          and performs well for feed posts on Instagram. Square images render correctly as both
+          thumbnails and full-size images without requiring a crop.
+        </p>
+        <p>
+          Best for: profile pictures, product thumbnails, Instagram feed posts, app icons.
+          Avoid for: hero images, banners, and anything meant to convey width or landscape context.
+        </p>
+
+        <h3 className="text-lg font-medium text-foreground">16:9 — Widescreen</h3>
+        <p>
+          16:9 is the standard widescreen ratio — it matches the aspect ratio of every modern monitor,
+          TV, and smartphone when held horizontally. It is the native format for video content (YouTube,
+          Vimeo, embedded video players) and widely used for hero images, blog cover images, and
+          Open Graph (OG) images that appear when links are shared on social media.
+        </p>
+        <p>
+          The 1200×628 OG image used by Facebook, LinkedIn, and X is close to but not exactly 16:9
+          (it is approximately 1.91:1). If you crop to 16:9 for OG images, the sides may be slightly
+          cropped on some platforms. Crop to 1.91:1 (or just use 1200×628 px directly) for link preview images.
+        </p>
+        <p>
+          Best for: YouTube thumbnails, video cover images, blog post hero images, desktop wallpapers.
+        </p>
+
+        <h3 className="text-lg font-medium text-foreground">4:3 — Classic photo</h3>
+        <p>
+          4:3 was the standard for analogue television and early digital cameras. It is still common
+          in photography and works well for general-purpose images that need to be slightly wider than
+          tall without committing to the very wide 16:9 look. It renders well in blog grids, email
+          newsletters, and presentation slides.
+        </p>
+        <p>
+          Best for: product photography, blog post images, email headers, presentation graphics.
+        </p>
+
+        <h3 className="text-lg font-medium text-foreground">4:5 — Instagram portrait</h3>
+        <p>
+          4:5 (0.8:1) is Instagram&apos;s maximum portrait ratio for feed posts. It takes up more vertical
+          space in the feed than a square post, which means more screen real estate and typically higher
+          engagement. If you are creating content specifically for Instagram organic posts, 4:5 is
+          the highest-impact format.
+        </p>
+
+        <h3 className="text-lg font-medium text-foreground">9:16 — Vertical / Stories</h3>
+        <p>
+          9:16 is the inverse of 16:9 — a full-screen vertical format. It is the native ratio for
+          Instagram Stories, Reels, TikTok, and YouTube Shorts. On mobile, it fills the entire screen.
+          Cropping horizontal images to 9:16 is the most common mistake: the resulting crop loses
+          most of the original image. Start from a vertical-oriented source when shooting for Stories content.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">How to crop without losing the subject</h2>
+        <p>
+          The most common cropping mistake is centering the crop on the geometric middle of the image
+          rather than on the subject. If your subject is off-centre (which it often should be, per the
+          rule of thirds), a centre crop will cut them out.
+        </p>
+        <p>
+          A good crop tool lets you drag the crop box over the image so you choose what stays in frame.{" "}
+          <Link href="/image-resizer" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s Image Resizer & Cropper
+          </Link>{" "}
+          has preset ratio buttons (Free, 1:1, 4:3, 16:9, 3:2) that lock the crop box to the chosen ratio.
+          You then drag and position the box over the part of the image you want to keep. Switch to the
+          Resize tab afterwards to set the final pixel dimensions the platform requires. Both steps happen
+          in your browser — no upload.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Cropping for Open Graph images</h2>
+        <p>
+          Open Graph (OG) images are the preview images that appear when you share a URL on social
+          media. They are specified in the page&apos;s <code>&lt;meta property="og:image"&gt;</code> tag.
+          The recommended OG image size is 1200×628 px (ratio: approximately 1.91:1). If the image is
+          a different ratio, platforms will crop it — often in ways that remove important content.
+        </p>
+        <p>
+          Crop your OG images to exactly 1200×628 before uploading. If your source is a 16:9 image
+          (1200×675), a 47px crop from top or bottom centres it on the 628px height. If your source
+          is square, you will lose a significant amount of height — either recompose the image or use
+          a wider source.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Quick reference: crop ratios by use case</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Use case</th>
+                <th className="text-right px-4 py-2 text-foreground">Ratio</th>
+                <th className="text-right px-4 py-2 text-foreground">Pixels</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Instagram feed (portrait)", "4:5", "1080 × 1350"],
+                ["Instagram feed (square)", "1:1", "1080 × 1080"],
+                ["Instagram / TikTok Stories", "9:16", "1080 × 1920"],
+                ["YouTube thumbnail", "16:9", "1280 × 720"],
+                ["OG / link preview", "1.91:1", "1200 × 628"],
+                ["LinkedIn feed post", "1.91:1", "1200 × 628"],
+                ["Blog hero image", "16:9", "1200 × 675"],
+                ["Profile picture (any)", "1:1", "400 × 400 min"],
+                ["LinkedIn banner", "4:1", "1584 × 396"],
+              ].map(([use, ratio, px]) => (
+                <tr key={use} className="border-t border-border">
+                  <td className="px-4 py-2">{use}</td>
+                  <td className="px-4 py-2 text-right font-mono">{ratio}</td>
+                  <td className="px-4 py-2 text-right font-mono text-xs">{px}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Bookmark this table and use{" "}
+          <Link href="/image-resizer" className="underline underline-offset-2 text-foreground">
+            the Image Resizer & Cropper
+          </Link>{" "}
+          to hit any of these dimensions in under a minute. No account needed, nothing uploaded.
+        </p>
+      </div>
+    ),
+  },
+  "resize-product-photos-for-etsy-amazon-shopify": {
+    title: "How to resize and prepare product photos for Etsy, Amazon, and Shopify",
+    date: "2026-05-14",
+    description: "Each marketplace has different image requirements. Here's how to get clean, correctly sized product photos without paying for Photoshop.",
+    keywords: ["resize product photos", "Etsy image size", "Amazon product image size", "Shopify image size", "product photo preparation", "resize image for Etsy", "product photo free tool"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          Every e-commerce platform has different image requirements — minimum pixel dimensions, aspect
+          ratio expectations, background colour rules, and file size limits. Getting these right is not
+          just a technical formality: Amazon has been known to suppress listings with non-compliant images,
+          Etsy displays blurry thumbnails for low-resolution uploads, and Shopify&apos;s storefront themes
+          expect consistent image ratios across product galleries. This guide covers the exact specs for
+          the three largest platforms and how to prepare compliant images without spending money on
+          Photoshop or Canva Pro.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Amazon</h2>
+        <p>
+          Amazon&apos;s image requirements are the strictest of the three platforms and the most consequential
+          to ignore — non-compliant main images can trigger listing suppression.
+        </p>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Rule</th>
+                <th className="text-left px-4 py-2 text-foreground">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Main image background", "Pure white (RGB 255, 255, 255)"],
+                ["Minimum size", "1000 px on longest side (zoom feature requires this)"],
+                ["Recommended size", "2000 × 2000 px (1:1 square)"],
+                ["Maximum size", "10,000 px on longest side"],
+                ["Product in frame", "Fills 85–100% of the image area"],
+                ["File formats", "JPEG, PNG, GIF, TIFF"],
+                ["No text or graphics", "Disallowed on main image"],
+              ].map(([rule, req]) => (
+                <tr key={rule} className="border-t border-border">
+                  <td className="px-4 py-2 font-medium text-foreground">{rule}</td>
+                  <td className="px-4 py-2">{req}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          The white background requirement is the most commonly failed rule. If you photograph products
+          on a light grey surface or in natural light with a non-white background, you need to remove
+          and replace the background before uploading.{" "}
+          <Link href="/background-remover" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s Background Remover
+          </Link>{" "}
+          runs entirely in your browser and removes the background without any upload. After removing
+          the background, the download is a transparent PNG — open it in any image editor (even MS Paint)
+          and place it on a white canvas before saving as JPEG for Amazon.
+        </p>
+        <p>
+          The 2000×2000 recommendation activates Amazon&apos;s zoom feature, which allows customers to hover
+          over the image and see fine product details. Listings without zoom have meaningfully lower
+          conversion rates on Amazon. Always aim for 2000×2000 or larger on the main image.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Etsy</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Rule</th>
+                <th className="text-left px-4 py-2 text-foreground">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Minimum size", "2000 px on shortest side"],
+                ["Recommended ratio", "4:3 for listing photos"],
+                ["Thumbnail display", "Square (1:1) crop of the listing image"],
+                ["Maximum file size", "1 MB per image"],
+                ["Accepted formats", "JPEG, GIF, PNG"],
+                ["Background", "No platform requirement (lifestyle photos encouraged)"],
+              ].map(([rule, req]) => (
+                <tr key={rule} className="border-t border-border">
+                  <td className="px-4 py-2 font-medium text-foreground">{rule}</td>
+                  <td className="px-4 py-2">{req}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Etsy&apos;s interface crops listing images to a square thumbnail in search results. This means the
+          centre of your listing photo is what shoppers see first. If your product is not centred in the
+          frame, the thumbnail will show the wrong part of the image. Crop to 1:1 (square) for the first
+          listing image to control exactly what appears in search. Use 4:3 images for the secondary photos
+          that shoppers see after clicking through.
+        </p>
+        <p>
+          The 1 MB file size limit is worth noting — high-resolution JPEGs from modern phones are often
+          3–8 MB. Resize to 2000×2000 and save as JPEG at 85–90% quality, which typically produces files
+          under 500 KB without visible quality loss.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Shopify</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Rule</th>
+                <th className="text-left px-4 py-2 text-foreground">Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Maximum dimensions", "4472 × 4472 px"],
+                ["Maximum file size", "20 MB"],
+                ["Recommended size", "2048 × 2048 px"],
+                ["Recommended ratio", "1:1 (consistent across product gallery)"],
+                ["Accepted formats", "JPEG, PNG, GIF, WebP"],
+                ["Background", "Consistent across all product images (brand choice)"],
+              ].map(([rule, req]) => (
+                <tr key={rule} className="border-t border-border">
+                  <td className="px-4 py-2 font-medium text-foreground">{rule}</td>
+                  <td className="px-4 py-2">{req}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Shopify is the most permissive of the three platforms for technical requirements, but the most
+          sensitive to visual consistency. Shopify themes expect product gallery images to share the same
+          aspect ratio — mixing portrait and square images creates irregular grid layouts that look
+          unprofessional. Decide on one ratio for your store (most themes are built around 1:1) and
+          crop everything to match before uploading.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">The fastest preparation workflow</h2>
+        <p>
+          For most small e-commerce sellers, the workflow from phone photo to upload-ready image is:
+        </p>
+        <ol className="list-decimal list-inside space-y-2">
+          <li>
+            <strong className="text-foreground">Remove background</strong> if the platform requires white (Amazon)
+            or if you want a clean look: drop the image into{" "}
+            <Link href="/background-remover" className="underline underline-offset-2 text-foreground">
+              quickhelp.dev&apos;s Background Remover
+            </Link>
+            . Download as PNG (transparent).
+          </li>
+          <li>
+            <strong className="text-foreground">Crop to ratio</strong>: open the PNG in the{" "}
+            <Link href="/image-resizer" className="underline underline-offset-2 text-foreground">
+              Image Resizer & Cropper
+            </Link>
+            . Select 1:1 crop preset, centre on the product, crop.
+          </li>
+          <li>
+            <strong className="text-foreground">Resize to target dimensions</strong>: switch to the Resize tab.
+            Set 2000×2000 for Amazon/Shopify, 2000×2000 for Etsy. Choose JPEG output at 90% quality.
+            Download.
+          </li>
+        </ol>
+        <p>
+          Total time: under two minutes per image. No software to install, no account required, nothing
+          uploaded to a server. The entire workflow runs in your browser.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">WebP on Shopify</h2>
+        <p>
+          Shopify now accepts WebP uploads and will serve WebP to browsers that support it. WebP files
+          are typically 30–40% smaller than JPEG at equivalent quality, which improves storefront load
+          times and Core Web Vitals scores (a ranking factor on Google Shopping). If you are uploading
+          to Shopify, consider using WebP output from the image resizer — modern phones, tablets, and
+          laptops all support WebP natively.
+        </p>
+      </div>
+    ),
+  },
 };
 
 export function generateStaticParams() {

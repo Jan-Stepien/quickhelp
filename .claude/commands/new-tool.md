@@ -81,7 +81,7 @@ grep -r "slug:" packages/tools/*/src/manifest.ts | grep "use-case-slug-here"
 
 ---
 
-### Step 3 — Wire into registry
+### Step 3 — Wire into registry and home page
 
 **`apps/web/package.json`** — add to `dependencies`:
 ```json
@@ -101,6 +101,8 @@ export const registry: AnyTool[] = [..., <camelSlug>];
 ```
 
 **`apps/mcp/src/index.ts`** — add import + add to registry array.
+
+**Home page** — `apps/web/app/page.tsx` renders `const featured = registry` so the new tool appears automatically. No manual edit needed. Verify it shows up at `http://localhost:3000` after `pnpm install`.
 
 ---
 
@@ -141,7 +143,35 @@ If any surface is missing, the cause is almost always a missed registry wire-up 
 
 ---
 
-### Step 6 — SEO quality check
+### Step 6 — Create AdSense ad unit
+
+**Before finishing the tool**, create a dedicated AdSense ad unit for it so ads are ready to activate with a single env-var flip.
+
+1. Go to **Google AdSense → Ads → By ad unit → Display ads** → click **Create new ad unit**
+2. Name it exactly: `<slug>-mid` (e.g. `base64-encoder-mid`)
+3. Type: **Display**, size: **Responsive**
+4. Copy the numeric unit ID that AdSense generates (e.g. `9876543210`)
+5. Add it to **`apps/web/lib/ad-slots.ts`**:
+   ```ts
+   export const AD_SLOTS = {
+     // ... existing entries ...
+     "<slug>-mid": "<numeric-id>",   // ← add this line
+   } as const;
+   ```
+6. In the tool's **`apps/web/app/<slug>/page.tsx`**, wire the slot:
+   ```tsx
+   import { AD_SLOTS } from "@/lib/ad-slots";
+   // ...
+   <AdSlot slot={AD_SLOTS["<slug>-mid"]} format="horizontal" className="my-2" />
+   ```
+
+> If AdSense is not yet approved, add a placeholder entry with an empty string (`""`). The `AdSlot` component's `!slot` guard will suppress the element until the real ID is filled in.
+
+> **Never hardcode numeric IDs as string literals** directly in `page.tsx` — always go through `AD_SLOTS` so all unit IDs are auditable in one place.
+
+---
+
+### Step 7 — SEO quality check
 
 Run these against the local dev server to confirm no regressions:
 

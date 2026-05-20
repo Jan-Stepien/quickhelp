@@ -4,7 +4,7 @@ import { JsonLd } from "@quickhelp/seo";
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from "@quickhelp/tool-kit";
 
 export default function HomePage() {
-  const featured = registry.slice(0, 4);
+  const featured = registry;
   const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";
   const sameAs = [
     process.env["NEXT_PUBLIC_GITHUB_URL"],
