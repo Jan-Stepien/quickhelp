@@ -3,11 +3,13 @@ import { jwtDecoder } from "@quickhelp/tools-jwt-decoder";
 import { jsonFormatter } from "@quickhelp/tools-json-formatter";
 import { imageConverter } from "@quickhelp/tools-image-converter";
 import { backgroundRemover } from "@quickhelp/tools-background-remover";
+import { lcovViewer } from "@quickhelp/tools-lcov-viewer";
+import { imageResizer } from "@quickhelp/tools-image-resizer";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyTool = Tool<any, any>;
 
-export const registry: AnyTool[] = [jwtDecoder, jsonFormatter, imageConverter, backgroundRemover];
+export const registry: AnyTool[] = [jwtDecoder, jsonFormatter, imageConverter, backgroundRemover, lcovViewer, imageResizer];
 
 export function getToolBySlug(slug: string): AnyTool | undefined {
   return registry.find((t) => t.slug === slug);

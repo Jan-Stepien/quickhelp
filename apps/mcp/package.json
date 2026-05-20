@@ -16,9 +16,11 @@
     "@modelcontextprotocol/sdk": "^1.12.1",
     "@quickhelp/agent-sdk": "workspace:*",
     "@quickhelp/tool-kit": "workspace:*",
+    "@quickhelp/tools-image-converter": "workspace:*",
+    "@quickhelp/tools-image-resizer": "workspace:*",
     "@quickhelp/tools-json-formatter": "workspace:*",
     "@quickhelp/tools-jwt-decoder": "workspace:*",
-    "@quickhelp/tools-image-converter": "workspace:*"
+    "@quickhelp/tools-lcov-viewer": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.19.19",

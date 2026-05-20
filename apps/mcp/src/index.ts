@@ -10,9 +10,11 @@ import type { Tool } from "@quickhelp/tool-kit";
 import { jwtDecoder } from "@quickhelp/tools-jwt-decoder";
 import { jsonFormatter } from "@quickhelp/tools-json-formatter";
 import { imageConverter } from "@quickhelp/tools-image-converter";
+import { imageResizer } from "@quickhelp/tools-image-resizer";
+import { lcovViewer } from "@quickhelp/tools-lcov-viewer";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter];
+const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter, imageResizer, lcovViewer];
 
 const server = new Server(
   { name: "quickhelp-mcp", version: "0.0.1" },

@@ -137,7 +137,7 @@ export const imageConverter = defineTool({
           "WebP is 25–35% smaller than JPEG/PNG at equivalent quality and is supported by all modern browsers. AVIF is 50% smaller still but takes longer to encode. Both are great for web delivery.",
       },
     ],
-    relatedTools: ["jwt-decoder", "json-formatter"],
+    relatedTools: ["image-resizer", "background-remover", "jwt-decoder"],
     useCases: [
       {
         slug: "convert-png-to-webp",

@@ -69,7 +69,7 @@ export const backgroundRemover = defineTool({
         answer: "PNG, JPEG, WebP, AVIF, TIFF, and GIF as input. Output is always a transparent PNG.",
       },
     ],
-    relatedTools: ["image-converter", "jwt-decoder"],
+    relatedTools: ["image-converter", "image-resizer"],
     useCases: [
       {
         slug: "remove-background-from-product-photo",

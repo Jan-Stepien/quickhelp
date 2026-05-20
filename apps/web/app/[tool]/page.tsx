@@ -16,7 +16,7 @@ interface Props {
 
 export async function generateStaticParams() {
   // image-converter and background-remover have their own dedicated pages
-  const DEDICATED = new Set(["image-converter", "background-remover"]);
+  const DEDICATED = new Set(["image-converter", "background-remover", "lcov-viewer", "image-resizer"]);
   return registry.filter((t) => !DEDICATED.has(t.slug)).map((t) => ({ tool: t.slug }));
 }
 

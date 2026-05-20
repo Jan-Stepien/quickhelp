@@ -1,0 +1,23 @@
+{
+  "name": "@quickhelp/tools-lcov-viewer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "echo 'Tool consumed directly from src by Next.js'"
+  },
+  "dependencies": {
+    "@quickhelp/tool-kit": "workspace:*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
