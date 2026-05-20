@@ -7,6 +7,7 @@ import { buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
 import { JsonLd } from "@quickhelp/seo";
 import { buildMetadata } from "@/lib/metadata";
 import { AdSlot } from "@/components/AdSlot";
+import { AD_SLOTS } from "@/lib/ad-slots";
 
 export const metadata: Metadata = buildMetadata({
   path: "/lcov-viewer",
@@ -55,7 +56,7 @@ export default function LcovViewerPage() {
 
       <LcovViewerUI />
 
-      <AdSlot slot="tool-page-mid" format="horizontal" className="my-2" />
+      <AdSlot slot={AD_SLOTS["tool-mid"]} format="horizontal" className="my-2" />
 
       {content?.whatIs && (
         <section id="what-is" aria-labelledby="what-is-heading">

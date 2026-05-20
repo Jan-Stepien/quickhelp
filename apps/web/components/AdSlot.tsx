@@ -22,7 +22,7 @@ export function AdSlot({ slot, format = "auto", className = "" }: AdSlotProps) {
     }
   }, []);
 
-  if (!ENABLED || !CLIENT) return null;
+  if (!ENABLED || !CLIENT || !slot) return null;
 
   return (
     <div className={`ad-slot overflow-hidden ${className}`} aria-hidden="true">

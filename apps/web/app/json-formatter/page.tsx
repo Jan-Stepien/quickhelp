@@ -9,6 +9,7 @@ import { buildMetadata } from "@/lib/metadata";
 import { registry } from "@/lib/registry";
 import { JsonFormatterUI } from "./JsonFormatterUI";
 import { AdSlot } from "@/components/AdSlot";
+import { AD_SLOTS } from "@/lib/ad-slots";
 
 export const dynamic = "force-static";
 
@@ -47,7 +48,7 @@ export default function JsonFormatterPage() {
       </header>
 
       <JsonFormatterUI />
-      <AdSlot slot="tool-page-mid" format="horizontal" className="my-2" />
+      <AdSlot slot={AD_SLOTS["json-formatter-mid"]} format="horizontal" className="my-2" />
 
       {content?.whatIs && (
         <section id="what-is" aria-labelledby="what-is-heading">

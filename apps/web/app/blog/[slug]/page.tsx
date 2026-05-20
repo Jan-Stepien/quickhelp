@@ -6,6 +6,7 @@ import { buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
 import { JsonLd } from "@quickhelp/seo";
 import { AuthorByline } from "@/components/AuthorByline";
 import { AdSlot } from "@/components/AdSlot";
+import { AD_SLOTS } from "@/lib/ad-slots";
 
 export const dynamic = "force-static";
 
@@ -728,9 +729,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <p className="text-lg text-muted-foreground">{post.description}</p>
           <AuthorByline name="Jan Stepien" date={post.date} />
         </header>
-        <AdSlot slot="blog-content-top" format="horizontal" className="my-2" />
+        <AdSlot slot={AD_SLOTS["blog-content-top"]} format="horizontal" className="my-2" />
         {post.body}
-        <AdSlot slot="blog-content-bottom" format="rectangle" className="my-4" />
+        <AdSlot slot={AD_SLOTS["blog-content-bottom"]} format="rectangle" className="my-4" />
         <footer className="border-t border-border pt-6">
           <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2">
             ← Back to blog
