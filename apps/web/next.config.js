@@ -17,6 +17,16 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [],
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.quickhelp.dev" }],
+        destination: "https://quickhelp.dev/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       // Security headers for all routes
