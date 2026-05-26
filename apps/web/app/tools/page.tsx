@@ -29,21 +29,43 @@ export default function ToolsPage() {
 
   const categories = Object.keys(byCategory).sort() as Category[];
 
+  const categoryDescriptions: Partial<Record<Category, string>> = {
+    encoding: "Tools for encoding, decoding, and inspecting token formats used in authentication and data exchange.",
+    formatting: "Tools that parse, validate, and reformat structured data — making it readable or compact without changing its meaning.",
+    images: "Client-side image processing tools for converting, resizing, and editing images — no upload to a server required.",
+    coverage: "Tools for inspecting and visualising code coverage reports.",
+  };
+
   return (
     <>
       {collectionJsonLd.map((item, i) => <JsonLd key={i} data={item} />)}
       <JsonLd data={breadcrumb} />
       <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">All tools</h1>
-        <p className="mt-1">{registry.length} tools available</p>
+      <div className="space-y-3">
+        <h1 className="text-3xl font-bold">All developer tools</h1>
+        <p className="text-muted-foreground max-w-2xl">
+          {registry.length} free, deterministic tools — each available as a web UI, a REST API endpoint,
+          an OpenAPI 3.1 schema, and an MCP server entry. No account required. Every tool accepts
+          JSON input and returns JSON output with a consistent, documented schema.
+        </p>
+        <p className="text-sm text-muted-foreground max-w-2xl">
+          Use any tool directly in your browser, integrate it into a script or CI pipeline via the API,
+          or add the MCP server to Claude or Cursor to let your AI agent call these tools automatically.
+          The <a href="/openapi.json" className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/openapi.json</a> endpoint
+          documents every tool&apos;s input and output schemas in a machine-readable format.
+        </p>
       </div>
 
       {categories.map((cat) => (
         <section key={cat}>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {cat}
-          </h2>
+          <div className="mb-3">
+            <h2 className="text-base font-semibold capitalize text-foreground">
+              {cat}
+            </h2>
+            {categoryDescriptions[cat] && (
+              <p className="mt-0.5 text-sm text-muted-foreground">{categoryDescriptions[cat]}</p>
+            )}
+          </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {byCategory[cat]!.map((tool) => (
               <Link key={tool.slug} href={`/${tool.slug}`} className="tool-card">
@@ -54,6 +76,23 @@ export default function ToolsPage() {
           </div>
         </section>
       ))}
+
+      <section className="rounded-lg border border-border bg-muted/40 p-5 space-y-3">
+        <h2 className="text-base font-semibold text-foreground">Use any tool as an API</h2>
+        <p className="text-sm text-muted-foreground">
+          Every tool on this page has a corresponding REST endpoint at{" "}
+          <span className="font-mono text-xs">POST /api/{"<slug>"}</span>.
+          Send a JSON body matching the tool&apos;s input schema and receive a structured JSON response.
+          No API key is required. Input and output schemas are documented in the{" "}
+          <a href="/openapi.json" className="underline underline-offset-2 hover:text-foreground font-mono text-xs">/openapi.json</a>{" "}
+          spec and the per-tool <a href="/docs" className="underline underline-offset-2 hover:text-foreground">API docs</a>.
+        </p>
+        <pre className="rounded bg-muted p-3 text-xs text-muted-foreground overflow-x-auto">
+          {`curl -X POST https://quickhelp.dev/api/json-formatter \\
+  -H 'Content-Type: application/json' \\
+  -d '{"json":"{\"key\":1}","mode":"pretty"}'`}
+        </pre>
+      </section>
       </div>
     </>
   );

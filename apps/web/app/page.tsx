@@ -81,6 +81,69 @@ export default function HomePage() {
           </a>
         </div>
       </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">What is quickhelp.dev?</h2>
+        <p className="text-muted-foreground">
+          quickhelp.dev is a collection of small, focused developer tools that do exactly one thing well.
+          Each tool is free to use — no account, no rate limit for normal use. You can use any tool
+          through its web interface, call it directly as a REST API, discover it through an OpenAPI
+          3.1 schema, or register it as an MCP tool inside Claude, Cursor, or any MCP-compatible agent.
+        </p>
+        <p className="text-muted-foreground">
+          The tools are deterministic: given the same input, they always produce the same output.
+          There are no black-box AI models deciding the result — just well-defined transformations
+          like decoding a JWT, formatting JSON, converting an image, or removing a background.
+          That predictability makes them reliable for automated workflows, CI pipelines, and AI agents
+          that need a tool they can trust.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">Three ways to use every tool</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="rounded-lg border border-border p-4 space-y-2">
+            <div className="text-sm font-semibold text-foreground">Human UI</div>
+            <p className="text-sm text-muted-foreground">
+              Visit the tool page, fill in the form, click Run. Results appear instantly and can be
+              copied with one click. No sign-up, no tutorial.
+            </p>
+          </div>
+          <div className="rounded-lg border border-border p-4 space-y-2">
+            <div className="text-sm font-semibold text-foreground">REST API</div>
+            <p className="text-sm text-muted-foreground">
+              Every tool has a <span className="font-mono text-xs">POST /api/{"<slug>"}</span> endpoint
+              that accepts JSON and returns JSON. No API key required for standard use. Integrate it
+              into any script, workflow, or application.
+            </p>
+          </div>
+          <div className="rounded-lg border border-border p-4 space-y-2">
+            <div className="text-sm font-semibold text-foreground">MCP server</div>
+            <p className="text-sm text-muted-foreground">
+              Add quickhelp.dev to Claude Desktop or any MCP-compatible agent. All tools are
+              registered automatically — the agent can discover and call them without extra
+              configuration.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">Why deterministic tools?</h2>
+        <p className="text-muted-foreground">
+          AI agents work best with tools that are predictable. A tool that decodes a JWT should
+          always return the same header and payload — not a summary, not a paraphrase, not a
+          hallucination. quickhelp.dev tools are built with that contract in mind: strict JSON
+          schemas for inputs and outputs, no side effects, no state between calls.
+        </p>
+        <p className="text-muted-foreground">
+          Every tool exposes its input and output shapes via OpenAPI 3.1, which means agents
+          using the OpenAPI spec can validate inputs before calling and parse outputs without
+          guesswork. The <a href="/llms.txt" className="underline underline-offset-2 hover:text-foreground">llms.txt</a> file
+          at the root of the domain gives language models a structured overview of what each
+          tool does, how to call it, and what to expect back.
+        </p>
+      </section>
       </div>
     </>
   );

@@ -8,6 +8,7 @@ interface OpenAPIDocument {
     version: string;
     description: string;
   };
+  servers: Array<{ url: string; description: string }>;
   paths: Record<string, unknown>;
   components: {
     schemas: Record<string, unknown>;
@@ -85,6 +86,7 @@ export function buildOpenAPI(
   return {
     openapi: "3.1.0",
     info: { title, version, description },
+    servers: [{ url: baseUrl, description: "Production" }],
     paths,
     components: { schemas: {} },
   };
