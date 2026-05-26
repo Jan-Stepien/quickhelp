@@ -11,7 +11,8 @@ Research, plan, and ship a new tool to quickhelp.dev — fully wired for SEO and
 1. Picks the best next tool to add (based on search demand, implementation cost, and category gap)
 2. Implements it end-to-end using `/new-tool`
 3. Commits and pushes
-4. Writes `docs/manual-actions/<slug>-tool.md` listing every human action needed to finish the launch
+4. Deploys to Vercel and waits for the deployment to go live
+5. Writes `docs/manual-actions/<slug>-tool.md` listing every human action needed to finish the launch
 
 ---
 
@@ -49,7 +50,40 @@ Pick whichever is not yet in the registry and has the best search-volume-to-impl
 
 Run `/new-tool <slug>` (use the Skill tool to invoke it) and follow all its steps through commit and push.
 
-### Step 3 — Write manual actions file
+### Step 3 — Deploy to Vercel
+
+After pushing, trigger a Vercel deployment and wait for it to go live:
+
+```bash
+# Trigger deployment (requires Vercel CLI logged in)
+vercel deploy --prod 2>&1
+
+# If Vercel CLI is not installed or not authenticated, push triggers auto-deploy.
+# Monitor deployment status:
+vercel ls --prod 2>&1 | head -5
+```
+
+If `vercel` CLI is not available, check deployment status via the GitHub integration — the push to `main` triggers Vercel automatically. Poll until the deployment is live:
+
+```bash
+# Poll until the new tool responds (replace <slug> with the actual slug)
+until curl -sf -o /dev/null "https://quickhelp.dev/<slug>"; do
+  echo "Waiting for deployment..."; sleep 15
+done
+echo "Live: https://quickhelp.dev/<slug>"
+```
+
+Once live, run the smoke tests:
+
+```bash
+curl -s -X POST https://quickhelp.dev/api/<slug> \
+  -H 'Content-Type: application/json' \
+  -d '<example input from manifest>' | jq .
+```
+
+Confirm the response matches the expected output from the manifest's first example.
+
+### Step 4 — Write manual actions file
 
 Create `docs/manual-actions/<slug>-tool.md` with:
 
@@ -78,10 +112,11 @@ Added: <today's date>
 [Disable AI Crawler managed rules in Cloudflare dashboard]
 ```
 
-### Step 4 — Confirm
+### Step 5 — Confirm
 
 Report back with:
 - The slug chosen and why
 - Word count of the content block
 - All surfaces the tool now appears on (UI / API / OpenAPI / MCP / sitemap)
+- Vercel deployment URL (confirmed live)
 - Path to the manual actions file
