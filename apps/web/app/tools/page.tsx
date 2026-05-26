@@ -32,8 +32,8 @@ export default function ToolsPage() {
   const categoryDescriptions: Partial<Record<Category, string>> = {
     encoding: "Tools for encoding, decoding, and inspecting token formats used in authentication and data exchange.",
     formatting: "Tools that parse, validate, and reformat structured data — making it readable or compact without changing its meaning.",
-    images: "Client-side image processing tools for converting, resizing, and editing images — no upload to a server required.",
-    coverage: "Tools for inspecting and visualising code coverage reports.",
+    conversion: "Client-side tools for converting images and files between formats — no upload to a server required.",
+    validation: "Tools for inspecting, linting, and visualising code and data quality reports.",
   };
 
   return (

@@ -20,6 +20,7 @@
     "@quickhelp/tools-image-resizer": "workspace:*",
     "@quickhelp/tools-json-formatter": "workspace:*",
     "@quickhelp/tools-jwt-decoder": "workspace:*",
+    "@quickhelp/tools-base64": "workspace:*",
     "@quickhelp/tools-lcov-viewer": "workspace:*"
   },
   "devDependencies": {
