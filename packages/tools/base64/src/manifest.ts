@@ -128,7 +128,7 @@ export const base64 = defineTool({
         answer: "The API endpoint accepts up to 1 MB of input. For larger files, use Node.js: Buffer.from(str, 'utf-8').toString('base64') for encoding, or Buffer.from(b64, 'base64').toString('utf-8') for decoding.",
       },
     ],
-    relatedTools: ["jwt-decoder", "json-formatter"],
+    relatedTools: ["jwt-decoder", "json-formatter", "hash-generator"],
     useCases: [
       {
         slug: "encode-string-to-base64",

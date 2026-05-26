@@ -104,7 +104,7 @@ export const jwtDecoder = defineTool({
         answer: "The browser-side decoder never makes a network call. The signature-verification endpoint receives your token and key only during the verify request; neither is logged or stored.",
       },
     ],
-    relatedTools: ["json-formatter"],
+    relatedTools: ["json-formatter", "hash-generator", "base64"],
     useCases: [
       {
         slug: "decode-jwt-in-browser",
