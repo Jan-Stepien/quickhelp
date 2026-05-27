@@ -14,9 +14,10 @@ import { imageResizer } from "@quickhelp/tools-image-resizer";
 import { lcovViewer } from "@quickhelp/tools-lcov-viewer";
 import { base64 } from "@quickhelp/tools-base64";
 import { hashGenerator } from "@quickhelp/tools-hash-generator";
+import { urlEncoder } from "@quickhelp/tools-url-encoder";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter, imageResizer, lcovViewer, base64, hashGenerator];
+const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter, imageResizer, lcovViewer, base64, hashGenerator, urlEncoder];
 
 const server = new Server(
   { name: "quickhelp-mcp", version: "0.0.1" },

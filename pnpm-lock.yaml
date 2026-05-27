@@ -47,6 +47,9 @@ importers:
       '@quickhelp/tools-lcov-viewer':
         specifier: workspace:*
         version: link:../../packages/tools/lcov-viewer
+      '@quickhelp/tools-url-encoder':
+        specifier: workspace:*
+        version: link:../../packages/tools/url-encoder
     devDependencies:
       '@types/node':
         specifier: ^22.19.19
@@ -102,6 +105,9 @@ importers:
       '@quickhelp/tools-lcov-viewer':
         specifier: workspace:*
         version: link:../../packages/tools/lcov-viewer
+      '@quickhelp/tools-url-encoder':
+        specifier: workspace:*
+        version: link:../../packages/tools/url-encoder
       '@quickhelp/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -319,6 +325,22 @@ importers:
         specifier: ^3.24.2
         version: 3.25.76
     devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/tools/url-encoder:
+    dependencies:
+      '@quickhelp/tool-kit':
+        specifier: workspace:*
+        version: link:../../tool-kit
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
