@@ -53,6 +53,9 @@ importers:
       '@quickhelp/tools-url-encoder':
         specifier: workspace:*
         version: link:../../packages/tools/url-encoder
+      '@quickhelp/tools-uuid-generator':
+        specifier: workspace:*
+        version: link:../../packages/tools/uuid-generator
     devDependencies:
       '@types/node':
         specifier: ^22.19.19
@@ -114,6 +117,9 @@ importers:
       '@quickhelp/tools-url-encoder':
         specifier: workspace:*
         version: link:../../packages/tools/url-encoder
+      '@quickhelp/tools-uuid-generator':
+        specifier: workspace:*
+        version: link:../../packages/tools/uuid-generator
       '@quickhelp/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -352,6 +358,22 @@ importers:
         version: 5.9.3
 
   packages/tools/url-encoder:
+    dependencies:
+      '@quickhelp/tool-kit':
+        specifier: workspace:*
+        version: link:../../tool-kit
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/tools/uuid-generator:
     dependencies:
       '@quickhelp/tool-kit':
         specifier: workspace:*

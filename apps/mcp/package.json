@@ -23,6 +23,7 @@
     "@quickhelp/tools-base64": "workspace:*",
     "@quickhelp/tools-hash-generator": "workspace:*",
     "@quickhelp/tools-timestamp-converter": "workspace:*",
+    "@quickhelp/tools-uuid-generator": "workspace:*",
     "@quickhelp/tools-url-encoder": "workspace:*",
     "@quickhelp/tools-lcov-viewer": "workspace:*"
   },
