@@ -29,6 +29,9 @@ importers:
       '@quickhelp/tools-base64':
         specifier: workspace:*
         version: link:../../packages/tools/base64
+      '@quickhelp/tools-color-converter':
+        specifier: workspace:*
+        version: link:../../packages/tools/color-converter
       '@quickhelp/tools-hash-generator':
         specifier: workspace:*
         version: link:../../packages/tools/hash-generator
@@ -99,6 +102,9 @@ importers:
       '@quickhelp/tools-base64':
         specifier: workspace:*
         version: link:../../packages/tools/base64
+      '@quickhelp/tools-color-converter':
+        specifier: workspace:*
+        version: link:../../packages/tools/color-converter
       '@quickhelp/tools-hash-generator':
         specifier: workspace:*
         version: link:../../packages/tools/hash-generator
@@ -245,6 +251,22 @@ importers:
         version: 5.9.3
 
   packages/tools/base64:
+    dependencies:
+      '@quickhelp/tool-kit':
+        specifier: workspace:*
+        version: link:../../tool-kit
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/tools/color-converter:
     dependencies:
       '@quickhelp/tool-kit':
         specifier: workspace:*
