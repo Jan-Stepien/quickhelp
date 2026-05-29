@@ -47,6 +47,9 @@ importers:
       '@quickhelp/tools-lcov-viewer':
         specifier: workspace:*
         version: link:../../packages/tools/lcov-viewer
+      '@quickhelp/tools-timestamp-converter':
+        specifier: workspace:*
+        version: link:../../packages/tools/timestamp-converter
       '@quickhelp/tools-url-encoder':
         specifier: workspace:*
         version: link:../../packages/tools/url-encoder
@@ -105,6 +108,9 @@ importers:
       '@quickhelp/tools-lcov-viewer':
         specifier: workspace:*
         version: link:../../packages/tools/lcov-viewer
+      '@quickhelp/tools-timestamp-converter':
+        specifier: workspace:*
+        version: link:../../packages/tools/timestamp-converter
       '@quickhelp/tools-url-encoder':
         specifier: workspace:*
         version: link:../../packages/tools/url-encoder
@@ -325,6 +331,22 @@ importers:
         specifier: ^3.24.2
         version: 3.25.76
     devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/tools/timestamp-converter:
+    dependencies:
+      '@quickhelp/tool-kit':
+        specifier: workspace:*
+        version: link:../../tool-kit
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
