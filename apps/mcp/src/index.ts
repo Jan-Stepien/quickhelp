@@ -18,9 +18,10 @@ import { urlEncoder } from "@quickhelp/tools-url-encoder";
 import { timestampConverter } from "@quickhelp/tools-timestamp-converter";
 import { uuidGenerator } from "@quickhelp/tools-uuid-generator";
 import { textCaseConverter } from "@quickhelp/tools-text-case-converter";
+import { jsonToCsv } from "@quickhelp/tools-json-to-csv";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter, imageResizer, lcovViewer, base64, hashGenerator, urlEncoder, timestampConverter, uuidGenerator, textCaseConverter];
+const registry: Tool<any, any>[] = [jwtDecoder, jsonFormatter, imageConverter, imageResizer, lcovViewer, base64, hashGenerator, urlEncoder, timestampConverter, uuidGenerator, textCaseConverter, jsonToCsv];
 
 const server = new Server(
   { name: "quickhelp-mcp", version: "0.0.1" },

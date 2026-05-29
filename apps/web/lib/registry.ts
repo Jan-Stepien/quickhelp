@@ -11,11 +11,12 @@ import { urlEncoder } from "@quickhelp/tools-url-encoder";
 import { timestampConverter } from "@quickhelp/tools-timestamp-converter";
 import { uuidGenerator } from "@quickhelp/tools-uuid-generator";
 import { textCaseConverter } from "@quickhelp/tools-text-case-converter";
+import { jsonToCsv } from "@quickhelp/tools-json-to-csv";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyTool = Tool<any, any>;
 
-export const registry: AnyTool[] = [jwtDecoder, jsonFormatter, imageConverter, backgroundRemover, lcovViewer, imageResizer, base64, hashGenerator, urlEncoder, timestampConverter, uuidGenerator, textCaseConverter];
+export const registry: AnyTool[] = [jwtDecoder, jsonFormatter, imageConverter, backgroundRemover, lcovViewer, imageResizer, base64, hashGenerator, urlEncoder, timestampConverter, uuidGenerator, textCaseConverter, jsonToCsv];
 
 export function getToolBySlug(slug: string): AnyTool | undefined {
   return registry.find((t) => t.slug === slug);

@@ -41,6 +41,9 @@ importers:
       '@quickhelp/tools-json-formatter':
         specifier: workspace:*
         version: link:../../packages/tools/json-formatter
+      '@quickhelp/tools-json-to-csv':
+        specifier: workspace:*
+        version: link:../../packages/tools/json-to-csv
       '@quickhelp/tools-jwt-decoder':
         specifier: workspace:*
         version: link:../../packages/tools/jwt-decoder
@@ -108,6 +111,9 @@ importers:
       '@quickhelp/tools-json-formatter':
         specifier: workspace:*
         version: link:../../packages/tools/json-formatter
+      '@quickhelp/tools-json-to-csv':
+        specifier: workspace:*
+        version: link:../../packages/tools/json-to-csv
       '@quickhelp/tools-jwt-decoder':
         specifier: workspace:*
         version: link:../../packages/tools/jwt-decoder
@@ -314,6 +320,22 @@ importers:
         specifier: ^3.24.2
         version: 3.25.76
     devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+
+  packages/tools/json-to-csv:
+    dependencies:
+      '@quickhelp/tool-kit':
+        specifier: workspace:*
+        version: link:../../tool-kit
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
