@@ -144,6 +144,49 @@ export default function HomePage() {
           tool does, how to call it, and what to expect back.
         </p>
       </section>
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">From the blog</h2>
+        <p className="text-muted-foreground">
+          In-depth guides on the formats and techniques these tools are built around.
+        </p>
+        <ul className="space-y-4">
+          {[
+            {
+              href: "/blog/how-to-decode-jwt-safely",
+              title: "How to decode a JWT safely in 2026 (no signature verification)",
+              summary: "Learn how to read JWT header and payload without needing the signing secret, when this is safe, and when it isn't.",
+            },
+            {
+              href: "/blog/png-vs-webp-vs-avif-benchmark",
+              title: "PNG vs WebP vs AVIF: a 2026 benchmark using our converter",
+              summary: "We converted 100 images across three formats and measured file size and quality. Here are the numbers.",
+            },
+            {
+              href: "/blog/background-removal-in-browser",
+              title: "Why we run background removal in your browser, not on a server",
+              summary: "Server-side AI costs money per call. WebAssembly doesn't. How we ship AI tools for free.",
+            },
+            {
+              href: "/blog/json-formatter-benchmarks",
+              title: "JSON formatter benchmarks: which approach is fastest?",
+              summary: "Comparing JSON.stringify, streaming parsers, and tree-diffing across 1 KB to 1 MB payloads.",
+            },
+          ].map((post) => (
+            <li key={post.href}>
+              <Link href={post.href} className="group block space-y-0.5 rounded-lg border border-border p-4 hover:bg-muted transition-colors">
+                <div className="font-medium group-hover:underline underline-offset-2">{post.title}</div>
+                <div className="text-sm text-muted-foreground">{post.summary}</div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <Link href="/blog" className="text-sm underline underline-offset-2 text-muted-foreground hover:text-foreground">
+            All articles →
+          </Link>
+        </div>
+      </section>
       </div>
     </>
   );
