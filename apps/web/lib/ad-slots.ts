@@ -5,4 +5,13 @@ export const AD_SLOTS = {
   "compare-mid": "6959560556",
   "blog-content-top": "7160076388",
   "blog-content-bottom": "3346851669",
+  "number-base-converter-mid": "5883767124",
+  "color-converter-mid": "4249297428",
+  "text-case-converter-mid": "4570685451",
+  "json-to-csv-mid": "5493415111",
+  "hash-generator-mid": "6705894208",
+  "url-encoder-mid": "7500101125",
+  "timestamp-converter-mid": "2449130597",
+  "uuid-generator-mid": "1102213739",
+  "base64-mid": "8789132064",
 } as const;
