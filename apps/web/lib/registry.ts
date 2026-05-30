@@ -13,11 +13,12 @@ import { uuidGenerator } from "@quickhelp/tools-uuid-generator";
 import { textCaseConverter } from "@quickhelp/tools-text-case-converter";
 import { jsonToCsv } from "@quickhelp/tools-json-to-csv";
 import { colorConverter } from "@quickhelp/tools-color-converter";
+import { numberBaseConverter } from "@quickhelp/tools-number-base-converter";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyTool = Tool<any, any>;
 
-export const registry: AnyTool[] = [jwtDecoder, jsonFormatter, imageConverter, backgroundRemover, lcovViewer, imageResizer, base64, hashGenerator, urlEncoder, timestampConverter, uuidGenerator, textCaseConverter, jsonToCsv, colorConverter];
+export const registry: AnyTool[] = [jwtDecoder, jsonFormatter, imageConverter, backgroundRemover, lcovViewer, imageResizer, base64, hashGenerator, urlEncoder, timestampConverter, uuidGenerator, textCaseConverter, jsonToCsv, colorConverter, numberBaseConverter];
 
 export function getToolBySlug(slug: string): AnyTool | undefined {
   return registry.find((t) => t.slug === slug);

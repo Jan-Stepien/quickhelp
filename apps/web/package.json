@@ -28,6 +28,7 @@
     "@quickhelp/tools-uuid-generator": "workspace:*",
     "@quickhelp/tools-url-encoder": "workspace:*",
     "@quickhelp/tools-color-converter": "workspace:*",
+    "@quickhelp/tools-number-base-converter": "workspace:*",
     "@quickhelp/tools-lcov-viewer": "workspace:*",
     "@quickhelp/ui": "workspace:*",
     "next": "^14.2.18",
