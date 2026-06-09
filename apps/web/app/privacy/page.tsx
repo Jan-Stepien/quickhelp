@@ -6,7 +6,6 @@ export const metadata = buildMetadata({
   path: "/privacy",
   title: "Privacy Policy",
   description: "Privacy policy for quickhelp.dev — how we collect and use data.",
-  noindex: true,
 });
 
 /* <!-- TODO: review with counsel --> */
