@@ -14,4 +14,8 @@ export const AD_SLOTS = {
   "timestamp-converter-mid": "2449130597",
   "uuid-generator-mid": "1102213739",
   "base64-mid": "8789132064",
+  "image-converter-mid": "5546904941",
+  "image-resizer-mid": "4233823275",
+  "background-remover-mid": "4533206171",
+  "lcov-viewer-mid": "9482280524",
 } as const;
