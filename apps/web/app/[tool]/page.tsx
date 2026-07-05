@@ -8,8 +8,6 @@ import { JsonLd } from "@quickhelp/seo";
 import { buildMetadata } from "@/lib/metadata";
 import { ToolPageClient } from "./ToolPageClient";
 import Link from "next/link";
-import { AdSlot } from "@/components/AdSlot";
-import { AD_SLOTS } from "@/lib/ad-slots";
 
 interface Props {
   params: Promise<{ tool: string }>;
@@ -67,8 +65,6 @@ export default async function ToolPage({ params }: Props) {
 
         {/* Interactive tool form — hydrated on client */}
         <ToolPageClient tool={serialized} />
-
-        <AdSlot slot={AD_SLOTS["tool-mid"]} format="horizontal" className="my-2" />
 
         {content?.whatIs && (
           <section id="what-is" aria-labelledby="what-is-heading">

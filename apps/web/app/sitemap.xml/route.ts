@@ -6,13 +6,23 @@ import { getAllDirections } from "@/lib/conversion-directions";
 export const dynamic = "force-static";
 
 const BLOG_POSTS = [
+  { slug: "how-to-view-lcov-coverage-reports", date: "2026-05-20" },
+  { slug: "understanding-lcov-coverage-metrics", date: "2026-05-19" },
   { slug: "how-to-decode-jwt-safely", date: "2026-05-18" },
+  { slug: "image-sizes-for-social-media-2026", date: "2026-05-17" },
+  { slug: "how-to-crop-images-for-web", date: "2026-05-16" },
   { slug: "png-vs-webp-vs-avif-benchmark", date: "2026-05-15" },
+  { slug: "resize-product-photos-for-etsy-amazon-shopify", date: "2026-05-14" },
   { slug: "background-removal-in-browser", date: "2026-05-12" },
   { slug: "json-formatter-benchmarks", date: "2026-05-10" },
 ];
 
-const GLOSSARY_TERMS = ["jwt", "mcp", "openapi", "llms-txt"];
+const GLOSSARY_TERMS = [
+  "base64", "binary", "csv", "hash-function", "hexadecimal", "hmac",
+  "json", "json-schema", "jwt", "llms-txt", "mcp", "oauth2",
+  "openapi", "regex", "rest-api", "sha-256", "unix-timestamp",
+  "url-encoding", "uuid", "zod",
+];
 
 export function GET() {
   const baseUrl = process.env["NEXT_PUBLIC_APP_URL"] ?? "https://quickhelp.dev";

@@ -2,9 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import type { SerializedTool, FormField } from "@/lib/tool-serializer";
-import type { ToolContent } from "@quickhelp/tool-kit";
-import { AdSlot, Button, Card, CardBody, Textarea, Input, Select, CodeBlock, CopyButton } from "@quickhelp/ui";
-import { AD_SLOTS } from "@/lib/ad-slots";
+import { Button, Card, CardBody, Textarea, Input, Select, CodeBlock, CopyButton } from "@quickhelp/ui";
 
 interface ToolPageClientProps {
   tool: SerializedTool;
@@ -67,11 +65,6 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">{tool.name}</h1>
-        <p className="mt-1 text-muted-foreground">{tool.summary}</p>
-      </div>
-
       <Card>
         <CardBody>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -127,9 +120,6 @@ export function ToolPageClient({ tool, prefilledValues }: ToolPageClientProps) {
         </Card>
       )}
 
-      <AdSlot slot={AD_SLOTS["tool-mid"]} />
-
-      {tool.content && <ContentBlock content={tool.content} />}
     </div>
   );
 }
@@ -232,40 +222,3 @@ function FieldInput({
   );
 }
 
-function ContentBlock({ content }: { content: ToolContent }) {
-  return (
-    <div className="space-y-6 border-t border-border pt-8">
-      {content.whatIs && (
-        <section>
-          <h2 className="text-base font-semibold text-foreground">What is this?</h2>
-          <p className="mt-2 text-sm text-muted-foreground">{content.whatIs}</p>
-        </section>
-      )}
-      {content.howToSteps.length > 0 && (
-        <section>
-          <h2 className="text-base font-semibold text-foreground">How to use</h2>
-          <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
-            {content.howToSteps.map((step, i) => (
-              <li key={i}>
-                <strong className="text-foreground">{step.name}</strong>: {step.text}
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-      {content.faq.length > 0 && (
-        <section>
-          <h2 className="text-base font-semibold text-foreground">FAQ</h2>
-          <dl className="mt-2 space-y-4">
-            {content.faq.map((item, i) => (
-              <div key={i}>
-                <dt className="text-sm font-medium text-foreground">{item.question}</dt>
-                <dd className="mt-1 text-sm text-muted-foreground">{item.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
-    </div>
-  );
-}

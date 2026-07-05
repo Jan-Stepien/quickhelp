@@ -6,8 +6,6 @@ import { buildBreadcrumbJsonLd } from "@quickhelp/tool-kit";
 import { JsonLd } from "@quickhelp/seo";
 import { buildMetadata } from "@/lib/metadata";
 import { ImageConverterUI } from "./ImageConverterUI";
-import { AdSlot } from "@/components/AdSlot";
-import { AD_SLOTS } from "@/lib/ad-slots";
 
 export const metadata: Metadata = buildMetadata({
   path: "/image-converter",
@@ -47,7 +45,6 @@ export default function ImageConverterPage() {
 
       {/* Browser-only UI — requires Canvas API */}
       <ImageConverterUI />
-      <AdSlot slot={AD_SLOTS["tool-mid"]} format="horizontal" className="my-2" />
 
       {content?.whatIs && (
         <section id="what-is" aria-labelledby="what-is-heading">
