@@ -1,7 +1,14 @@
 {
-  "name": "@quickhelp/mcp",
-  "version": "0.0.1",
-  "private": true,
+  "name": "quickhelp-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for quickhelp.dev — 15 free developer tools (JWT decoder, image converter, Base64, hash generator, UUID, JSON formatter, and more) available to any MCP-compatible AI agent.",
+  "keywords": ["mcp", "model-context-protocol", "developer-tools", "jwt", "json", "image-converter", "base64", "uuid", "hash", "ai-tools", "claude"],
+  "homepage": "https://quickhelp.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jan-Stepien/no_work"
+  },
+  "license": "MIT",
   "type": "module",
   "bin": {
     "quickhelp-mcp": "./dist/index.js"

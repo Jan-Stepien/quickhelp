@@ -64,6 +64,7 @@ export function Layout({ children }: LayoutProps) {
             <ul className="space-y-1">
               <li><a href="/about" className="hover:text-foreground transition-colors">About</a></li>
               <li><a href="/contact" className="hover:text-foreground transition-colors">Contact</a></li>
+              <li><a href="https://github.com/Jan-Stepien/no_work" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub ↗</a></li>
               <li><a href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</a></li>
               <li><a href="/terms" className="hover:text-foreground transition-colors">Terms of Service</a></li>
               <li><a href="/cookies" className="hover:text-foreground transition-colors">Cookies</a></li>

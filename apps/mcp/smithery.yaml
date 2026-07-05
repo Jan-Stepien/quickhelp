@@ -1,0 +1,50 @@
+# Smithery registry configuration for quickhelp-mcp
+# https://smithery.ai/docs/config
+
+name: quickhelp-mcp
+displayName: quickhelp.dev Developer Tools
+description: >
+  15 free, deterministic developer tools — JWT decoder, JSON formatter,
+  Base64 encoder/decoder, image converter, background remover (ONNX-based AI),
+  hash generator (MD5/SHA-1/SHA-256/SHA-512), UUID generator (v4/v7),
+  URL encoder, timestamp converter, JSON to CSV, text case converter,
+  colour converter (HEX/RGB/HSL/HSV), number base converter, image resizer,
+  and LCOV coverage viewer. Stateless, no auth, <5s responses.
+
+homepage: https://quickhelp.dev
+repository: https://github.com/Jan-Stepien/no_work
+
+# Hosted HTTP transport — no install required
+transport:
+  type: http
+  url: https://quickhelp.dev/mcp
+
+# npx stdio alternative
+startCommand:
+  type: stdio
+  command: npx
+  args: ["-y", "quickhelp-mcp"]
+
+categories:
+  - developer-tools
+  - utilities
+  - image-processing
+  - encoding
+  - security
+
+tools:
+  - jwt-decoder
+  - json-formatter
+  - base64
+  - image-converter
+  - image-resizer
+  - background-remover
+  - hash-generator
+  - uuid-generator
+  - url-encoder
+  - timestamp-converter
+  - json-to-csv
+  - text-case-converter
+  - color-converter
+  - number-base-converter
+  - lcov-viewer

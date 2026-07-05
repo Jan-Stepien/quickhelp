@@ -1539,6 +1539,857 @@ module.exports = {
       </div>
     ),
   },
+
+  "png-to-webp-conversion-guide": {
+    title: "How to convert PNG to WebP online (and when to use AVIF instead)",
+    date: "2026-07-05",
+    description: "A practical guide to converting PNG images to WebP in your browser, via the command line, and through the API — with file size benchmarks and guidance on when AVIF beats WebP.",
+    keywords: ["convert PNG to WebP", "PNG to WebP online free", "WebP converter", "PNG WebP AVIF comparison", "image format 2026"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          WebP is the format you should be using for most web images in 2026. It is 25–40% smaller than PNG or JPEG
+          at equivalent quality, it supports transparency (unlike JPEG), it supports animation (unlike PNG), and
+          every major browser and operating system has supported it for years. If you are still serving PNG files
+          on a website, you are leaving a significant page speed improvement on the table.
+        </p>
+        <p>
+          This guide covers three ways to convert PNG to WebP — in the browser, on the command line, and via an API —
+          along with file size benchmarks, a comparison with AVIF, and guidance on which format to choose for each
+          type of image.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Why WebP is smaller than PNG</h2>
+        <p>
+          PNG uses lossless compression: every pixel is preserved exactly as it was in the source. This makes PNG
+          the right choice for screenshots, UI elements, logos, and any image that must be pixel-perfect. But
+          &quot;lossless&quot; means large. A typical photograph saved as PNG is 2–10× larger than the same photograph
+          saved as a high-quality JPEG, and 3–15× larger than a WebP at equivalent perceived quality.
+        </p>
+        <p>
+          WebP uses a prediction model borrowed from the VP8 video codec. Instead of storing each pixel
+          independently, WebP stores how each pixel <em>differs</em> from a prediction based on neighbouring pixels.
+          For typical images, this dramatically reduces the data needed. WebP also supports both lossy and lossless
+          modes — lossy WebP competes with JPEG, lossless WebP competes with PNG.
+        </p>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-left px-4 py-2 text-foreground">Compression</th>
+                <th className="text-left px-4 py-2 text-foreground">Transparency</th>
+                <th className="text-right px-4 py-2 text-foreground">Typical size vs PNG</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">PNG</td>
+                <td className="px-4 py-2">Lossless</td>
+                <td className="px-4 py-2">✓ Alpha</td>
+                <td className="px-4 py-2 text-right">100% (baseline)</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">JPEG</td>
+                <td className="px-4 py-2">Lossy</td>
+                <td className="px-4 py-2">✗</td>
+                <td className="px-4 py-2 text-right">30–50%</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">WebP (lossy)</td>
+                <td className="px-4 py-2">Lossy</td>
+                <td className="px-4 py-2">✓ Alpha</td>
+                <td className="px-4 py-2 text-right">25–40%</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">AVIF</td>
+                <td className="px-4 py-2">Lossy / Lossless</td>
+                <td className="px-4 py-2">✓ Alpha</td>
+                <td className="px-4 py-2 text-right">15–30%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-xl font-semibold text-foreground">Method 1: convert PNG to WebP in the browser</h2>
+        <p>
+          The fastest way to convert a PNG to WebP is{" "}
+          <Link href="/image-converter" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s Image Converter
+          </Link>
+          . It runs entirely in your browser using the Canvas API — your image is never uploaded to a server.
+        </p>
+        <ol className="list-decimal list-inside space-y-2">
+          <li>Open <Link href="/image-converter" className="underline underline-offset-2 text-foreground">/image-converter</Link>.</li>
+          <li>Drag your PNG file onto the converter (or click to browse). Multiple files are supported — they download as a ZIP.</li>
+          <li>Select <strong className="text-foreground">WebP</strong> as the output format.</li>
+          <li>Adjust quality if needed (default: 80, which is a good starting point for photographs).</li>
+          <li>Click <strong className="text-foreground">Convert</strong>. The WebP file downloads automatically.</li>
+        </ol>
+        <p>
+          You can also convert directly from a specific format pair — for example,{" "}
+          <Link href="/convert/png-to-webp" className="underline underline-offset-2 text-foreground">
+            /convert/png-to-webp
+          </Link>{" "}
+          pre-selects PNG → WebP so you skip the format picker. Similarly,{" "}
+          <Link href="/convert/png-to-avif" className="underline underline-offset-2 text-foreground">
+            /convert/png-to-avif
+          </Link>{" "}
+          handles the PNG → AVIF path.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Method 2: convert PNG to WebP on the command line</h2>
+        <p>
+          For batch conversion or CI pipelines, <code>cwebp</code> (from the libwebp package) is the standard tool.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`# Install on macOS
+brew install webp
+
+# Install on Ubuntu/Debian
+apt-get install webp
+
+# Convert a single file (quality 80)
+cwebp -q 80 input.png -o output.webp
+
+# Batch convert all PNGs in a directory
+for f in *.png; do cwebp -q 80 "$f" -o "\${f%.png}.webp"; done`}
+        </pre>
+        <p>
+          For lossless WebP (closest to PNG quality, but still smaller for many images):
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`cwebp -lossless input.png -o output.webp`}
+        </pre>
+
+        <h2 className="text-xl font-semibold text-foreground">Method 3: convert via API</h2>
+        <p>
+          The quickhelp.dev API accepts Base64-encoded image data and returns the converted file as Base64.
+          This is useful for server-side or CI conversion without installing native binaries.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`# Encode PNG to Base64, convert to WebP, decode result
+B64=$(base64 -i input.png)
+RESULT=$(curl -s -X POST https://quickhelp.dev/api/image-converter \\
+  -H 'Content-Type: application/json' \\
+  -d '{"image":"'"$B64"'","from":"png","to":"webp","quality":80}')
+
+echo $RESULT | jq -r '.image' | base64 --decode > output.webp`}
+        </pre>
+        <p>
+          See the{" "}
+          <a href="/openapi.json" className="underline underline-offset-2 text-foreground">
+            OpenAPI spec
+          </a>{" "}
+          or{" "}
+          <Link href="/docs/api/image-converter" className="underline underline-offset-2 text-foreground">
+            API docs
+          </Link>{" "}
+          for the full schema.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Quality settings: what 80 means</h2>
+        <p>
+          WebP quality is a 0–100 scale. Unlike JPEG (where 100 is lossless but huge, and 60–75 is typical),
+          WebP&apos;s quality scale is calibrated differently:
+        </p>
+        <ul className="list-disc list-inside space-y-1">
+          <li><strong className="text-foreground">Quality 80–85:</strong> the standard recommendation for photographs. Visually indistinguishable from lossless for most images.</li>
+          <li><strong className="text-foreground">Quality 90–95:</strong> for images where quality is critical (product photography, medical images). 10–20% larger than q80.</li>
+          <li><strong className="text-foreground">Quality 60–75:</strong> for thumbnails, previews, or any image that will be displayed at a small size.</li>
+          <li><strong className="text-foreground">Lossless:</strong> for logos, screenshots, and images with text. Usually still smaller than PNG, never degrades quality.</li>
+        </ul>
+
+        <h2 className="text-xl font-semibold text-foreground">When to use AVIF instead of WebP</h2>
+        <p>
+          AVIF (AV1 Image File Format) achieves better compression than WebP — typically 15–30% smaller at the same
+          perceptual quality. As of 2026, AVIF is supported by Chrome, Firefox, and Safari (since Safari 16.4),
+          meaning it covers the vast majority of browsers worldwide.
+        </p>
+        <p>
+          Use AVIF when:
+        </p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>You control the server and can serve AVIF with a fallback (<code>{`<picture>`}</code> with a WebP or JPEG source).</li>
+          <li>File size is critical — high-traffic pages where every KB saved reduces bandwidth costs.</li>
+          <li>You need the best possible quality at a given file size (AVIF wins at equal SSIM scores).</li>
+        </ul>
+        <p>
+          Stick with WebP when:
+        </p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>You need broad compatibility without conditional serving (e.g., direct download links, email, social media uploads).</li>
+          <li>Encoding speed matters — AVIF encoding is significantly slower than WebP, especially for large or complex images.</li>
+          <li>You are converting GIF animations (WebP supports animation; AVIF animation support is less mature).</li>
+        </ul>
+        <p>
+          For most websites, the pragmatic answer is: convert everything to WebP now, and add AVIF as a first-choice
+          option in your <code>{`<picture>`}</code> elements as your build pipeline allows.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">A note on transparency</h2>
+        <p>
+          If your PNG has a transparent background (alpha channel), WebP preserves it correctly. JPEG does not support
+          transparency at all — converting a transparent PNG to JPEG will replace the transparency with a solid
+          background (usually black or white). When transparency matters, use WebP, AVIF, or PNG; never JPEG.
+        </p>
+        <p>
+          You can use{" "}
+          <Link href="/background-remover" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev&apos;s Background Remover
+          </Link>{" "}
+          to create a transparent PNG from a photo, then convert that to WebP for web use.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Common pitfalls</h2>
+        <ul className="list-disc list-inside space-y-2">
+          <li>
+            <strong className="text-foreground">Re-converting a lossy file:</strong> converting JPEG → WebP does not
+            recover quality lost during the original JPEG compression. Always convert from the original lossless source
+            (PNG or RAW) if you have it.
+          </li>
+          <li>
+            <strong className="text-foreground">Over-compressing product images:</strong> below quality 70, WebP
+            compression artefacts become visible at sharp edges (e.g., text in images, logos). Use lossless WebP
+            for anything with text or fine detail.
+          </li>
+          <li>
+            <strong className="text-foreground">Not using <code>&lt;picture&gt;</code>:</strong> if you are changing
+            file extensions on a live site, make sure old PNG URLs still work or update all references. The{" "}
+            <code>&lt;picture&gt;</code> element lets you serve WebP to modern browsers and PNG as a fallback without
+            breaking anything.
+          </li>
+        </ul>
+
+        <h2 className="text-xl font-semibold text-foreground">Try it now</h2>
+        <p>
+          Convert your PNG files to WebP for free at{" "}
+          <Link href="/convert/png-to-webp" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev/convert/png-to-webp
+          </Link>
+          . No upload to a server, no account, no watermark on images.
+          For PNG → AVIF, go to{" "}
+          <Link href="/convert/png-to-avif" className="underline underline-offset-2 text-foreground">
+            /convert/png-to-avif
+          </Link>
+          . Both converters also support batch conversion — drag multiple files and download a ZIP.
+        </p>
+      </div>
+    ),
+  },
+
+  "base64-encoding-guide": {
+    title: "Base64 encoding explained: URL-safe mode, padding, and common mistakes",
+    date: "2026-07-04",
+    description: "Everything developers need to know about Base64 — how the encoding works, the difference between standard and URL-safe variants, padding rules, and the most common pitfalls.",
+    keywords: ["base64 encode decode", "base64 URL safe", "base64 online", "base64 padding rules", "base64 javascript"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          Base64 shows up everywhere in web development: JWTs, data URLs, email attachments, API keys, binary
+          data in JSON, and more. Despite being one of the most-used encodings in software, it trips up
+          developers regularly — usually over padding, the URL-safe variant, or a mistaken belief that it
+          provides some kind of encryption. This guide covers how Base64 works, when to use which variant,
+          and the mistakes that appear most often in the wild.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">How Base64 encoding works</h2>
+        <p>
+          Base64 converts arbitrary binary data into a string made up of 64 printable ASCII characters:
+          A–Z (26), a–z (26), 0–9 (10), <code>+</code> (1), <code>/</code> (1). The name comes from this
+          alphabet of 64 characters.
+        </p>
+        <p>
+          The algorithm takes 3 bytes of input (24 bits) at a time and encodes them as 4 characters (6 bits
+          each). Because every 3 bytes become 4 characters, Base64 output is always 4/3 (approximately 133%)
+          the size of the input — encoding increases size by about 33%.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`Input bytes:   M        a        n
+               01001101 01100001 01101110
+
+Split into 6-bit groups:
+               010011 010110 000101 101110
+
+Map to Base64 alphabet:
+               T      W      F      u
+
+Result: "TWFu"`}
+        </pre>
+        <p>
+          When the input length is not a multiple of 3, padding is added. One extra byte → two
+          characters + <code>==</code>. Two extra bytes → three characters + <code>=</code>. This is why
+          Base64 strings frequently end in one or two equals signs.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Standard vs URL-safe Base64</h2>
+        <p>
+          The two characters in the standard alphabet that are not URL-safe are <code>+</code> and <code>/</code>.
+          Both have special meanings in URLs: <code>+</code> is a space in query strings, and <code>/</code> is a
+          path separator. If you put a standard Base64 string into a URL without escaping it, these characters
+          will be misinterpreted.
+        </p>
+        <p>
+          The URL-safe variant (defined in RFC 4648 §5) replaces these two characters:
+        </p>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Standard</th>
+                <th className="text-left px-4 py-2 text-foreground">URL-safe</th>
+                <th className="text-left px-4 py-2 text-foreground">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">+</td>
+                <td className="px-4 py-2 font-mono">-</td>
+                <td className="px-4 py-2">hyphen-minus</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">/</td>
+                <td className="px-4 py-2 font-mono">_</td>
+                <td className="px-4 py-2">underscore</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">=</td>
+                <td className="px-4 py-2 font-mono">(often omitted)</td>
+                <td className="px-4 py-2">padding stripped in URL contexts</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          JWTs use URL-safe Base64 without padding (called &quot;Base64url&quot; in RFC 7515). If you try to decode a JWT
+          part with a standard Base64 decoder, it will fail for any token that contains a <code>-</code> or{" "}
+          <code>_</code> — you first need to replace them back to <code>+</code> and <code>/</code>.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Encoding in JavaScript</h2>
+        <p>
+          The browser&apos;s built-in <code>btoa()</code> function encodes standard Base64. Its inverse is{" "}
+          <code>atob()</code>. Neither is URL-safe, and both fail on non-Latin-1 input.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// Standard Base64 — browser built-in
+const encoded = btoa("Hello, world!");       // "SGVsbG8sIHdvcmxkIQ=="
+const decoded = atob("SGVsbG8sIHdvcmxkIQ=="); // "Hello, world!"
+
+// URL-safe Base64 (RFC 4648 §5) — no padding
+function toBase64Url(str) {
+  return btoa(str)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
+
+function fromBase64Url(str) {
+  // Add back padding
+  const padded = str + '==='.slice((str.length + 3) % 4);
+  return atob(padded.replace(/-/g, '+').replace(/_/g, '/'));
+}
+
+// Unicode-safe encoding (btoa fails on emoji / non-Latin-1)
+function encodeBase64(str) {
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+      String.fromCharCode(parseInt(p1, 16))
+    )
+  );
+}
+
+// Node.js built-in (no btoa/atob needed)
+Buffer.from("Hello").toString("base64");            // "SGVsbG8="
+Buffer.from("SGVsbG8=", "base64").toString("utf8"); // "Hello"`}
+        </pre>
+
+        <h2 className="text-xl font-semibold text-foreground">Common use cases</h2>
+        <ul className="list-disc list-inside space-y-2">
+          <li>
+            <strong className="text-foreground">JWTs:</strong> all three parts (header, payload, signature) are
+            Base64url-encoded. The{" "}
+            <Link href="/jwt-decoder" className="underline underline-offset-2 text-foreground">
+              JWT Decoder
+            </Link>{" "}
+            handles the decoding and re-adds missing padding automatically.
+          </li>
+          <li>
+            <strong className="text-foreground">Data URLs:</strong> embedding images, fonts, or other binary data
+            directly in HTML/CSS — <code>{`data:image/png;base64,iVBORw0KGgo...`}</code>. Useful for small assets
+            to reduce HTTP requests; avoid for large files.
+          </li>
+          <li>
+            <strong className="text-foreground">Binary data in JSON:</strong> JSON has no binary type, so binary
+            payloads (images, certificates, encrypted blobs) are commonly Base64-encoded when sent as JSON fields.
+          </li>
+          <li>
+            <strong className="text-foreground">HTTP Basic Auth:</strong> the <code>Authorization: Basic</code>
+            header encodes <code>username:password</code> as standard Base64. Never rely on this for
+            confidentiality — it is trivially reversible.
+          </li>
+          <li>
+            <strong className="text-foreground">Email (MIME):</strong> attachments are Base64-encoded so binary
+            files can travel safely through text-based email protocols.
+          </li>
+        </ul>
+
+        <h2 className="text-xl font-semibold text-foreground">Common mistakes</h2>
+        <ul className="list-disc list-inside space-y-3">
+          <li>
+            <strong className="text-foreground">Thinking Base64 is encryption:</strong> it is not. Anyone can
+            decode a Base64 string in seconds. It is encoding for text-safe transport, not confidentiality.
+            Sensitive data in Base64 is just as exposed as plaintext.
+          </li>
+          <li>
+            <strong className="text-foreground">Mixing standard and URL-safe variants:</strong> the most common
+            bug is decoding a Base64url string with a standard decoder. Check whether your string contains{" "}
+            <code>-</code> or <code>_</code> — if it does, it is URL-safe and needs conversion first.
+          </li>
+          <li>
+            <strong className="text-foreground">Missing padding:</strong> <code>atob()</code> requires padding.
+            If you stripped <code>=</code> for URL cleanliness, re-add it before decoding:{" "}
+            <code>str + &apos;===&apos;.slice((str.length + 3) % 4)</code>.
+          </li>
+          <li>
+            <strong className="text-foreground">Passing Unicode to <code>btoa()</code>:</strong> <code>btoa()</code>
+            only handles Latin-1 characters. Anything outside that range (emoji, Chinese, Arabic, etc.) throws a
+            <code>DOMException</code>. Use the <code>TextEncoder</code> + <code>Uint8Array</code> approach or the
+            encode/decode helpers above.
+          </li>
+          <li>
+            <strong className="text-foreground">Double-encoding:</strong> encoding an already-encoded string
+            produces garbage on decode. Common when a middleware layer and the application both Base64-encode
+            the same value before sending.
+          </li>
+        </ul>
+
+        <h2 className="text-xl font-semibold text-foreground">When to use URL encoding instead</h2>
+        <p>
+          Base64 and URL encoding (percent-encoding) both make data safe for transmission, but they serve different
+          purposes. Use Base64 when you need to encode <em>binary data</em> as a text string for embedding or
+          transport. Use{" "}
+          <Link href="/url-encoder" className="underline underline-offset-2 text-foreground">
+            URL encoding
+          </Link>{" "}
+          when you need to make a text string safe for use in a URL — specifically when the string contains
+          characters like spaces, ampersands, equals signs, or non-ASCII characters that have special meaning in URLs.
+        </p>
+        <p>
+          Confusing the two is a frequent source of bugs. A URL query parameter value should be percent-encoded,
+          not Base64-encoded. A binary file embedded in a JSON body should be Base64-encoded, not percent-encoded.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Try it now</h2>
+        <p>
+          Encode or decode any Base64 string — standard or URL-safe — at{" "}
+          <Link href="/base64" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev/base64
+          </Link>
+          . The tool detects which variant your input uses, handles padding automatically, and shows both the
+          encoded and decoded values side by side. It also works as an API:{" "}
+          <code>POST /api/base64</code> with <code>{`{"input":"...","mode":"encode","variant":"url-safe"}`}</code>.
+        </p>
+      </div>
+    ),
+  },
+
+  "uuid-v4-vs-v7": {
+    title: "UUID v4 vs v7: what changed and which to use for new projects",
+    date: "2026-07-03",
+    description: "UUID v7 is now in the RFC 9562 standard and is widely supported. Here is what changed from v4, when to switch, and how sortable identifiers improve database performance.",
+    keywords: ["UUID v4 vs v7", "UUIDv7 explained", "UUID v7 database", "sortable UUID", "UUID generator 2026"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          UUID v4 has been the default choice for randomly generated identifiers for over two decades. It is simple,
+          well-supported, and statistically collision-resistant. But in 2024, RFC 9562 formalised UUID v7 as an
+          official version, and it fixes the biggest practical problem with v4: random UUIDs are terrible for
+          database primary keys because they destroy index locality. This guide explains what v7 changes, when to
+          switch, and how to generate both.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">UUID structure recap</h2>
+        <p>
+          A UUID is a 128-bit identifier, conventionally written as 32 hex digits in five groups separated by
+          hyphens: <code>xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx</code>. The <code>M</code> nibble indicates the version
+          (4 = random, 7 = timestamp-ordered). The <code>N</code> nibble indicates the variant (always <code>8</code>,
+          <code>9</code>, <code>a</code>, or <code>b</code> for standard UUIDs).
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">UUID v4: pure randomness</h2>
+        <p>
+          Version 4 UUIDs are generated from a cryptographically secure random number generator. 122 of the 128
+          bits are random; the remaining 6 are fixed version/variant flags. The probability of a collision is
+          so low it is essentially zero for practical purposes: generating 1 trillion UUIDs per second for
+          85 years gives a 50% chance of a single collision — roughly the lifetime of the sun.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// UUID v4 example
+550e8400-e29b-4d13-a456-426614174000
+         ^^^^                        <- version 4
+              ^                      <- variant bit`}
+        </pre>
+        <p>
+          The downside of pure randomness is that sequential UUIDs are completely non-sequential. When you insert
+          rows with random UUID primary keys into a B-tree index (PostgreSQL, MySQL, SQLite), each new insertion
+          lands in a random position in the index. At high insert rates, this causes <em>page splits</em> — the
+          database must constantly reorganise the index pages. On large tables, this creates significant write
+          amplification and fragmentation that degrades both insert performance and read locality.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">UUID v7: timestamp-ordered</h2>
+        <p>
+          UUID v7 uses a Unix timestamp (millisecond precision) in the most significant 48 bits, followed by
+          random data. Because the timestamp is at the front, v7 UUIDs generated in order are lexicographically
+          ordered — newer UUIDs sort after older ones, both as strings and as raw bytes.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// UUID v7 structure (128 bits total)
+// [unix_ts_ms 48 bits][ver 4 bits][rand_a 12 bits][var 2 bits][rand_b 62 bits]
+
+// Example — three v7 UUIDs generated 1ms apart sort in insertion order:
+019184e6-7000-7a1c-b2f3-4d6e89f01234   <- generated at T+0ms
+019184e6-7001-7b4a-9f12-8c3e56d07856   <- generated at T+1ms
+019184e6-7002-7c88-a531-1b7f23e04512   <- generated at T+2ms`}
+        </pre>
+        <p>
+          The <code>7</code> in position 13 (the version nibble) identifies these as v7. The first 12 hex characters
+          encode the Unix timestamp in milliseconds — you can decode the creation time directly from the UUID.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Why ordering matters for databases</h2>
+        <p>
+          When UUID v7 primary keys are inserted in time order, each new row appends near the end of the index
+          rather than at a random position. This is the same behaviour as auto-incrementing integers, which are
+          well-known to produce efficient B-tree indexes. The practical results on production-scale PostgreSQL
+          tables (10M+ rows):
+        </p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>Insert throughput can be 2–5× higher for UUID v7 vs v4 at high write rates.</li>
+          <li>Index size is smaller because fragmentation is lower.</li>
+          <li>Range queries on the primary key (e.g., &quot;all rows from the last 5 minutes&quot;) use a sequential index
+            scan rather than a scattered random-access pattern.</li>
+          <li>Cache hit rates improve because recently accessed rows are near each other in the index.</li>
+        </ul>
+
+        <h2 className="text-xl font-semibold text-foreground">When to use v4 vs v7</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Use case</th>
+                <th className="text-left px-4 py-2 text-foreground">Recommended version</th>
+                <th className="text-left px-4 py-2 text-foreground">Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2">Database primary keys (new table)</td>
+                <td className="px-4 py-2 font-semibold text-foreground">v7</td>
+                <td className="px-4 py-2">Index locality, insert performance</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2">Distributed event IDs</td>
+                <td className="px-4 py-2 font-semibold text-foreground">v7</td>
+                <td className="px-4 py-2">Sortable, timestamp embedded, no coordination needed</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2">Session tokens / CSRF tokens</td>
+                <td className="px-4 py-2 font-semibold text-foreground">v4</td>
+                <td className="px-4 py-2">Must be unpredictable; timestamp leakage undesirable</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2">Existing table with v4 PKs</td>
+                <td className="px-4 py-2 font-semibold text-foreground">v4 (keep)</td>
+                <td className="px-4 py-2">Migration cost outweighs benefit unless table is small</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2">Security-sensitive identifier</td>
+                <td className="px-4 py-2 font-semibold text-foreground">v4</td>
+                <td className="px-4 py-2">v7 leaks creation timestamp (6 bytes); v4 leaks nothing</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2">Name-based deterministic ID</td>
+                <td className="px-4 py-2 font-semibold text-foreground">v5 (SHA-1)</td>
+                <td className="px-4 py-2">Hashes a name within a namespace to a stable UUID</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-xl font-semibold text-foreground">Generating UUID v7 in code</h2>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// Node.js 22+ / Bun — crypto.randomUUID() is v4 only; use a library
+import { uuidv7 } from "uuidv7";
+console.log(uuidv7()); // 019184e6-7002-7c88-a531-1b7f23e04512
+
+// PostgreSQL — gen_random_uuid() is v4; use pg_uuidv7 extension
+CREATE EXTENSION IF NOT EXISTS "pg_uuidv7";
+SELECT uuid_generate_v7(); -- 019184e6-7002-7000-8000-000000000000
+
+// Python 3.11+ — uuid.uuid7() draft; use python-uuid7 library
+from uuid_extensions import uuid7
+str(uuid7())  # '019184e6-7002-7000-8000-000000000000'
+
+// Go
+import "github.com/google/uuid"
+id := uuid.Must(uuid.NewV7())`}
+        </pre>
+
+        <h2 className="text-xl font-semibold text-foreground">A note on timestamp precision</h2>
+        <p>
+          RFC 9562 mandates millisecond precision for the timestamp field. If multiple UUIDs are generated within
+          the same millisecond (very common in high-throughput systems), the 12-bit <code>rand_a</code> field is
+          typically used as a monotonic counter to maintain ordering within the same millisecond. Good
+          implementations handle this automatically; check your library&apos;s documentation to confirm.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Try it now</h2>
+        <p>
+          Generate UUID v4 or v7 (in bulk, with optional count) at{" "}
+          <Link href="/uuid-generator" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev/uuid-generator
+          </Link>
+          . The tool lets you choose version, count (1–100), and format (uppercase/lowercase/braces). It also
+          works as an API: <code>POST /api/uuid-generator</code> with{" "}
+          <code>{`{"version":"v7","count":10}`}</code>.
+          For related tools, see{" "}
+          <Link href="/hash-generator" className="underline underline-offset-2 text-foreground">
+            Hash Generator
+          </Link>{" "}
+          (SHA-256 checksums) and{" "}
+          <Link href="/timestamp-converter" className="underline underline-offset-2 text-foreground">
+            Timestamp Converter
+          </Link>{" "}
+          (decode the timestamp embedded in a v7 UUID).
+        </p>
+      </div>
+    ),
+  },
+
+  "hex-rgb-hsl-color-formats-guide": {
+    title: "HEX, RGB, HSL, and HSV: a developer's complete guide to colour formats",
+    date: "2026-07-02",
+    description: "What each colour format means, how to convert between them, when to use each in CSS, and the most common bugs caused by confusing colour spaces.",
+    keywords: ["HEX to RGB", "RGB to HSL", "colour formats developer", "color converter online", "HSL HSV difference"],
+    body: (
+      <div className="space-y-6 text-muted-foreground leading-relaxed">
+        <p>
+          CSS supports over a dozen ways to specify a colour. HEX, RGB, HSL, HSV, HWB, LAB, LCH, OKLCH, named
+          colours, and more. Most developers learn HEX first, use RGB when they need alpha, and never think about
+          HSL. This is a mistake — HSL is by far the most intuitive format for <em>working with</em> colour
+          programmatically, and understanding the differences between formats will save you hours of debugging
+          mismatched colours and failed conversions.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">HEX: what the digits mean</h2>
+        <p>
+          A HEX colour is three bytes — one each for red, green, and blue — written in hexadecimal notation
+          and prefixed with <code>#</code>. Each byte ranges from <code>00</code> (0 in decimal, no contribution)
+          to <code>FF</code> (255 in decimal, full contribution).
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`#FF5733
+  ^^     Red   = 0xFF = 255 (full red)
+    ^^   Green = 0x57 = 87  (some green)
+      ^^ Blue  = 0x33 = 51  (a little blue)
+Result: a warm orange-red`}
+        </pre>
+        <p>
+          The 3-digit shorthand <code>#RGB</code> is equivalent to <code>#RRGGBB</code> where each digit is
+          doubled — so <code>#F53</code> means <code>#FF5533</code>. This only works when both hex digits of each
+          channel are identical.
+        </p>
+        <p>
+          The 8-digit form <code>#RRGGBBAA</code> adds an alpha channel (opacity). <code>#FF573380</code> is
+          the same orange-red at 50% opacity (<code>0x80 = 128 / 255 ≈ 0.502</code>). Browser support for 8-digit
+          HEX is universal in 2026.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">RGB: the additive model</h2>
+        <p>
+          RGB describes colour by the amounts of red, green, and blue light combined. In CSS, channels are
+          0–255 integers or 0%–100% percentages. The <code>rgba()</code> function adds an alpha channel as
+          a 0–1 decimal or percentage.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`/* All equivalent */
+color: rgb(255, 87, 51);
+color: rgba(255, 87, 51, 1);
+color: rgb(100% 34.1% 20%);
+
+/* 50% transparent */
+color: rgba(255, 87, 51, 0.5);
+color: rgb(255 87 51 / 50%);  /* modern syntax */`}
+        </pre>
+        <p>
+          Converting between HEX and RGB is arithmetic: divide each HEX byte by 255 to get a 0–1 float, or
+          multiply by 255 to go back. Use the{" "}
+          <Link href="/number-base-converter" className="underline underline-offset-2 text-foreground">
+            Number Base Converter
+          </Link>{" "}
+          to translate individual hex bytes to decimal if you are doing this manually.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">HSL: the human-friendly model</h2>
+        <p>
+          HSL (Hue, Saturation, Lightness) describes colour the way humans think about it. Instead of asking
+          &quot;how much red, green, and blue?&quot; it asks &quot;what colour is it, how vivid is it, and how light or dark?&quot;
+        </p>
+        <ul className="list-disc list-inside space-y-2">
+          <li>
+            <strong className="text-foreground">Hue (0–360°)</strong> — the colour wheel. 0° and 360° are red.
+            120° is green. 240° is blue. 60° is yellow. 180° is cyan. 300° is magenta.
+          </li>
+          <li>
+            <strong className="text-foreground">Saturation (0–100%)</strong> — how vivid the colour is. 0% is grey
+            (no colour at all), 100% is the purest version of the hue.
+          </li>
+          <li>
+            <strong className="text-foreground">Lightness (0–100%)</strong> — how light or dark. 0% is always
+            black regardless of hue, 50% is the &quot;pure&quot; colour, 100% is always white.
+          </li>
+        </ul>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`hsl(11, 100%, 60%)   /* our warm orange-red */
+hsl(11, 50%, 60%)    /* same hue, less vivid (pastel) */
+hsl(11, 100%, 80%)   /* same hue, lighter */
+hsl(191, 100%, 60%)  /* complementary blue (11 + 180 = 191) */`}
+        </pre>
+        <p>
+          HSL&apos;s superpower is that relationships between colours are easy to compute. The complementary colour
+          of any hue is <code>hue + 180</code>. An analogous palette is <code>hue ± 30</code>. A lighter/darker
+          variant is just a lightness adjustment. None of this is intuitive in HEX or RGB.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">HSV / HSB: the Photoshop model</h2>
+        <p>
+          HSV (Hue, Saturation, Value) is sometimes called HSB (Hue, Saturation, Brightness). It is the colour
+          model used in Photoshop, Illustrator, Figma, and most design tools. The hue and saturation axes work
+          the same as HSL, but &quot;value&quot; behaves differently from &quot;lightness&quot;:
+        </p>
+        <ul className="list-disc list-inside space-y-2">
+          <li>
+            <strong className="text-foreground">HSL lightness 50%</strong> is the pure, saturated colour.
+            Increasing lightness adds white; decreasing adds black. At 100%, you always get white.
+          </li>
+          <li>
+            <strong className="text-foreground">HSV value 100%</strong> is the pure, saturated colour.
+            Decreasing value adds black. You can never reach white by adjusting value alone — white in HSV
+            requires 0% saturation + 100% value.
+          </li>
+        </ul>
+        <p>
+          In practice: HSV is better for a colour picker where you separately control vividity and brightness.
+          HSL is better for CSS because its 50% midpoint at full saturation maps directly to the &quot;pure&quot; colour.
+          CSS uses HSL (and the newer OKLCH), not HSV.
+        </p>
+
+        <h2 className="text-xl font-semibold text-foreground">Conversion formulas (and why to use a tool)</h2>
+        <p>
+          HEX ↔ RGB is trivial arithmetic. RGB ↔ HSL and RGB ↔ HSV are more involved — they require normalising
+          to 0–1, finding min/max channel values, and handling multiple cases depending on which channel is dominant.
+          The{" "}
+          <Link href="/color-converter" className="underline underline-offset-2 text-foreground">
+            Color Converter
+          </Link>{" "}
+          handles all conversions (HEX ↔ RGB ↔ HSL ↔ HSV) without the arithmetic errors that come from doing
+          it manually.
+        </p>
+        <pre className="rounded-lg bg-muted p-4 text-xs font-mono overflow-x-auto">
+{`// RGB to HSL in JavaScript (correct, handling all edge cases)
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  if (max === min) { h = s = 0; } // achromatic
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}`}
+        </pre>
+
+        <h2 className="text-xl font-semibold text-foreground">When to use each format in CSS</h2>
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-muted">
+              <tr>
+                <th className="text-left px-4 py-2 text-foreground">Format</th>
+                <th className="text-left px-4 py-2 text-foreground">Best for</th>
+                <th className="text-left px-4 py-2 text-foreground">Avoid when</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">HEX</td>
+                <td className="px-4 py-2">Design tokens, copying from Figma/brand guidelines</td>
+                <td className="px-4 py-2">You need to compute colour variations programmatically</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">RGB</td>
+                <td className="px-4 py-2">When you need alpha transparency inline</td>
+                <td className="px-4 py-2">Theming / colour scales (hard to reason about)</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">HSL</td>
+                <td className="px-4 py-2">Design systems, CSS custom properties, hover states, dark mode</td>
+                <td className="px-4 py-2">Matching exact HEX values from a brand palette</td>
+              </tr>
+              <tr className="border-t border-border">
+                <td className="px-4 py-2 font-mono">OKLCH</td>
+                <td className="px-4 py-2">Perceptually uniform scales, wide-gamut (P3) displays</td>
+                <td className="px-4 py-2">Supporting very old browsers (IE, legacy Safari)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 className="text-xl font-semibold text-foreground">Common bugs</h2>
+        <ul className="list-disc list-inside space-y-2">
+          <li>
+            <strong className="text-foreground">HSL lightness ≠ perceived brightness:</strong> HSL 50% lightness
+            looks very different across hues — yellow at 50% looks much brighter than blue at 50% even though
+            they have the same L value. OKLCH fixes this with perceptual uniformity; use it for accessible colour
+            contrast ratios.
+          </li>
+          <li>
+            <strong className="text-foreground">Alpha in HEX vs CSS:</strong> <code>#RRGGBBAA</code> uses a hex
+            byte (0x00–0xFF) for alpha. <code>rgba()</code> uses 0–1 or a percentage. Copying an 8-digit HEX
+            alpha directly into <code>rgba()</code> as a decimal is wrong — divide by 255 first.
+          </li>
+          <li>
+            <strong className="text-foreground">CSS hue units:</strong> <code>hsl(180deg, 100%, 50%)</code> and
+            <code>hsl(180, 100%, 50%)</code> are both valid. <code>hsl(0.5turn, 100%, 50%)</code> is also valid
+            (half a turn = 180°). Mixing unit systems in calculations leads to off-by-factor-of-360 bugs.
+          </li>
+        </ul>
+
+        <h2 className="text-xl font-semibold text-foreground">Try it now</h2>
+        <p>
+          Convert any colour between HEX, RGB, HSL, and HSV instantly at{" "}
+          <Link href="/color-converter" className="underline underline-offset-2 text-foreground">
+            quickhelp.dev/color-converter
+          </Link>
+          . Paste a HEX value, an <code>rgb()</code> string, or an <code>hsl()</code> value and get all four
+          representations at once. The tool also works as an API:{" "}
+          <code>POST /api/color-converter</code> with <code>{`{"color":"#FF5733","from":"hex","to":"hsl"}`}</code>.
+          For converting individual hex byte values to decimal, see the{" "}
+          <Link href="/number-base-converter" className="underline underline-offset-2 text-foreground">
+            Number Base Converter
+          </Link>
+          .
+        </p>
+      </div>
+    ),
+  },
 };
 
 export function generateStaticParams() {

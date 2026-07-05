@@ -6,6 +6,10 @@ import { getAllDirections } from "@/lib/conversion-directions";
 export const dynamic = "force-static";
 
 const BLOG_POSTS = [
+  { slug: "png-to-webp-conversion-guide", date: "2026-07-05" },
+  { slug: "base64-encoding-guide", date: "2026-07-04" },
+  { slug: "uuid-v4-vs-v7", date: "2026-07-03" },
+  { slug: "hex-rgb-hsl-color-formats-guide", date: "2026-07-02" },
   { slug: "how-to-view-lcov-coverage-reports", date: "2026-05-20" },
   { slug: "understanding-lcov-coverage-metrics", date: "2026-05-19" },
   { slug: "how-to-decode-jwt-safely", date: "2026-05-18" },

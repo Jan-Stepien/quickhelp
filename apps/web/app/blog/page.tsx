@@ -15,6 +15,34 @@ export const metadata = buildMetadata({
 // Seed posts — replace with MDX loader once content/blog/*.mdx files are added
 const POSTS = [
   {
+    slug: "png-to-webp-conversion-guide",
+    title: "How to convert PNG to WebP online (and when to use AVIF instead)",
+    date: "2026-07-05",
+    summary: "A practical guide covering browser, command line, and API conversion — with file size benchmarks and guidance on when AVIF beats WebP.",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "base64-encoding-guide",
+    title: "Base64 encoding explained: URL-safe mode, padding, and common mistakes",
+    date: "2026-07-04",
+    summary: "How the encoding works, the difference between standard and URL-safe variants, padding rules, and the pitfalls that trip up developers most often.",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "uuid-v4-vs-v7",
+    title: "UUID v4 vs v7: what changed and which to use for new projects",
+    date: "2026-07-03",
+    summary: "UUID v7 is now an RFC standard. Here is what changed from v4, why sortable identifiers matter for database performance, and when to switch.",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "hex-rgb-hsl-color-formats-guide",
+    title: "HEX, RGB, HSL, and HSV: a developer's complete guide to colour formats",
+    date: "2026-07-02",
+    summary: "What each colour format means, how to convert between them, when to use each in CSS, and the most common bugs caused by confusing colour spaces.",
+    readingTime: "8 min read",
+  },
+  {
     slug: "how-to-decode-jwt-safely",
     title: "How to decode a JWT safely in 2026 (no signature verification)",
     date: "2026-05-18",
