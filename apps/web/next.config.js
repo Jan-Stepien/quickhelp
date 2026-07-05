@@ -50,12 +50,19 @@ const nextConfig = {
           { key: "Cache-Control", value: "public, s-maxage=3600, stale-while-revalidate=86400" },
         ],
       },
-      // API responses: noindex (page UI is what gets indexed, not raw JSON)
+      // Machine-only routes: noindex so crawlers don't try to index JSON/binary responses
       {
         source: "/api/(.*)",
-        headers: [
-          { key: "X-Robots-Tag", value: "noindex" },
-        ],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
+        source: "/mcp",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      // Next.js build artefacts are not content pages
+      {
+        source: "/_next/(.*)",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
     ];
   },

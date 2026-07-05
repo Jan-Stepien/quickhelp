@@ -8,6 +8,15 @@ const MAX_REQUESTS = 30;
 const ipMap = new Map<string, { count: number; windowStart: number }>();
 
 export function middleware(req: NextRequest) {
+  // Redirect HTTP → HTTPS. Vercel normally handles this but some DNS/proxy
+  // configurations (e.g. Cloudflare in front of Vercel) can bypass it.
+  const proto = req.headers.get("x-forwarded-proto");
+  if (proto === "http") {
+    const url = req.nextUrl.clone();
+    url.protocol = "https:";
+    return NextResponse.redirect(url, { status: 301 });
+  }
+
   // Only rate-limit API routes
   if (!req.nextUrl.pathname.startsWith("/api/")) {
     return NextResponse.next();
@@ -57,5 +66,7 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  // Run on all routes so the HTTP→HTTPS redirect fires everywhere.
+  // Excludes Next.js internals and static files that never need redirecting.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

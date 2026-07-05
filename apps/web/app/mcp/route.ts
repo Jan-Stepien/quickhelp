@@ -7,6 +7,12 @@ export const runtime = "nodejs";
 
 const mcpTools = buildMcpTools(registry);
 
+// Redirect browsers/crawlers to the docs page.
+// The MCP endpoint is POST-only (JSON-RPC); GET here would otherwise return 405.
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  return NextResponse.redirect(new URL("/docs", req.url), { status: 302 });
+}
+
 interface McpRequest {
   jsonrpc: "2.0";
   id: string | number;

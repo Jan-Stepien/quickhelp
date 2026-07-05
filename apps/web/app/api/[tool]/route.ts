@@ -5,6 +5,13 @@ interface RouteParams {
   params: Promise<{ tool: string }>;
 }
 
+// Redirect browsers/crawlers to the human-readable API docs page.
+// The actual API is POST-only; GET here would otherwise return 405.
+export async function GET(req: NextRequest, { params }: RouteParams) {
+  const { tool: slug } = await params;
+  return NextResponse.redirect(new URL(`/docs/api/${slug}`, req.url), { status: 302 });
+}
+
 export async function POST(req: NextRequest, { params }: RouteParams) {
   const { tool: slug } = await params;
   const tool = getToolBySlug(slug);
