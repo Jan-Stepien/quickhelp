@@ -68,5 +68,5 @@ export function middleware(req: NextRequest) {
 export const config = {
   // Run on all routes so the HTTP→HTTPS redirect fires everywhere.
   // Excludes Next.js internals and static files that never need redirecting.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|1b22ff4c4be6d9319dca296d774c4e1d\\.txt).*)"],
 };

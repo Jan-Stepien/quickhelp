@@ -13,7 +13,10 @@ async function fetchSitemapUrls() {
   const res = await fetch(`${BASE_URL}/sitemap.xml`);
   const xml = await res.text();
   const matches = xml.matchAll(/<loc>([^<]+)<\/loc>/g);
-  return [...matches].map((m) => m[1]).filter(Boolean);
+  return [...matches]
+    .map((m) => m[1])
+    .filter(Boolean)
+    .filter((url) => !new URL(url).pathname.match(/\.(json|txt|xml)$/));
 }
 
 async function submitBatch(urls) {

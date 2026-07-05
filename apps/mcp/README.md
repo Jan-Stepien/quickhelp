@@ -84,7 +84,7 @@ Add to `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claud
 
 ```bash
 git clone https://github.com/Jan-Stepien/quickhelp
-cd no_work
+cd quickhelp
 pnpm install
 pnpm --filter @quickhelp/tool-kit build
 pnpm --filter @quickhelp/agent-sdk build
@@ -98,7 +98,7 @@ pnpm --filter quickhelp-mcp build
   "mcpServers": {
     "quickhelp": {
       "command": "node",
-      "args": ["/absolute/path/to/no_work/apps/mcp/dist/index.js"]
+      "args": ["/absolute/path/to/quickhelp/apps/mcp/dist/index.js"]
     }
   }
 }
