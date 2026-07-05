@@ -12,7 +12,7 @@ description: >
   and LCOV coverage viewer. Stateless, no auth, <5s responses.
 
 homepage: https://quickhelp.dev
-repository: https://github.com/Jan-Stepien/no_work
+repository: https://github.com/Jan-Stepien/quickhelp
 
 # Hosted HTTP transport — no install required
 transport:

@@ -14,7 +14,7 @@ Work through these in order. Tick each one off as you complete it.
 - [ ] **Google Search Console verify** — instructions + copy in §GSC below.
 - [ ] **Bing Webmaster Tools** — import from GSC (one click) — link in §Bing below.
 - [ ] **Run IndexNow** after every deploy: `node tooling/indexnow/submit.mjs` from repo root.
-- [ ] **Make GitHub repo public**: https://github.com/Jan-Stepien/no_work → Settings → Danger Zone → Change visibility → Public. (Secret scan done — safe.)
+- [ ] **Make GitHub repo public**: https://github.com/Jan-Stepien/quickhelp → Settings → Danger Zone → Change visibility → Public. (Secret scan done — safe.)
 - [ ] **Set GitHub topics**: on the repo page → gear icon next to "About" → add: `developer-tools`, `mcp`, `mcp-server`, `nextjs`, `api`, `jwt`, `image-converter`, `ai-tools`.
 - [ ] **Submit to Smithery** → https://smithery.ai/new → Connect GitHub repo. `smithery.yaml` is already in `apps/mcp/`.
 - [ ] **Submit to Glama** → https://glama.ai/mcp/servers → Submit (or it auto-indexes after repo is public).
@@ -106,7 +106,7 @@ Free tier: 30 req/60s, watermarked output. All tools are stateless, privacy-firs
 Fork https://github.com/punkpeye/awesome-mcp-servers and add this line under the "Tools" or "Developer Tools" section:
 
 ```markdown
-- [quickhelp.dev](https://github.com/Jan-Stepien/no_work) - 15 free deterministic developer tools (JWT decoder, image converter, Base64, hash, UUID, JSON formatter, and more). Hosted HTTP endpoint at https://quickhelp.dev/mcp or `npx quickhelp-mcp` for stdio.
+- [quickhelp.dev](https://github.com/Jan-Stepien/quickhelp) - 15 free deterministic developer tools (JWT decoder, image converter, Base64, hash, UUID, JSON formatter, and more). Hosted HTTP endpoint at https://quickhelp.dev/mcp or `npx quickhelp-mcp` for stdio.
 ```
 
 ---
@@ -262,7 +262,7 @@ No per-tool wiring — add a package, it appears everywhere.
 
 The MCP server is both a hosted HTTP endpoint (quickhelp.dev/mcp) and an npx stdio server (npx -y quickhelp-mcp). Claude Desktop / Claude Code users can point at either.
 
-Source: github.com/Jan-Stepien/no_work
+Source: github.com/Jan-Stepien/quickhelp
 ```
 
 ---
@@ -373,7 +373,7 @@ Every tool is a single manifest file (defineTool()). Adding a new tool means wri
 
 No per-tool wiring. That's the whole architecture.
 
-Open source: github.com/Jan-Stepien/no_work
+Open source: github.com/Jan-Stepien/quickhelp
 ```
 
 ---

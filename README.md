@@ -103,7 +103,7 @@ curl -X POST https://quickhelp.dev/api/uuid-generator \
 ## Repo structure
 
 ```
-no_work/
+quickhelp/
 ├── apps/web/          # Next.js 14 — human UI + REST API + discovery routes
 ├── apps/mcp/          # Standalone MCP stdio server (same registry)
 ├── packages/tool-kit/ # defineTool() contract + Zod helpers

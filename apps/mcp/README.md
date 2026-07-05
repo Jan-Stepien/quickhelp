@@ -83,7 +83,7 @@ Add to `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claud
 ## Option 3 — Local build from source
 
 ```bash
-git clone https://github.com/Jan-Stepien/no_work
+git clone https://github.com/Jan-Stepien/quickhelp
 cd no_work
 pnpm install
 pnpm --filter @quickhelp/tool-kit build
