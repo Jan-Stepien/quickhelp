@@ -1,11 +1,10 @@
 "use client";
 
 import Script from "next/script";
-import { useConsent } from "@quickhelp/ui";
 
+// Cloudflare Web Analytics is cookieless and stores no PII — no consent needed.
 export function AnalyticsLoader({ cfToken }: { cfToken: string }) {
-  const { consent } = useConsent();
-  if (!cfToken || consent?.analytics !== true) return null;
+  if (!cfToken) return null;
   return (
     <Script
       src="https://static.cloudflareinsights.com/beacon.min.js"
