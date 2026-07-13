@@ -137,6 +137,26 @@ export const imageResizer = defineTool({
         answer:
           "'Inside' (default) scales the image to fit within the target width and height while preserving the aspect ratio — the output may be smaller than requested if proportions differ. 'Cover' fills the exact dimensions and crops the overflow. 'Fill' stretches to exactly the target size regardless of aspect ratio.",
       },
+      {
+        question: "What is the best output format for web images — PNG, JPEG, or WebP?",
+        answer:
+          "Use WebP for photos and complex images on modern websites — it is 25–35% smaller than JPEG at comparable quality and supports transparency. Use PNG for screenshots, logos, and images with text or sharp edges where lossless quality matters. Use JPEG only when broad compatibility is required (older email clients, legacy systems). Avoid JPEG for images with transparency — use PNG or WebP instead.",
+      },
+      {
+        question: "How do I resize an image to a specific aspect ratio without distortion?",
+        answer:
+          "Use the 'cover' fit mode: set both width and height to your target dimensions and select cover. The image is scaled to fill the target size and the overflow is cropped symmetrically. Alternatively, use the crop tab to trim the image to your desired ratio first, then resize to the target dimensions with 'fill' mode — this gives you precise control over which part of the image is kept.",
+      },
+      {
+        question: "Why does rotating a photo from my phone produce a different orientation than expected?",
+        answer:
+          "Phone cameras store orientation information in the image's EXIF metadata rather than rotating the pixels. Some apps read the EXIF orientation and display the photo correctly; others ignore it and show raw pixels sideways. The Image Resizer reads EXIF orientation at load time and applies it automatically, so the preview already shows the correct orientation. Use the rotate controls only if the preview itself is wrong.",
+      },
+      {
+        question: "Can I batch-process multiple images?",
+        answer:
+          "The browser UI processes one image at a time. For batch processing, use the REST API endpoint (POST /api/image-resizer) from a script — send each image as base64 with your target dimensions and format. The API is stateless and deterministic, making it safe to parallelize across many images in a shell loop or CI pipeline.",
+      },
     ],
     relatedTools: ["image-converter", "background-remover"],
     useCases: [

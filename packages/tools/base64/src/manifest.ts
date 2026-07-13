@@ -127,6 +127,18 @@ export const base64 = defineTool({
         question: "Is there a size limit?",
         answer: "The API endpoint accepts up to 1 MB of input. For larger files, use Node.js: Buffer.from(str, 'utf-8').toString('base64') for encoding, or Buffer.from(b64, 'base64').toString('utf-8') for decoding.",
       },
+      {
+        question: "How do I Base64 encode an HTTP Basic Auth header?",
+        answer: "Concatenate the username and password with a colon — for example 'alice:s3cr3t' — then Base64-encode the entire string using the standard charset. Prepend 'Basic ' to the result: Authorization: Basic YWxpY2U6czNjcjN0. Never use URL-safe Base64 for Basic Auth — servers expect the standard + and / characters.",
+      },
+      {
+        question: "Why does the same string produce different Base64 output in different tools?",
+        answer: "The most common cause is a trailing newline or different line endings. Some tools append a newline character (\\n) to the input before encoding, producing a longer output. Paste your string carefully and verify there is no invisible whitespace. Another cause is URL-safe vs standard charset: if one tool uses - and _ while another uses + and /, the outputs differ even for identical input.",
+      },
+      {
+        question: "What is Base64url encoding and where is it used?",
+        answer: "Base64url is the URL-safe variant defined in RFC 4648 §5. It replaces + with - and / with _ and optionally omits padding (=). It is used in JWTs (the header and payload sections), OAuth tokens, URL-safe nonces, and any context where + and / would need percent-encoding. This tool's 'url-safe' charset produces Base64url output.",
+      },
     ],
     relatedTools: ["jwt-decoder", "json-formatter", "hash-generator"],
     useCases: [

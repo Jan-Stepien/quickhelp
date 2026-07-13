@@ -192,6 +192,16 @@ export const numberBaseConverter = defineTool({
         answer:
           "A CSS hex color like #FF6600 has three 2-digit hex components: R=FF, G=66, B=00. Convert each pair to decimal: FF → 255, 66 → 102, 00 → 0. The result is rgb(255, 102, 0). Use this tool for each pair, or use the Color Converter tool which handles full CSS color conversions.",
       },
+      {
+        question: "How do I read a Unix file permission number like chmod 755?",
+        answer:
+          "Unix file permissions are specified in octal. 755 in octal breaks into three digits: owner (7), group (5), others (5). Each digit is a 3-bit mask: 4=read, 2=write, 1=execute. So 7 = 4+2+1 = rwx, and 5 = 4+1 = r-x. Enter 755 with 'from base' set to Octal to see the binary representation: 111 101 101 — confirming all three bit patterns.",
+      },
+      {
+        question: "What does 'bit length' mean in the output?",
+        answer:
+          "Bit length is the minimum number of binary digits needed to represent the value — the position of the most significant 1 bit. For example, 255 needs 8 bits (11111111). This is useful when choosing integer types: a value with bit length ≤8 fits in a uint8, ≤16 in a uint16, ≤32 in a uint32. Powers of two always have bit length equal to their exponent plus one.",
+      },
     ],
     relatedTools: ["hash-generator", "color-converter", "base64", "url-encoder"],
     useCases: [

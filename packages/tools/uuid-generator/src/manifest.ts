@@ -145,6 +145,21 @@ export const uuidGenerator = defineTool({
         answer:
           "Yes. Hyphens are part of the canonical textual representation but carry no information — the 128-bit value is identical. The compact format (32 hex chars, no hyphens) is common in URLs, file names, and storage systems that require alphanumeric-only identifiers. Most UUID parsers accept both formats.",
       },
+      {
+        question: "How does UUID v4 compare to ULID or NanoID?",
+        answer:
+          "UUID v4 is the most widely supported format — accepted by PostgreSQL, MySQL, MongoDB, and virtually every ORM. ULID encodes a millisecond timestamp in the first 48 bits, making it lexicographically sortable (useful for database index locality), and uses Crockford's Base32 encoding for a shorter string. NanoID is smaller (21 chars by default) and URL-safe, but is not a UUID and requires a library. Use UUID v4 for maximum compatibility, ULID or UUID v7 when insertion-order sortability matters.",
+      },
+      {
+        question: "Are UUIDs case-sensitive?",
+        answer:
+          "UUID values are hexadecimal and case-insensitive — '550e8400-E29B-41D4-A716-446655440000' and '550e8400-e29b-41d4-a716-446655440000' represent the same value. RFC 4122 recommends lowercase output, which is what most libraries and databases produce. When comparing UUIDs, always normalize to the same case.",
+      },
+      {
+        question: "Can two independently generated UUID v4s ever collide?",
+        answer:
+          "In practice, no. UUID v4 has 122 random bits (the other 6 bits are fixed for version and variant). The probability of any two UUIDs colliding is approximately 1 in 5.3 × 10³⁶. If you generated 1 billion UUIDs per second for 100 years, the probability of even a single collision would be astronomically small. Collisions happen in practice only when a broken random number generator produces repeated output.",
+      },
     ],
     relatedTools: ["hash-generator", "timestamp-converter"],
     useCases: [
