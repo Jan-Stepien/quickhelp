@@ -243,6 +243,21 @@ export const colorConverter = defineTool({
         answer:
           "Figma may show colour values in a colour profile other than sRGB (e.g. Display P3). If your design file uses a wide-gamut colour space, the HEX values are in P3 and will look different when converted to sRGB. Check your Figma document colour profile under File → Document Colours.",
       },
+      {
+        question: "What is the hue value in HSL and how is it measured?",
+        answer:
+          "Hue is measured in degrees around a colour wheel from 0 to 360. Red is at 0°, yellow at 60°, green at 120°, cyan at 180°, blue at 240°, and magenta at 300°. Pure red appears at both 0° and 360°. In CSS, hsl(120, 100%, 50%) is fully saturated green at 50% lightness.",
+      },
+      {
+        question: "How do I find the HEX code for a colour on a website?",
+        answer:
+          "Open DevTools (F12 or right-click → Inspect), select the element, and look for the color or background-color property in the Styles panel. Click the colour swatch to open the browser's colour picker, which shows the HEX, RGB, and HSL values. Alternatively, use the browser's eyedropper tool (available in Chrome and Firefox DevTools) to sample any colour on screen.",
+      },
+      {
+        question: "Why does the same colour look different on different screens?",
+        answer:
+          "Colour rendering depends on the display's colour profile, brightness calibration, and gamut. A #FF0000 red on an sRGB monitor looks the same as on another sRGB monitor when both are properly calibrated. On a wide-gamut Display P3 screen, the same HEX value may appear more vivid because the display can show more saturated reds. Professional design work uses colour-managed workflows to ensure consistency across devices.",
+      },
     ],
     relatedTools: ["image-converter", "base64"],
     useCases: [

@@ -228,6 +228,21 @@ export const jsonToCsv = defineTool({
         answer:
           "The converter expects a JSON array of flat objects. Arrays of arrays are not tabular data and cannot be meaningfully converted to CSV. Mixed types (some rows have extra fields) are handled by taking the union of all keys across all rows and leaving cells empty where a field is absent.",
       },
+      {
+        question: "How do I open the CSV output in Excel or Google Sheets?",
+        answer:
+          "Copy the CSV output and paste it into a new spreadsheet, or download the file and use File → Import (Google Sheets) or open the .csv file directly in Excel. If Excel opens the file as a single column, use Data → Text to Columns with comma as the delimiter. Google Sheets imports CSVs automatically when you open or import a .csv file.",
+      },
+      {
+        question: "What delimiter should I use — comma, semicolon, or tab?",
+        answer:
+          "Comma is the RFC 4180 standard and works with most tools. Semicolons are preferred in some European locales where commas are used as decimal separators (e.g. Excel in German or French). Tab-separated values (TSV) avoid delimiter conflicts entirely and are a safe choice for data that may contain commas or semicolons. Choose the delimiter that matches the import settings of your target application.",
+      },
+      {
+        question: "Can I convert CSV back to JSON?",
+        answer:
+          "Yes — this tool supports both directions. Switch to CSV-to-JSON mode and paste your CSV. The first row is treated as the header and becomes the object keys. Each subsequent row becomes a JSON object in the output array. Values that look like numbers or booleans are kept as strings — cast them in your application code if needed.",
+      },
     ],
     relatedTools: ["json-formatter", "text-case-converter"],
     useCases: [

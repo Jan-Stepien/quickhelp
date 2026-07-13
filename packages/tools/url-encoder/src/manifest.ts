@@ -148,6 +148,21 @@ export const urlEncoder = defineTool({
         answer:
           "No. Encoding and decoding run entirely in your browser using built-in JavaScript functions — no network request is made. The REST API endpoint is stateless and logs nothing.",
       },
+      {
+        question: "How do I encode a full URL safely?",
+        answer:
+          "Do not encode the entire URL at once — that would encode the slashes, colons, and query string delimiters, breaking the URL structure. Instead, encode only the values: use encodeURIComponent on each query parameter value, then assemble the full URL manually. For example: const url = 'https://example.com/search?q=' + encodeURIComponent(userInput) + '&lang=' + encodeURIComponent(lang).",
+      },
+      {
+        question: "What characters must be percent-encoded in a URL?",
+        answer:
+          "RFC 3986 defines unreserved characters (A-Z, a-z, 0-9, -, _, ., ~) as safe in any URL component. All other characters — including spaces, @, #, ?, /, =, &, :, and all non-ASCII Unicode — must be percent-encoded when used as literal data values. Reserved characters (: / ? # [ ] @ ! $ & ' ( ) * + , ; =) are allowed in URLs as structural delimiters but must be encoded when they appear as data.",
+      },
+      {
+        question: "How does percent-encoding handle non-ASCII characters like emoji or accented letters?",
+        answer:
+          "Non-ASCII characters are first encoded as UTF-8 bytes, then each byte is percent-encoded. The letter 'é' is UTF-8 bytes C3 A9, so it becomes %C3%A9. The emoji 🔥 is UTF-8 bytes F0 9F 94 A5, becoming %F0%9F%94%A5. This is why non-ASCII URL characters appear as multiple %xx sequences rather than a single one.",
+      },
     ],
     relatedTools: ["base64", "json-formatter", "hash-generator"],
     useCases: [
