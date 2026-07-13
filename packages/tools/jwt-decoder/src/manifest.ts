@@ -88,20 +88,36 @@ export const jwtDecoder = defineTool({
   },
   content: {
     whatIs:
-      "A JSON Web Token (JWT) is a compact, URL-safe way to represent claims. It has three base64url-encoded parts: header, payload, and signature. This tool decodes the header and payload and can optionally verify the signature.",
+      "A JSON Web Token (JWT) is a compact, URL-safe string used to securely transmit claims between two parties. It consists of three base64url-encoded segments separated by dots: a header, a payload, and a signature. The header specifies the signing algorithm (such as HS256, RS256, or ES256). The payload contains claims — statements about an entity and additional metadata, such as a user ID (sub), an expiry time (exp), an issuer (iss), and any custom application-defined fields. The signature is computed over the header and payload using a secret or private key, allowing the recipient to verify that the token was issued by a trusted source and has not been modified. JWTs are the standard mechanism for stateless authentication in modern web applications: once issued, they travel with every API request (typically in the Authorization: Bearer header) and can be validated without a database lookup. This tool decodes the header and payload instantly without requiring a key, and can optionally verify the signature using your HMAC secret or RSA/ECDSA public key — all within your browser.",
     howToSteps: [
-      { name: "Paste your token", text: "Copy your JWT string (starts with 'eyJ') and paste it into the input field." },
-      { name: "Inspect claims", text: "The decoded header and payload appear instantly — check exp, sub, iss, and any custom claims." },
-      { name: "Verify signature", text: "Enter your secret or public key and click Verify to confirm the token hasn't been tampered with." },
+      { name: "Paste your token", text: "Copy your JWT string — it starts with 'eyJ' and contains two dots separating the three segments. Paste it into the input field." },
+      { name: "Inspect the claims", text: "The decoded header and payload appear as formatted JSON instantly. Check the algorithm (alg) in the header, and look for exp (expiry as a Unix timestamp), sub (subject/user ID), iss (issuer), and any application-specific claims in the payload." },
+      { name: "Verify the signature (optional)", text: "To confirm the token has not been tampered with, enter your HMAC secret (for HS256/HS384/HS512) or PEM public key (for RS*/ES*) in the Verify section and click Verify. A green badge means the signature is valid." },
     ],
     faq: [
       {
         question: "Does this verify the signature?",
-        answer: "Yes — enter your HMAC secret or RSA/ECDSA public key in the Verify section. For HS* algorithms the secret is a plain string; for RS*/ES* provide a PEM public key.",
+        answer: "Yes — enter your HMAC secret or RSA/ECDSA public key in the Verify section. For HS* algorithms the secret is a plain text string; for RS*/ES* provide a PEM-formatted public key matching the private key that signed the token.",
       },
       {
         question: "Is my token sent to a server?",
-        answer: "The browser-side decoder never makes a network call. The signature-verification endpoint receives your token and key only during the verify request; neither is logged or stored.",
+        answer: "The browser-side decoder never makes a network call — decoding is done entirely in JavaScript. The signature-verification call does send your token and key over HTTPS to a server-side endpoint, but neither is logged or stored.",
+      },
+      {
+        question: "What is the difference between HS256 and RS256?",
+        answer: "HS256 (HMAC-SHA-256) uses a single shared secret that both the issuer and the verifier must know. RS256 (RSA-SHA-256) uses a private key to sign and a public key to verify — the public key can be shared openly via a JWKS endpoint without exposing the signing key. RS256 is preferred for public APIs and multi-tenant systems.",
+      },
+      {
+        question: "How do I check if a JWT has expired?",
+        answer: "After decoding, look for the 'exp' claim in the payload — it is a Unix timestamp (seconds since 1970-01-01 UTC). If Date.now() / 1000 > exp, the token is expired. The decoder converts timestamp claims to human-readable dates automatically so you can see the expiry at a glance.",
+      },
+      {
+        question: "Can I decode a JWT without the secret?",
+        answer: "Yes. Decoding only requires base64url-decoding the header and payload segments, which requires no key. Anyone with the token string can read the claims — JWTs are encoded, not encrypted. Never store sensitive data (passwords, payment details) in a JWT payload unless you also encrypt it (JWE).",
+      },
+      {
+        question: "What should I do if I see 'Invalid signature'?",
+        answer: "Confirm you are using the correct key for the algorithm shown in the header. For HS256, check for extra whitespace or base64 encoding on the secret. For RS256/ES256, confirm you are using the public key (not the private key) in PEM format. A wrong key is always the cause of a signature mismatch.",
       },
     ],
     relatedTools: ["json-formatter", "hash-generator", "base64"],

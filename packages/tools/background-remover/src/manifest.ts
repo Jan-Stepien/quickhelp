@@ -41,32 +41,48 @@ export const backgroundRemover = defineTool({
   },
   content: {
     whatIs:
-      "Background Remover uses an AI model running entirely in your browser to detect and remove image backgrounds, returning a transparent PNG. No image is ever sent to a server — all processing is local.",
+      "Background Remover uses an AI model running entirely in your browser to detect and remove image backgrounds, returning a transparent PNG. The model is based on U-2-Net, a neural network architecture trained specifically for salient object detection — it identifies the main subject in an image and masks out everything else. Processing happens via WebAssembly (ONNX Runtime Web), which means the AI runs at near-native speed directly in your browser tab. No image is ever sent to a server — all processing is local, making it suitable even for confidential or proprietary photos. The output is always a 32-bit RGBA PNG with a transparent alpha channel where the background was, ready to be placed on any color or design without white halos or fringing.",
     howToSteps: [
-      { name: "Upload", text: "Drop an image or click to browse. PNG, JPEG, WebP are all supported." },
+      { name: "Upload your image", text: "Drop an image onto the upload area or click to browse. PNG, JPEG, WebP, AVIF, TIFF, and GIF are all supported as input." },
       {
-        name: "Wait",
-        text: "The AI model loads from a CDN on first use (about 40 MB, cached afterwards) then processes your image in seconds.",
+        name: "Wait for AI processing",
+        text: "The AI model (~40 MB) downloads from a CDN on first use and is cached by your browser. After the initial download, processing takes 2–5 seconds for a typical photo at full resolution.",
       },
       {
-        name: "Download",
-        text: "Click Download to save the transparent PNG. Use it on websites, presentations, or social media.",
+        name: "Download the transparent PNG",
+        text: "Click Download to save the result as a transparent PNG. Use it in design tools (Figma, Canva, Photoshop), e-commerce listings, presentations, or social media graphics.",
       },
     ],
     faq: [
       {
         question: "Is my image uploaded anywhere?",
         answer:
-          "No. The AI model runs entirely in your browser using WebAssembly. Your image never leaves your device.",
+          "No. The AI model runs entirely in your browser using WebAssembly. Your image never leaves your device — not even for the initial model download, which is just the model weights, not your photos.",
       },
       {
         question: "Why does the first run take longer?",
         answer:
-          "The AI model (~40 MB) is downloaded from a CDN on first use and cached by your browser. Subsequent runs are instant.",
+          "The AI model weights (~40 MB) are downloaded from a CDN on first use and cached by your browser. Subsequent runs skip the download entirely and start processing immediately.",
       },
       {
         question: "What image formats are supported?",
-        answer: "PNG, JPEG, WebP, AVIF, TIFF, and GIF as input. Output is always a transparent PNG.",
+        answer: "PNG, JPEG, WebP, AVIF, TIFF, and GIF are accepted as input. Output is always a transparent PNG (RGBA), since PNG is the only widely supported raster format with full alpha channel transparency.",
+      },
+      {
+        question: "How does the quality compare to remove.bg or Photoshop?",
+        answer: "For portraits, products with clear contrast, and logos on simple backgrounds, the quality is comparable to remove.bg. Complex subjects — fine hair, transparent objects, fur, or scenes where the foreground blends with the background — produce better results in Photoshop's Select Subject feature, which has had more training data and more years of tuning.",
+      },
+      {
+        question: "Is there a file size limit?",
+        answer: "The limit is your browser's available memory, typically several hundred megabytes. Very large images (above 20 megapixels) may be slow to process or cause memory errors on devices with less than 4 GB of RAM. Downscaling to 2000px on the longest side before uploading is a practical workaround.",
+      },
+      {
+        question: "Can I use the transparent PNG output in Canva or Google Slides?",
+        answer: "Yes. Both Canva and Google Slides support PNG files with transparency. Upload the downloaded PNG and it will appear on a transparent background, ready to be placed over any slide color or image.",
+      },
+      {
+        question: "What AI model powers the background removal?",
+        answer: "The tool uses U-2-Net (Universal Salient Object Detection Network), an open-source neural network optimized for detecting and segmenting salient objects. It is loaded via ONNX Runtime Web, which compiles the model to WebAssembly for in-browser execution without any server-side inference.",
       },
     ],
     relatedTools: ["image-converter", "image-resizer"],

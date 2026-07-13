@@ -101,20 +101,36 @@ export const jsonFormatter = defineTool({
   },
   content: {
     whatIs:
-      "A JSON formatter parses a JSON string and re-serializes it with consistent indentation (pretty) or no whitespace (minify). This tool also catches syntax errors and reports the exact position of the problem.",
+      "JSON (JavaScript Object Notation) is a lightweight text format for representing structured data using key-value pairs, arrays, strings, numbers, booleans, and null. It is the dominant data interchange format for REST APIs, configuration files, and data storage. A JSON formatter parses a JSON string and re-serializes it with consistent indentation and line breaks (pretty-print) to make it human-readable, or removes all whitespace (minify) to produce the smallest possible representation for transmission or storage. This tool goes further: it validates syntax and reports the exact line and column of any parse error, optionally sorts all object keys alphabetically for consistent diffs, and can repair common JSON-like inputs that are technically invalid — such as trailing commas, JavaScript-style comments, and single-quoted strings.",
     howToSteps: [
-      { name: "Paste JSON", text: "Paste your raw, minified, or malformed JSON into the input field." },
-      { name: "Choose mode", text: "Select 'pretty' for readable output or 'minify' to compact it." },
-      { name: "Click Run", text: "The formatted result appears instantly. Use the Copy button to copy it." },
+      { name: "Paste your JSON", text: "Paste raw, minified, or malformed JSON into the input field. The tool accepts anything — even invalid JSON that you want to diagnose or repair." },
+      { name: "Choose a mode and options", text: "Select 'Pretty' for readable output with your chosen indentation (2 spaces, 4 spaces, or tabs). Select 'Minify' to strip all whitespace. Toggle 'Sort keys' to alphabetize all object keys. Toggle 'Repair' to auto-fix common errors." },
+      { name: "Copy the result", text: "The formatted output appears instantly. Click the Copy button to put it in your clipboard, ready to paste into your editor, terminal, or documentation." },
     ],
     faq: [
       {
-        question: "What's the size limit?",
-        answer: "The API accepts up to 1 MB of JSON. For larger files, run the formatter locally with JSON.stringify.",
+        question: "What's the file size limit?",
+        answer: "The API endpoint accepts up to 1 MB of JSON per request. For larger files, run the formatter locally: node -e \"console.log(JSON.stringify(JSON.parse(require('fs').readFileSync('input.json','utf8')),null,2))\"",
       },
       {
         question: "Does it sort keys?",
-        answer: "Yes — enable the 'Sort keys' option to sort object keys alphabetically at every level of nesting.",
+        answer: "Yes — enable the 'Sort keys' option to sort object keys alphabetically at every level of nesting. Array element order is always preserved because arrays are ordered by definition.",
+      },
+      {
+        question: "What can Repair mode fix?",
+        answer: "Repair mode automatically removes trailing commas before } or ], converts single-quoted strings to double-quoted ones, quotes bare (unquoted) object keys, and strips JavaScript-style // line comments and /* */ block comments. It does not handle every possible malformed input — severely broken JSON may still fail.",
+      },
+      {
+        question: "Does formatting change the data?",
+        answer: "Pretty-printing and minifying only change whitespace — the data, field order (without Sort keys), and values are identical. Sort keys reorders object properties alphabetically, which has no semantic effect since JSON object keys are unordered by specification.",
+      },
+      {
+        question: "How do I find a syntax error in a large JSON file?",
+        answer: "Paste the file into the formatter and click Run. If the JSON is invalid, a red error message shows the exact problem and its line:column position. Navigate to that line in your editor to fix the issue. The most common errors are missing commas between items, unclosed brackets or braces, and trailing commas after the last item.",
+      },
+      {
+        question: "Is there a difference between 2-space and 4-space indentation?",
+        answer: "Purely cosmetic. Most JavaScript style guides (Airbnb, Google, Standard) use 2 spaces. Python's json.dumps uses 4 spaces by default. Tabs are preferred in some C and Go codebases. The formatted data is functionally identical regardless of indentation choice.",
       },
     ],
     relatedTools: ["jwt-decoder"],
