@@ -105,36 +105,48 @@ export const imageConverter = defineTool({
   },
   content: {
     whatIs:
-      "Image Converter is a free, browser-based tool that converts image files between popular formats — PNG, JPEG, WebP, AVIF, TIFF, and GIF. SVG files can also be rasterised to any of those formats. No software to install and no sign-up required.",
+      "Image conversion is the process of re-encoding a digital image from one file format to another, changing the container, compression algorithm, and colour depth according to the target format's specification. Different image formats make different trade-offs: PNG uses lossless compression and supports full alpha transparency, making it ideal for screenshots, icons, and graphics with sharp edges. JPEG uses lossy compression optimised for photographs, achieving small file sizes at the cost of some detail. WebP is a modern format developed by Google that supports both lossless and lossy compression as well as alpha transparency — it is typically 25–35% smaller than JPEG or PNG at equivalent quality, and all modern browsers support it. AVIF (AV1 Image File Format) is the newest of the major formats, achieving roughly 50% smaller files than JPEG at equivalent visual quality at the cost of longer encoding times. TIFF is a lossless, uncompressed format used in print and photography workflows. GIF supports up to 256 colours and is primarily used for animations. This tool converts between PNG, JPEG, WebP, AVIF, TIFF, and GIF, and can rasterise SVG files to any of those formats. Conversion runs on the server using the Sharp library (libvips) — your image is sent over HTTPS and is not stored.",
     howToSteps: [
       {
-        name: "Upload",
-        text: "Click the file picker and select your image (up to 3 MB).",
+        name: "Upload your image",
+        text: "Click the file picker and select your image (up to 3 MB). PNG, JPEG, WebP, AVIF, TIFF, GIF, and SVG are all accepted as input.",
       },
       {
-        name: "Choose formats",
-        text: "Select the source format and your desired output format, then adjust quality if needed.",
+        name: "Choose output format and quality",
+        text: "Select the target format from the dropdown. For lossy formats (JPEG, WebP, AVIF), adjust the quality slider — 80 is a sensible default that balances visual fidelity and file size. For lossless formats (PNG, TIFF), quality has no effect.",
       },
       {
-        name: "Convert & download",
-        text: "Click Run. A preview appears immediately and you can download the converted file.",
+        name: "Convert and download",
+        text: "Click Run. A preview of the converted image appears along with the file size and dimensions. Click Download to save it to your device.",
       },
     ],
     faq: [
       {
         question: "What is the maximum file size?",
         answer:
-          "3 MB. This is set by the Vercel free tier request body limit. For larger images, clone the repo and run locally — there is no size cap when self-hosted.",
+          "3 MB. This is set by the Vercel free tier request body limit. For larger images, use the API with a self-hosted instance — there is no size cap when self-hosted.",
       },
       {
         question: "Does conversion affect image quality?",
         answer:
-          "Lossless formats (PNG, TIFF) preserve every pixel. Lossy formats (JPEG, WebP, AVIF) use the quality slider — 80 is a good default that balances file size and visual fidelity.",
+          "Lossless formats (PNG, TIFF) preserve every pixel exactly. Lossy formats (JPEG, WebP, AVIF) reduce file size by discarding perceptually insignificant detail. The quality slider controls this trade-off: 80 is a good default for web images, 90+ for print-quality exports, and 60–70 for thumbnails where small file size matters more than sharpness.",
       },
       {
         question: "Why convert to WebP or AVIF?",
         answer:
-          "WebP is 25–35% smaller than JPEG/PNG at equivalent quality and is supported by all modern browsers. AVIF is 50% smaller still but takes longer to encode. Both are great for web delivery.",
+          "WebP is 25–35% smaller than JPEG/PNG at equivalent quality and is supported by all modern browsers. AVIF is 50% smaller still but takes longer to encode and decode. Both formats support alpha transparency. Converting your images to WebP or AVIF before serving them from a website reduces page load times and bandwidth costs significantly.",
+      },
+      {
+        question: "Does PNG to WebP conversion lose transparency?",
+        answer: "No. WebP supports full alpha channel transparency. Converting a PNG with a transparent background to WebP preserves the transparency. AVIF also supports alpha transparency. JPEG does not — converting a transparent PNG to JPEG replaces the transparent areas with white.",
+      },
+      {
+        question: "Can I convert SVG to PNG or JPEG?",
+        answer: "Yes. SVG is accepted as an input format and can be rasterised (converted from vector to pixels) to any of the supported output formats. The output resolution depends on the SVG's viewBox and the browser's rendering. For high-resolution exports, use the API with a custom width parameter.",
+      },
+      {
+        question: "What quality setting should I use?",
+        answer: "For JPEG: 85 for general use, 70 for thumbnails, 95 for high quality. For WebP: 80 for general use, 60–70 for thumbnails. For AVIF: 70 for general use (AVIF's perceived quality is higher than JPEG at the same numeric value). For lossless PNG and TIFF, quality is ignored.",
       },
     ],
     relatedTools: ["image-resizer", "background-remover", "jwt-decoder"],

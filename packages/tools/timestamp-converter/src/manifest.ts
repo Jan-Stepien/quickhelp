@@ -200,6 +200,21 @@ export const timestampConverter = defineTool({
         answer:
           "Any string parseable by the JavaScript Date constructor: ISO 8601 (2024-05-29T16:00:00Z), RFC 2822 (Wed, 29 May 2024 16:00:00 +0000), or common formats like '2024-05-29'. Ambiguous formats like '05/29/2024' may be parsed incorrectly — prefer ISO 8601 with an explicit timezone offset.",
       },
+      {
+        question: "What is the maximum Unix timestamp?",
+        answer:
+          "The 32-bit signed integer Unix timestamp overflows on 2038-01-19T03:14:07Z — the Year 2038 problem. Systems using 32-bit timestamps will wrap around to a negative number and misinterpret dates after that point. Modern systems use 64-bit integers, which will not overflow for billions of years. JavaScript's Date uses 64-bit millisecond timestamps, so web applications are not affected.",
+      },
+      {
+        question: "Why do JWT tokens use Unix timestamps?",
+        answer:
+          "JWT claims like 'iat' (issued at), 'exp' (expires), and 'nbf' (not before) store Unix timestamps in seconds. Using epoch seconds makes the values language-agnostic and timezone-free — a Python server, a JavaScript client, and a Go microservice all interpret 1716998400 identically as the same moment in UTC. This tool is useful for debugging JWT expiry issues: decode the token, find the 'exp' field, and paste it here to read the human-readable expiry time.",
+      },
+      {
+        question: "How do I convert a timestamp to a specific timezone?",
+        answer:
+          "This tool outputs UTC. To convert to a local timezone, use your language's date library: in JavaScript, new Date(timestamp * 1000).toLocaleString('en-US', { timeZone: 'America/New_York' }); in Python, datetime.fromtimestamp(timestamp, tz=ZoneInfo('Europe/Warsaw')); in Go, time.Unix(timestamp, 0).In(location).Format(time.RFC3339). Storing and transmitting timestamps in UTC is always recommended — convert to local time only at the display layer.",
+      },
     ],
     relatedTools: ["jwt-decoder", "json-formatter"],
     useCases: [

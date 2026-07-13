@@ -152,6 +152,21 @@ export const textCaseConverter = defineTool({
         answer:
           "This tool converts one identifier per call. For bulk conversion in a script, use the REST API: POST /api/text-case-converter with each identifier. In Node.js, you can also use the 'change-case' npm package for programmatic bulk conversion.",
       },
+      {
+        question: "When should I use SCREAMING_SNAKE_CASE?",
+        answer:
+          "SCREAMING_SNAKE_CASE (all uppercase with underscores) is the conventional style for constants and environment variables across many languages — Python's PEP 8, Java's constant fields, and shell scripts all use it. Examples: MAX_RETRY_COUNT, DATABASE_URL, API_TIMEOUT_SECONDS. Using it signals to readers that the value never changes at runtime.",
+      },
+      {
+        question: "What is COBOL-CASE and when is it used?",
+        answer:
+          "COBOL-CASE (also called TRAIN-CASE or HTTP-HEADER-CASE) uses uppercase letters with hyphens between words: Content-Type, X-Request-Id, Accept-Encoding. It is the standard casing for HTTP header names. Outside of HTTP headers, it is rarely used in modern code.",
+      },
+      {
+        question: "How does the tool handle numbers in identifiers?",
+        answer:
+          "Numbers are treated as opaque tokens and preserved in position. 'base64Encode' splits into ['base64', 'encode'] — the number is kept with its preceding word rather than split out as a separate token. If you need different behavior, split the identifier manually before converting.",
+      },
     ],
     relatedTools: ["json-formatter", "url-encoder"],
     useCases: [

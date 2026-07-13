@@ -110,12 +110,32 @@ export const hashGenerator = defineTool({
       {
         question: "Which algorithm should I use?",
         answer:
-          "Use SHA-256 for new projects — it is the current standard. Use MD5 or SHA-1 only when a legacy system requires it (they are broken for collision resistance but acceptable for non-security checksums). Use SHA-512 when you need a longer digest or when your framework requires it.",
+          "Use SHA-256 for new projects — it is the current standard for digital signatures, API authentication, and data integrity. Use MD5 or SHA-1 only when a legacy system requires it; both are broken for collision resistance but still acceptable for non-security checksums like file integrity verification. Use SHA-512 when you need a 512-bit digest or when a framework specifically requires it.",
       },
       {
         question: "Can I hash a file instead of text?",
         answer:
           "This tool hashes UTF-8 text. To hash a file in Node.js: createHash('sha256').update(fs.readFileSync('file')).digest('hex'). On macOS or Linux: sha256sum filename. On Windows: Get-FileHash filename -Algorithm SHA256.",
+      },
+      {
+        question: "What is the difference between hex and base64 output?",
+        answer:
+          "Both represent the same binary digest in different encodings. Hex uses lowercase letters a-f and digits 0-9, producing a string twice as long as the digest in bytes (64 characters for SHA-256). Base64 uses A-Z, a-z, 0-9, +, and /, producing a shorter string (44 characters for SHA-256 including padding). Hex is easier to read and compare visually; base64 is more compact and commonly used in HTTP headers and JWT signatures.",
+      },
+      {
+        question: "Are MD5 and SHA-1 safe to use?",
+        answer:
+          "Not for security purposes. MD5 has known collision vulnerabilities — two different inputs can produce the same hash — making it unsuitable for digital signatures, certificate verification, or password hashing. SHA-1 is similarly broken for collision resistance. Both are still widely used for non-security checksums (e.g. cache busting, deduplication, ETags) where collision attacks are not a concern.",
+      },
+      {
+        question: "How do I hash a password securely?",
+        answer:
+          "Do not use MD5, SHA-1, SHA-256, or SHA-512 to hash passwords directly. These algorithms are fast, which makes them easy to brute-force. Use a purpose-built key derivation function: bcrypt, Argon2id, or scrypt. These are intentionally slow and include a salt to prevent rainbow table attacks. All major web frameworks include a built-in password hashing library.",
+      },
+      {
+        question: "What is HMAC and how is it different from a plain hash?",
+        answer:
+          "HMAC (Hash-based Message Authentication Code) is a hash computed over both the message and a secret key, producing an authentication tag that proves both the content and the identity of the sender. A plain SHA-256 hash proves only content integrity — anyone can compute it. HMAC-SHA-256 requires knowing the secret key, making it suitable for API request signing, webhook verification, and session tokens.",
       },
     ],
     relatedTools: ["base64", "jwt-decoder"],
